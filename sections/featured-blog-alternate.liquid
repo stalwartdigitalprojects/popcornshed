@@ -1,0 +1,345 @@
+{% comment %}
+** Featured blog - homepage partial **
+- Draggable section
+{% endcomment %}
+
+{% comment %}
+<div class="container">
+  <div class="section clearfix homepage_content">
+    {% if section.settings.title != blank %}
+      <div class="sixteen columns">
+        <h2 class="title center blog">
+          <a href="{{ blogs[section.settings.blog_widget_select].url }}">{{ section.settings.title | escape }}</a>
+        </h2>
+        <div class="feature_divider"></div>
+      </div>
+    {% endif %}
+    {% if section.settings.blog_widget_select != blank %}
+      {% for article in blogs[section.settings.blog_widget_select].articles limit: section.settings.home_page_articles %}
+        <div class="{% if section.settings.home_page_articles == 2 %}eight columns{% elsif section.settings.home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article">
+          {% if article.image %}
+            <a href="{{ article.url }}">
+              <img  src="{{ article.image | img_url: '100x' }}"
+                    class="lazyload {{ settings.image_loading_style }}"
+                    alt="{% if article.image.alt != blank %}{{ article.image.alt }}{% else %}{{ article.title | escape }}{% endif %}"
+                    style="max-width: {{- article.image.width -}}px;"
+                    data-sizes="auto"
+                    data-src="{{ article.image | img_url: '650x' }}"
+                    data-srcset=" {{ article.image | img_url: '200x' }} 200w,
+                                  {{ article.image | img_url: '400x' }} 400w,
+                                  {{ article.image | img_url: '600x' }} 600w"
+                    />
+            </a>
+          {% endif %}
+
+          <h3 class="sub_title">
+            <a href="{{ article.url }}">{{ article.title }}</a>
+          </h3>
+          <p class="blog_meta">
+            {% if section.settings.blog_author %}
+              <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+            {% endif %}
+
+            {% if section.settings.blog_date %}
+              <span>{{ article.published_at | date: format: "month_day_year" }}</span>
+            {% endif %}
+
+            {% if section.settings.blog_comment_count %}
+              {% if settings.disqus_enabled %}
+                <span>
+                  <a href="{{ article.url }}#disqus_thread" data-disqus-identifier="{{ article.id }}" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+                </span>
+              {% elsif article.comments_enabled? and article.comments_count > 0 %}
+                <span>
+                  <a href="{{ article.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: article.comments_count }}</a>
+                </span>
+              {% endif %}
+            {% endif %}
+          </p>
+
+          {% if section.settings.blog_tags %}
+            <div class="blog_meta tags">
+              {% for tag in article.tags %}
+                <span><a href="{{ shop.url}}/blogs/{{ blogs[section.settings.blog_widget_select].handle }}/tagged/{{ tag | handleize }}" title="{{ blogs[section.settings.blog_widget_select].title | escape }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if article.excerpt != blank %}
+            <div class="excerpt">{{ article.excerpt }}</div>
+          {% endif %}
+          {% if section.settings.read_more_link %}
+            <a href="{{ article.url }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      {% for i in (1..section.settings.home_page_articles) %}
+        <div class="{% if section.settings.home_page_articles == 2 %}eight columns{% elsif section.settings.home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+
+          <h3 class="sub_title">
+            <a href="#">{{ 'homepage.onboarding.blogpost_title' | t }}</a>
+          </h3>
+          <p class="blog_meta">
+            {% if section.settings.blog_author %}
+              <span>{{ 'homepage.onboarding.blog_author' | t: author: article.author }}</span>
+            {% endif %}
+
+            {% if section.settings.blog_date %}
+              <span>{{ 'now' | date: format: "month_day_year" }}</span>
+            {% endif %}
+
+            {% if section.settings.blog_comment_count %}
+              {% if settings.disqus_enabled %}
+                <span>
+                  <a href="#" data-disqus-identifier="#" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+                </span>
+              {% else %}
+                <span>
+                  <a href="#">{{ 'blogs.counts.comments_with_count' | t: count: 5 }}</a>
+                </span>
+              {% endif %}
+            {% endif %}
+          </p>
+
+          {% if section.settings.blog_tags %}
+            <div class="blog_meta tags">
+              {% for tag in article.tags %}
+                <span><a href="{{ shop.url}}/blogs/{{ blogs[section.settings.blog_widget_select].handle }}/tagged/{{ tag | handleize }}" title="{{ blogs[section.settings.blog_widget_select].title | escape }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="excerpt">{{ 'homepage.onboarding.blog_excerpt' | t }}</div>
+
+          {% if section.settings.read_more_link %}
+            <a href="{{ article.url }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div> 
+{% endcomment %}
+
+
+<div class="news-container ez-animate" data-animation-offset="95%" data-animation="fadeInUp">
+  <div class="container">
+    
+    <div class="row">
+	<!-- What's New Section     -->
+      <div class="one-third column ">
+        {% if section.settings.title != blank %}
+        <div class="news-head-title ">
+          <h2><a href="{{ blogs[section.settings.blog_widget_select].url }}">{{ section.settings.title | escape }}</a></h2>          
+        </div>
+        {% endif %}
+        {% if section.settings.blog_widget_select != blank %}
+      	{% assign article = blogs[section.settings.blog_widget_select].articles[0] %}
+        <div class="sixteen columns whats-new-blog">          
+          {% include 'homepage-blog-article',blog_type:'blog',readmore:section.settings.readmore,readmore_link:blogs[section.settings.blog_widget_select].url %}
+        </div>
+        {% endif %}
+      </div>      
+      
+		<!--  Recipes Section      -->
+      <div class="one-third column " >
+        {% if section.settings.title2 != blank %}
+        <div class="news-head-title " >
+          <h2><a href="{{ blogs[section.settings.blog_widget_select2].url }}">{{ section.settings.title2 | escape }}</a></h2>          
+        </div>
+        {% endif %}
+        {% if section.settings.blog_widget_select2 != blank %}
+        {% assign article = blogs[section.settings.blog_widget_select2].articles[0] %}
+        <div class="sixteen columns  whats-new-blog">
+          {% include 'homepage-blog-article', blog_type:'recipe',readmore:section.settings.readmore2,readmore_link:blogs[section.settings.blog_widget_select2].url %}
+        </div>        
+        {% endif %}
+      </div>
+      
+      
+		<!--  Corporate Gifting      -->
+      <div class="one-third column " >
+        {% if section.settings.title3 != blank %}
+        <div class="news-head-title " >
+          <h2><a href="{{ section.settings.readmore3_url }}">{{ section.settings.title3 | escape }}</a></h2>          
+        </div>
+        {% endif %}
+        {% if section.settings.blog_widget_select3 != blank %}
+        {% assign article = blogs[section.settings.blog_widget_select3].articles[0] %}
+        <div class="sixteen columns whats-new-blog">
+          <div class="news-article">
+              <div class="news-image">
+                {% if section.settings.widget3_img %}
+                <a href="{{ section.settings.readmore3_url }}">
+                  <img  src="{{ section.settings.widget3_img | img_url: '100x' }}"
+                       class="lazyload {{ settings.image_loading_style }}"
+                       alt="{% if section.settings.widget3_img.alt != blank %}{{ section.settings.widget3_img.alt }}{% else %}{{ section.settings.widget3_title | escape }}{% endif %}"
+                       style="max-width: {{- section.settings.widget3_img.width -}}px;"
+                       data-sizes="auto"
+                       data-src="{{ section.settings.widget3_img | img_url: '650x' }}"
+                       data-srcset=" {{ section.settings.widget3_img | img_url: '200x' }} 200w,
+                                    {{ section.settings.widget3_img | img_url: '400x' }} 400w,
+                                    {{ section.settings.widget3_img | img_url: '600x' }} 600w"
+                       />
+                </a>
+                {% endif %}              
+              </div>
+              <div class="news-content">
+                <h3><a href="{{ section.settings.readmore3_url }}">{{ section.settings.widget3_title | upcase | strip_html | truncatewords :9 }}</a></h3>
+                {% if section.settings.widget3_subtitle  %}
+                <div class="excerpt">{{section.settings.widget3_subtitle | strip_html | truncatewords :20 }} </div>
+                {% endif %}
+                {% if section.settings.readmore3_url %}
+                <a href="{{ section.settings.readmore3_url }}" class="link-more">{{ section.settings.readmore3 }} <span class="arrow"></span></a>              
+                {% endif %}
+
+              </div>
+            </div>
+        </div>
+        {% endif %}
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+
+{
+  "name": "Blog posts alternate",
+  "class": "featured-blog-alternate-section",
+  "settings": [
+	{
+      "type": "header",      
+      "content": "What's New Blog posts"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "type": "blog",
+      "id": "blog_widget_select",
+      "label": "Blog"
+    },
+	{
+      "type": "text",
+      "id": "readmore",
+      "label": "Read More Link Title",
+      "default": "View All News"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_tags",
+      "label": "Show blog post tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_author",
+      "label": "Show author"
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "blog_comment_count",
+      "label": "Show comment count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "read_more_link",
+      "label": "Show continue reading link for blog post",
+      "default": true
+    },
+	{
+      "type": "checkbox",
+      "id": "article_content",
+      "label": "Show Article Content",
+      "default": true
+    },
+	{
+      "type": "header",      
+      "content": "Recipe Blog posts"
+    },
+    {
+      "type": "text",
+      "id": "title2",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "type": "blog",
+      "id": "blog_widget_select2",
+      "label": "Blog"
+    },
+	{
+      "type": "text",
+      "id": "readmore2",
+      "label": "Read More Link Title",
+      "default": "View All Recipes"
+    },
+	{
+      "type": "header",      
+      "content": "Corporate Gifting posts"
+    },
+    {
+      "type": "text",
+      "id": "title3",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "type": "blog",
+      "id": "blog_widget_select3",
+      "label": "Blog"
+    },
+	{
+      "type": "text",
+      "id": "widget3_title",
+      "label": "Title",
+      "default": "Corporate Gifting"
+    },
+	{
+      "type": "richtext",
+      "id": "widget3_subtitle",
+      "label": "SubTitle",
+	  "default": "<p>SubTitle</p>"
+    },
+	{
+      "type": "image_picker",
+      "id": "widget3_img",
+      "label": "Image"
+    },
+	{
+      "type": "text",
+      "id": "readmore3",
+      "label": "Read More Link Title",
+      "default": "Let’s start your Project"
+    },
+	{
+      "type": "url",
+      "id": "readmore3_url",
+      "label": "Read More Link URL"
+    }
+  ],
+  "presets": [{
+    "name": "Blog posts alternate",
+    "category": "Blog",
+    "settings": {
+		"blog_widget_select": "",
+		"blog_widget_select2": "",
+		"blog_widget_select3": ""
+    }
+  }]
+}
+{% endschema %}

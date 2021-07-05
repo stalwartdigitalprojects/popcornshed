@@ -1,0 +1,189 @@
+{% if type=="cart"%}
+{%- include 'bold-cart-item' with item -%}
+            {% if item.variant.compare_at_price > item.variant.price %}
+            {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+            {% assign total_saving = saving | plus: total_saving %}
+            {% endif %}
+            {% if item.variant.compare_at_price > bold_item_price %}
+            {% assign original_price = item.variant.compare_at_price | times: item.quantity | plus: original_price%}
+            {% else %}
+            {% assign original_price = bold_item_price | times: item.quantity | plus: original_price %}
+            {% endif %}
+            <li class="item cf midnight-thunder">        
+              {% assign prod_tags = item.product.tags %}
+              {% assign tagfound = false %}
+             
+              
+              <a class="remove toggler bold-ro-remove" href="/cart/change?line={{ forloop.index }}&quantity=0" data-qty="0" data-line-id="{{ forloop.index }}">x</a>
+              
+              <div class="image">          
+                <a href="{{ item.url }}" title="{{ item.title | escape }}" class="">
+                  <img  src="{{ item | img_url: '100x' }}"
+                       alt="{{ item.title | escape }}"
+                       class="lazyload {{ settings.image_loading_style }}"
+                       style="max-width: {{- item.image.width -}}px"
+                       data-sizes="auto"
+                       data-src="{{ item | img_url: '900x' }}"
+                       data-srcset=" {{ item | img_url: '300x' }} 300w,
+                                    {{ item | img_url: '600x' }} 600w,
+                                    {{ item | img_url: '900x' }} 900w"
+                       />
+                </a>
+              </div>
+
+              <div class="desc cart_desc">
+                <a class="name" href="{{ item.url }}">{{ item.product.title }}
+                  <span class="saso-cart-item-discount-notes" data-key="{{item.key}}"></span>
+                  <span class="saso-cart-item-upsell-notes" data-key="{{item.key}}"></span>                                
+
+                  <span class='booster-cart-item-success-notes' data-key='{{item.key}}'></span><span class='booster-cart-item-upsell-notes' data-key='{{item.key}}'></span>
+                </a>
+                {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+                <p class="meta">
+                  {% for option in item.product.options %}
+                  <span class="label">{{ option }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />
+                  {% endfor %}
+                </p>
+                {% endunless %}
+
+                {{ bold_recurring_desc }}
+                {% if item.properties %}          
+
+                {%- comment -%}
+                {% for p in item.properties %}
+                {% unless p.last == blank %}
+                {% if p.last contains '/uploads/' %}
+                <div>
+                  {{ p.first }}: <a class="lightbox" href="{{ p.last }}">{{ 'cart.general.uploaded_file' | t }}</a>
+                </div>
+                {% else %}
+                <div>
+                  {{ p.first }}: {{ p.last }}
+                </div>
+                {% endif %}
+                {% endunless %}
+                {% endfor %}
+                {%- endcomment -%}
+                {{ bold_item_properties }}
+                {% endif %}
+
+              </div>
+
+              <div class="quantotal">
+                <div class="quantity">
+                  <div class="quantity-row">              
+                    <a href="javascript:void(0);" class="btn-subtract js-change-quantity qty-minus {% if tagfound == true %}hidden{% else%}{% endif %}"  data-func="minus">
+                      <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><title>- icon</title><g fill="none" fill-rule="evenodd"><circle stroke="#CCD2D7" cx="12.5" cy="12.5" r="12"></circle><path fill="#CCD2D7" d="M7 12h11v1H7z"></path></g></svg>
+                    </a>
+                    <input type="number" {% if tagfound == true %}readonly{% else%}{% endif %} min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" {% if settings.limit_quantity and item.variant.inventory_management != blank and item.variant.inventory_quantity > 0 and item.variant.inventory_policy == "deny" %}max="{{ item.variant.inventory_quantity }}"{% endif %} />
+                    <a href="javascript:void(0);" class="btn-add js-change-quantity qty-plus {% if tagfound == true %}hidden{% else%}{% endif %}" data-func="plus">
+                      <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><title>+ icon</title><g fill="none" fill-rule="evenodd"><circle stroke="#CCD2D7" cx="12.5" cy="12.5" r="12"></circle><path fill="#CCD2D7" d="M7 12h11v1H7z"></path><path fill="#CCD2D7" d="M12 18V7h1v11z"></path></g></svg>
+                    </a>
+                  </div>
+                </div>
+                
+                <div class="line-total">
+                  {% if bold_item_price < item.variant.compare_at_price %}
+                  <span class="money was_price cart__item--fullPrice">{{ item.variant.compare_at_price | money }}</span>
+                  {% endif %}
+                  {% if bold_item_price > 0 %}
+                  <span class="">
+                    <span class="saso-cart-item-price money" data-key="{{item.key}}">{{ bold_item_price | money }}</span>
+                  </span>
+                  {% else %}
+                  {{ settings.free_price_text }}
+                  {% endif %}            
+                </div>
+              </div>
+            </li>
+{% elsif type=="minicart"%}
+{%- include 'bold-cart-item' with item -%}
+
+                  {% if item.variant.compare_at_price > item.variant.price %}
+                  {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+                  {% assign total_saving = saving | plus: total_saving %}          
+                  {% endif %}
+                  {% if item.variant.compare_at_price > bold_item_price %}
+                  {% assign original_price = item.variant.compare_at_price | times: item.quantity | plus: original_price%}
+                  {% else %}
+                  {% assign original_price = bold_item_price | times: item.quantity | plus: original_price %}
+                  {% endif %}
+
+                  <li class="cart_item clearfix">
+                    <a href="{{ item.url }}"  >
+                      {% if item.image %}
+                      <div class="cart_image">
+                        <img src="{{ item | img_url: '74x' }}" alt="{{ item.title | escape }}" />
+                      </div>
+                      {% endif %}
+                      <div class="item_title">
+                        {{ item.product.title }}
+                        {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+                        
+                        {% for option in item.product.options %}
+                        {{ item.variant.options[forloop.index0] }} {% unless forloop.last %}/{% endunless %}
+                        {% endfor %}
+                        {% endunless %}
+
+                        {{ bold_recurring_desc }}
+							{{ bold_item_properties }}
+                        {% if item.properties %}
+                          {%- comment -%}                
+                          {% for p in item.properties %}
+                          {% if p.last != blank %}
+                          <div class="line-item">
+                            {{ p.first }}: {{ p.last }}
+                          </div>
+                          {% endif %}
+                          {% endfor %}
+                          {%- endcomment -%}
+                        
+
+                        {% endif %}
+                      </div>
+                    </a>
+                    {% assign isSubscription = false %}
+
+                    {% for property in item.properties %}
+                    {% if property.first contains "frequency_type_text" %}
+                    {% assign isSubscription = true %}
+                    {% endif %}
+                    {% endfor %}
+
+
+                    <strong class=" {% if isSubscription ==true %}cart-subscription-price{% endif %} price">
+                      {% if bold_item_price < item.variant.compare_at_price %}
+                      <span class="money  was_price_clr"><strike>{{ item.variant.compare_at_price | money }}</strike></span>
+                      {% endif %}
+
+                      {% if bold_item_price > 0 %}
+                      <span class="money original_price">{{ bold_item_price | money }}</span><br/>
+                      {% endif %}
+                      
+                      {% assign prod_tags = item.product.tags %}
+                      {% assign tagfound = false %}
+                      
+                      <a class="item-delete ss-icon " href="javascript:;" data-qty="0" data-line-id="{{ forloop.index }}" style="display: block;margin-top: 5px;">Delete</a>
+                    </strong>
+                    
+                    <div class="quantity-row right" style="left:-16px;">
+                      <a href="javascript:void(0);" class="btn-subtract js-change-quantity qty-minus {% if tagfound == true %}hidden{% else%}{% endif %}"  data-func="minus">
+                        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><title>- icon</title><g fill="none" fill-rule="evenodd"><circle stroke="#CCD2D7" cx="12.5" cy="12.5" r="12"></circle><path fill="#CCD2D7" d="M7 12h11v1H7z"></path></g></svg>
+                      </a>
+                      <input type="number" {% if tagfound == true %}disabled{% else%}{% endif %} min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" {% if settings.limit_quantity and item.variant.inventory_management != blank and item.variant.inventory_quantity > 0 and item.variant.inventory_policy == "deny" %}max="{{ item.variant.inventory_quantity }}"{% endif %} />
+                      <a href="javascript:void(0);" class="btn-add js-change-quantity qty-plus {% if tagfound == true %}hidden{% else%}{% endif %}" data-func="plus">
+                        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><title>+ icon</title><g fill="none" fill-rule="evenodd"><circle stroke="#CCD2D7" cx="12.5" cy="12.5" r="12"></circle><path fill="#CCD2D7" d="M7 12h11v1H7z"></path><path fill="#CCD2D7" d="M12 18V7h1v11z"></path></g></svg>
+                      </a>
+                    </div>
+                    
+                    <!-- <div class="right product-quantity-box">
+                    <span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>
+                    <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" />
+                    <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
+                    </div>-->
+                    <br/>
+
+                    <div style="clear:both;"></div>
+
+                  </li>
+{% endif %}

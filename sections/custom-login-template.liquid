@@ -1,0 +1,288 @@
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="row sixteen columns clearfix collection_nav">
+  <h1>{{ 'customer.login.title' | t }}</h1>
+<!--   <div class="feature_divider"></div> -->
+</div>
+
+<div class="clearfix" id="customer">
+  <br class="clear" />
+  
+  <div class="form-login-center animated fadeInUp" id="login_form">
+    
+    {% form 'customer_login' %}
+      {{ form.errors | default_errors }}
+      
+      <label for="customer_email" class="login center">{{ 'customer.login.email' | t }}</label>
+      <input type="email" value="" name="customer[email]" id="customer_email" class="large" size="30"  autocorrect="off" autocapitalize="off" tabindex="1" />
+
+      {% if form.password_needed %}
+
+        {% comment %}
+          Customer Account Login
+        {% endcomment %}
+
+        
+        <label for="customer_password" class="login center">{{ 'customer.login.password' | t }}</label>
+        <input type="password" value="" name="customer[password]" id="customer_password" class="large password" size="16" tabindex="2" />
+
+      {% endif %}
+
+      <p class="center">
+      <small ><em><a href="#" id="forgot-pwd-btn">{{ 'customer.login.forgot_password' | t }}</a></em></small> |
+     {% unless shop.checkout.guest_login %}
+        <small  style="padding-top: 10px;">
+          {{ 'customer.login.new_customer_label' | t }} {{ 'customer.login.sign_up_html' | t | customer_register_link }}
+        </small>
+      {% endunless %}
+    </p>
+    <div class="center">
+    <input class="btn action_button login-btn" type="submit" value="{{ 'customer.login.sign_in' | t }}" style="margin-bottom: 5px !important" tabindex="3" />
+    </div>  
+    <p class="center margin-top15">OR</p>
+    {% endform %}
+    
+   
+
+    <div class="large--right">
+      
+      {% if shop.checkout.guest_login %}
+        <span class="or"> {{ 'customer.login.or' | t }} </span>
+        {% form 'guest_login' %}
+          <input class="guest_button" type="submit" value="{{ 'customer.login.guest_title_html' | t }}" />
+        {% endform %}
+      {% endif %}
+    </div>
+   
+  </div>
+   
+
+     <div id="recover-password">
+      <div class="form-login-center animated fadeInUp forgot-bg recover-password" style='display:none'>
+
+        <h4>{{ 'customer.recover_password.title' | t }}</h4>
+
+        {% form 'recover_customer_password' %}
+          {{ form.errors | default_errors }}
+
+          {% if form.posted_successfully? %}
+            {% assign reset_success = true %}
+          {% endif %}
+         {% if reset_success %}
+            <p>
+              <em class="note">{{ 'customer.recover_password.success' | t }}</em>
+            </p>
+          {% else %}
+
+          <div id="recover_email" class="clearfix large_form ">
+            <label for="email" class="large  center">{{ 'customer.recover_password.email' | t }}</label>
+            <input type="email" value="" size="30" name="email" id="recover-email" class="large" autocorrect="off" autocapitalize="off" />
+          </div>
+
+          <p>
+            <em class="note">{{ 'customer.recover_password.subtext' | t }}</em>
+          </p>
+
+          <div class="action_bottom">
+            <input class="btn action_button login-btn" type="submit" value="{{ 'SUBMIT' }}" />
+            <span class="note">{{ 'customer.recover_password.or' | t }} <a href="#" id="forgot-cancel-btn" >{{ 'customer.recover_password.cancel' | t }}</a></span>
+          </div>
+        {% endif %}
+        {% endform %}
+        
+      </div>
+    </div>
+  </div>
+
+
+<style>
+    .Smart_sl_social_front .list-inline li>a {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  .Smart_sl_social_front .Smart_sl_wds_icons.Smart_sl_wds_iconflat .fa {
+    border-radius: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+  .Smart_sl_social_front .Smart_sl_wds_icons.Smart_sl_wds_rotate .fa:active, .Smart_sl_social_front .Smart_sl_wds_icons.Smart_sl_wds_rotate .fa:hover {
+    transform: unset !important;
+    box-shadow: none !important;
+}
+  div.content{padding-bottom:0;}
+/*   form input.btn.action_button.login-btn {
+    background: #b74013 !important;
+    transition: 0.2s !important;
+    border: 2px solid #b74013 !important;
+  }
+  form input.btn.action_button.login-btn:hover {
+    background: transparent !important;
+    transition: 0.2s !important;
+    border: 2px solid #000 !important;
+  } */
+  .action_button {
+    width: 180px !important;
+    background: #202765 !important;
+    border: 2px solid #202765 !important;
+    transition: 0.2s;
+}
+  .action_button:hover {
+    background: transparent !important;
+    border: 2px solid #202765 !important;
+    color: #202765 !important;
+}
+/*  .login-btn{
+    width: 180px !important; 
+    background: #b74013 !important;
+    background: linear-gradient(to bottom,#b74013 0,#b74013 100%) !important;
+    border:none !important;
+  }
+  .login-btn:hover{
+    background-color: rgba(0,0,0,0) !important;
+    border-color: #000;
+    color: #000;
+  } */
+  div#customer {
+    background: url('{{ section.settings.login_bg_image | img_url:"master" }}');
+    background-size: cover;
+    background-position: 50%;
+    background-repeat: no-repeat;
+  }
+  .collection_nav{width:100%;}
+  .collection_nav h1{color:#fff;text-transform: uppercase;text-align:center;margin-bottom: 0;}
+  .form-login-center {
+    width: 500px;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    /* -webkit-box-align: center; */
+    height: auto;
+    margin: 0 auto;
+    padding: 15px 15px;
+    background: #fff;
+    margin-bottom: 140px;
+  }
+  .social ul{padding:0;}
+  .social ul li {
+    list-style: none;
+    float: left;
+    margin: 0 1%;
+    width: 100% !important;
+    margin-bottom: 5px;
+    margin-left:0px;
+    margin-right:0px;
+  }
+  .social ul li a {
+    font-size: 18px!important;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    -moz-border-radius:0 !important;
+    border-radius: 0 !important; 
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  span.fa.fa-google:after {
+    content: 'Login with Google';
+    font-family: Montserrat;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+
+  span.fa.fa-facebook:after {
+    content: 'Login with Facebook';
+    font-family: Montserrat;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .login,div#recover_email label {font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;}
+ 
+  
+  form#customer_login a {
+    font-style: normal;
+    font-size: 15px;
+    color: #202765;
+    letter-spacing: 0.5px;
+  }
+  form#customer_login input{height:43px;text-align:center;
+    letter-spacing: 1.5px;}
+  .collection_nav {
+    margin: 40px 0;
+  }
+  .social span {
+    font-weight: 600;
+  }
+  div.content{padding-top:0;}
+  form {
+     margin-bottom:0px;
+}
+  .forgot-bg {
+    background: #fff;
+    text-align: center;
+}
+ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+     -webkit-box-shadow: inset 0 0 0px 9999px white;
+}
+    @media screen and (min-width:769px) and (max-width:998px){
+    .form-login-center{width:50%;}
+  
+  }
+  @media screen and (min-width:320px) and (max-width:798px){
+    .form-login-center {width: 90%;}
+    .container div.collection_nav {margin-bottom: 0px;}
+    .collection_nav h1 {margin: 10px auto;}
+    .collection_nav {
+    margin: 20px 0;
+    }
+  }
+</style>
+<!-- <script type="text/javascript">
+  function showRecoverPasswordForm() {
+    document.getElementById('recover-password').style.display = 'block';
+    document.getElementById('login_form').style.display = 'none';
+    return false;
+  }
+
+  function hideRecoverPasswordForm() {
+    document.getElementById('recover-password').style.display = 'none';
+    document.getElementById('login_form').style.display = 'block';
+    return false;
+  }
+
+  if (window.location.hash == '#recover') { showRecoverPasswordForm() }
+
+//   reset_success is only true when the reset form is
+  {% if reset_success %}
+    showRecoverPasswordForm();
+  {% endif %}
+</script> -->
+
+{% schema %}
+
+{
+  "name": "Custom Login Page",
+  "class": "custom-login-section",
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "login_bg_image",
+        "label": "Login Background Image"
+      }
+  ]  
+}
+
+{% endschema %}

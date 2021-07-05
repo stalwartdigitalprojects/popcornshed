@@ -1,0 +1,14 @@
+{% comment %}
+  DO NOT MODIFY THIS FILE DIRECTLY. THIS FILE WILL BE OVERWRITTEN.
+  YOU CAN MODIFY THE LIQUID CODE FOR THIS CUSTOM FIELD HERE:
+  https://customfields.bonify.io/dashboard/popcorn-shed.myshopify.com/articles/configure/127789/edit
+{% endcomment %}
+{% if article.metafields.custom_fields["blog_product_2"] != blank %}
+  <div class="custom-field custom-field__blog-product-2 custom-field__type--product-reference">
+    <h3 class="custom-field--title">Enter Blog Product 2</h3>
+    <div class="custom-field--value">  
+    {% assign product_ref = all_products[article.metafields.custom_fields["blog_product_2"]] %}
+    {{ product_ref.title | link_to: product_ref.url }}
+    </div>
+  </div>
+{% endif %}

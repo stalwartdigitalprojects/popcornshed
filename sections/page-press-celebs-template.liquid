@@ -1,0 +1,183 @@
+{% comment %}
+** Details page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+
+<div class="container">
+{% if section.settings.image != nil %}
+  <header class="banner center page_banner dark-overlay-{{ section.settings.image_darken }}" style="background: url({{ section.settings.image | img_url: "master"}}) no-repeat;
+    background-size: cover;background-position: center center;display: flex;height: 200px;">
+<!--     <img  src="{{ section.settings.image | img_url: '100x' }}"
+          alt="{% if section.settings.image.alt != blank %}{{ section.settings.image.alt | escape }}{% else %}{{ page.title | escape }}{% endif %}"
+          class="lazyload {{ settings.image_loading_style }}"
+          data-src="{{ section.settings.image | img_url: '1400x', format: 'pjpg' }}"
+          sizes="100vw"
+          srcset="{{ section.settings.image | img_url: '480x', format: 'pjpg' }} 480w,
+                  {{ section.settings.image | img_url: '765x', format: 'pjpg' }} 765w,
+                  {{ section.settings.image | img_url: '1400x', format: 'pjpg' }} 1400w,
+                  {{ section.settings.image | img_url: '2048x', format: 'pjpg' }} 2048w"
+           /> -->
+    <div class="position-center caption js-caption">
+<!--       <h1 class="headline">{{ section.settings.title }}</h1> -->
+<!--       <h1 class="headline">{{ page.title | upcase }}</h1> -->
+<!--       <p class="subtitle">{{ section.settings.subtitle }}</p> -->
+    </div>
+  </header>
+{% endif %}
+
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="detail-sections" style="padding:50px 10px;">
+
+{% if section.blocks.size > 0 %}
+  <div class=" main content">
+    <div class="sixteen columns">
+<!--       <h1 class="center">{{ page.title }}</h1>-->
+      <div class="feature_divider"></div> 
+      {% for block in section.blocks %}
+
+      {% if block.type == "image_with_text_overlay" or block.type == "featured_video" %}
+      <div {{ block.shopify_attributes }} class="banner">
+        {% elsif block.type == "featured_collection" %}
+        <div {{ block.shopify_attributes }} class="featured-collection-section">
+          {% else %}
+          <div {{ block.shopify_attributes }}>
+            {% endif %}
+            
+
+            <!-- Press and Celebs block  -->
+            {% if block.type == 'press_celebs_image' %}
+            <div class="{% if section.settings.images_per_row == 2 %}eight columns {% cycle collection_group_thumb: 'alpha', 'omega' %}{% elsif section.settings.images_per_row == 4 %}four columns {% cycle collection_group_thumb: 'alpha', '','', 'omega' %}{% endif %} thumbnail ">
+              {% if block.settings.gallery_image %}
+              <a href="{{ block.settings.gallery_image | img_url: '520x' }}" class="lightbox" rel="detail-gallery">
+                <img src="{{ block.settings.gallery_image | img_url: 'master' }}" alt="{{ block.settings.gallery_image.alt }}" class="box-shadow" style="margin-bottom:50px;">
+              </a>
+              {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+            {% endif %}
+            <!--End Press and Celebs Block    -->
+            {% if block.type == 'divider' %}
+            <div class="container" style="padding: 0; {% if block.settings.divider_mobile %}display: none;{% endif %}">
+              <div class="sixteen columns">
+                <hr class="page-divider {% if block.settings.divider_border %}active-divider{% endif %}" style="{% if block.settings.divider_spacing %}margin: {{ block.settings.divider_spacing }}px 0px;{% endif %}">
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          {% endfor %}          
+        </div>
+      </div>
+      
+{% endif %}
+      <div class="feature_divider"></div>
+    </div>
+  </div>
+  </div>
+</div>
+    <style>
+      h1.headline{white-space: inherit;}
+      .caption .headline{top:25%;}
+     
+      
+    </style>
+{% schema %}
+
+{
+  "name": "Page",
+  "class": "page-details-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1600 x 600px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_darken",
+      "label": "Darken banner image",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "range",
+      "id": "images_per_row",
+      "label": "Images per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    }
+    ],
+  "blocks": [        
+    {
+       "name": "Press and Celebs Images",
+        "type":"press_celebs_image",       
+       "settings": [
+     	  {
+            "type": "image_picker",
+            "id": "gallery_image",
+            "label": "Image",
+            "info": "760 x 500px recommended"
+          }
+       ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add spacing in between your sections by using a divider."
+        },
+        {
+          "type": "range",
+          "id": "divider_spacing",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "unit": "px",
+          "label": "Spacing",
+          "default": 20
+        },
+        {
+          "type": "checkbox",
+          "id": "divider_border",
+          "label": "Show border",
+          "default": false
+        }
+      ]
+    }
+ ],
+  "default": {
+      "settings": {
+      },
+      "blocks": [        
+        {
+          "type": "press_celebs_image",
+          "settings": {}
+        }
+      ]
+    }
+}
+
+{% endschema %}

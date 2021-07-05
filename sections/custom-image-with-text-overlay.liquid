@@ -1,0 +1,321 @@
+{% comment %}
+** Image with text overlay - homepage partial **
+- Draggable section
+{% endcomment %}
+
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+{% assign size10 = '2000x' %}
+<div class="">
+<section id="banner-{{section.id}}" class="banner banner-bg ez-animate" data-handle="{{section.settings.title | handleize}}" data-animation="fadeInUp" data-animation-offset="80%">
+
+  {% if section.settings.image != nil %}
+    <img  src="{{ section.settings.image | img_url: '100x'}}"
+          alt="{{ section.settings.image.alt | escape }}"
+          class="lazyload {{ settings.image_loading_style }} mobile_hidden"
+          sizes="100vw"
+          data-src="{{ section.settings.image | img_url: default }}"
+          srcset="
+          {{ section.settings.image | img_url: default }} {{default | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size1 }} {{size1 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size2 }} {{size2 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size3 }} {{size3 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size4 }} {{size4 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size5 }} {{size5 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size6 }} {{size6 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size7 }} {{size7 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size8 }} {{size8 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size9 }} {{size9 | replace: 'x', 'w'}},
+          {{ section.settings.image | img_url: size10 }} {{size10 | replace: 'x', 'w'}}"
+
+           />
+  {% assign mobile_img = section.settings.mobile_image %}
+    {% if mobile_img != nil %}
+    <img  src="{{ mobile_img | img_url: '100x'}}"
+            alt="{{ mobile_img.alt | escape }}"
+            class="lazyload {{ settings.image_loading_style }} mobile_only"
+            sizes="100vw"
+            data-src="{{ mobile_img | img_url: default }}"
+            srcset="
+            {{ mobile_img | img_url: default }} {{default | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size1 }} {{size1 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size2 }} {{size2 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size3 }} {{size3 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size4 }} {{size4 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size5 }} {{size5 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size6 }} {{size6 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size7 }} {{size7 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size8 }} {{size8 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size9 }} {{size9 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size10 }} {{size10 | replace: 'x', 'w'}}"
+             />
+    {% else %}
+    {% assign mobile_img = section.settings.image %}
+     <img  src="{{ mobile_img | img_url: '100x'}}"
+            alt="{{ mobile_img.alt | escape }}"
+            class="lazyload {{ settings.image_loading_style }} mobile_only"
+            sizes="100vw"
+            data-src="{{ mobile_img | img_url: default }}"
+            srcset="
+            {{ mobile_img | img_url: default }} {{default | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size1 }} {{size1 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size2 }} {{size2 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size3 }} {{size3 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size4 }} {{size4 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size5 }} {{size5 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size6 }} {{size6 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size7 }} {{size7 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size8 }} {{size8 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size9 }} {{size9 | replace: 'x', 'w'}},
+            {{ mobile_img | img_url: size10 }} {{size10 | replace: 'x', 'w'}}"
+             />
+    {% endif %}
+  {% else %}
+    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+  {% endif %}
+  {% unless section.settings.button1_link != blank and section.settings.button2_link != blank %}
+    {% if section.settings.button1_link != blank %}
+      <a href="{{ section.settings.button1_link }}" class="banner-full-link">
+        {{ section.settings.button1 }}
+      </a>
+    {% endif %}
+    {% if section.settings.button2_link != blank %}
+      <a href="{{ section.settings.button2_link }}" class="banner-full-link">
+        {{ section.settings.button2 }}
+      </a>
+    {% endif %}
+  {% endunless %}
+  {% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
+    <div class="position-{{ section.settings.text_position }} caption js-caption">
+      <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }} ez-animate" data-animation="fadeInDown" data-animation-offset="90%">
+        {% if section.settings.pretext != blank %}
+          <div class="pretext">
+            {{ section.settings.pretext }}
+          </div>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="headline ez-animate" data-animation="fadeInUp" data-animation-offset="80%" style="color:{{section.settings.collection_title_color | default:"#000"}};">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <div class="subtitle ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+            {{ section.settings.subtitle }}
+          </div>
+        {% endif %}
+        {% if section.settings.button1 != blank %}
+          <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }} friendbuy-popup ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+            {{ section.settings.button1 }}
+          </a>
+        {% endif %}
+        {% if section.settings.button2 != blank %}
+          <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }} friendbuy-popup ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+            {{ section.settings.button2 }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endunless %}
+  
+</section>
+</div>
+<style>
+  [data-handle="mini-pop"] .caption .headline{
+    text-align: center;
+  }
+  [data-handle="mini-pop"] .subtitle{
+    margin: 20px 0 30px;
+    padding: 0px 10%;
+  }
+  [data-handle="mini-pop"] .position-center.caption{
+    top: 50% !important;
+    left: 15%;
+    text-align: center;
+  }
+/*   .banner-bg{
+    background: url('{{ section.settings.image | img_url: '1900x' }}') no-repeat ;
+      background-position:center;
+      background-size: cover;
+      height: 644px;
+      display: block;
+      } */
+  .first_button{min-height:46px !important;height:46px !important;}
+  .pretext p {font-weight: 600;}
+  .pretext p {
+    font-weight: 600;
+    color: #000;
+    font-size: 36px;
+    text-align: left;
+    line-height: 1.2;
+    margin-bottom: 18px;
+    font-family: 'CircularStd' !important;
+    text-shadow: none;
+  }  
+   @media screen and (max-width:1400px){
+    [data-handle="mini-pop"] .subtitle {
+      margin: 20px 0 30px;
+      padding: 0px 14%;
+    }
+     
+  }
+  @media screen and (max-width:1200px){
+    [data-handle="mini-pop"] .caption .headline {
+     font-size: 30px;
+    }
+    [data-handle="mini-pop"] .caption .subtitle{
+      font-size: 14px !important;
+    }
+    [data-handle="mini-pop"] .subtitle {
+      padding: 0px 23%;
+    }
+  }
+  @media screen and (max-width:1000px){
+    [data-handle="mini-pop"] .position-center.caption {
+      left: 8%;
+    }
+  }
+  @media screen and (max-width:800px){
+/*     .banner-bg{height:270px;background-position: center;} */
+    .caption .subtitle{width:100% }
+  }
+  @media screen and (max-width:800px){
+    .caption .subtitle{width:100% !important; }
+  }
+  @media screen and (max-width:798px){
+    [data-handle="mini-pop"] .subtitle {
+      padding: 0px 0%;
+    }
+  
+  }
+  @media screen and (max-width:798px){
+    [data-handle="mini-pop"] .position-center.caption {
+      position: relative;
+      left:0;
+      right:0;
+      margin-top: 25px;
+    }
+    [data-handle="mini-pop"] .caption-content.align-center {
+      max-width: 100%;
+      margin:0 auto;
+    }
+  }
+  @media screen and (min-width:320px) and (max-width:768px)
+  {
+    .caption-content .action_button {font-size: 14px;}
+    .subtitle p {font-size: 13px;}
+  }
+</style>
+{% schema %}
+
+{
+  "name": "Custom Image text overlay",
+  "class": "image-with-text-overlay-section under-menu",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1800 x 1000px recommended"
+    },
+	{
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "richtext",
+      "id": "pretext",
+      "label": "Preheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },    
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button1",
+      "label": "First button label"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "First button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button1_highlight",
+      "label": "Highlight first button"
+    },
+	{
+      "type": "color",
+      "id": "collection_title_color",
+      "label": "Title Color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Image with text overlay",
+      "category": "Image",
+      "settings": {
+        "image": "",
+        "title": "Your Headline",
+        "text_position": "center",
+        "text_align": "center"
+      }
+    }
+  ]
+}
+
+{% endschema %}

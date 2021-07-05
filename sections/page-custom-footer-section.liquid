@@ -1,0 +1,293 @@
+{% comment %}
+** Custom page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+<div class="">
+<!-- Custom Section Blocks   -->
+        {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}                
+        {% if block.type == 'as_seen_text_section' %}
+      
+        <div class="title"><h2 class="clearfix" style="margin: 10px 0;"><span class="title-name">{{ block.settings.as_seen_title | upcase }}</span>
+          {% if block.settings.as_seen_linktitle != blank%}
+          <span class="right"><a href="{{ block.settings.as_seen_url }}"><span class="title-viewmore">View All {{block.settings.as_seen_linktitle}}</span><span class="arrow"></span></a></span>
+          {%endif%}
+          </h2>
+        </div>
+
+        <div class="footer-banner inner">
+         
+            <div class="vb container-can">
+              <a href="{{ block.settings.as_seen_url }}">        
+                <img src="{{ block.settings.as_seen_bg_img_url | img_url:"master"}}" class="mobile_hidden">
+                <img src="{{ block.settings.as_seen_mbl_bg_img_url | img_url:"master"}}" class="mobile_only mobile-banner" >
+                <!--                 <img src="https://cdn2.bigcommerce.com/server4900/39e4a/product_images/uploaded_images/footer-badge-mobile-new.png" class="mobile-element"> -->
+              </a>
+            </div>
+         
+        </div>
+        <style>
+          .footer-banner.inner {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: {{ settings.as_seen_bg_color }};
+          }
+          .container-can img {
+            padding: 20px 0;
+            width:100%;
+          }
+          .footer-banner img {
+            width: 100% !important;
+          }
+          .footer-banner a{line-height: 0;display: block;}
+            .container-can {
+    padding: 0 75px;
+  }
+  @media screen and (min-width:320px) and (max-width:768px){.container-can{padding:0 0;}}
+          
+        </style>
+      
+        {% elsif block.type == 'image_with_text_overlay' %}
+		{% if template contains "collection" or template contains "index" or template contains "product" or template == "about" or template contains "alternate-insta" or template contains "press-celebs" or page.handle contains "reviews" %}
+        
+  		{% assign default = '1400x' %}
+        {% assign size1 = '480x' %}
+        {% assign size2 = '765x' %}
+        {% assign size3 = '900x' %}
+        {% assign size4 = '1000x' %}
+        {% assign size5 = '1100x' %}
+        {% assign size6 = '1300x' %}
+        {% assign size7 = '1500x' %}
+        {% assign size8 = '1700x' %}
+        {% assign size9 = '1900x' %}
+        {% assign size10 = '2000x' %}        
+          <style>
+            .banner-bg{
+              background: url({{ block.settings.image | img_url: default, format: 'pjpg' }}) no-repeat ;
+/*               background-position: 100%; */
+              background-size: cover;
+              height: 240px;
+              display: block;
+            }
+            .pretext p {
+                  font-weight: 600;
+/*                   font-size: 32pt; */
+                  color: {{ settings.banner_color }}
+              }
+            .subtitle p {
+                  letter-spacing: 0.5px;
+                  color:#000;
+/*                   font-size: 20pt; */
+              }
+            .caption-content .action_button {
+              width: 142px !important;
+              border: 2px solid #333 !important;
+/*               font-size: 14pt; */
+            }
+            .first_button{min-height:46px !important;height:46px !important;}
+            @media screen and (min-width:320px) and (max-width:768px)
+            {
+              .caption-content .action_button {
+                  font-size: 14px;
+              }
+            }
+        </style>
+          <div id="banner-{{section.id}}" class="banner banner-bg" {{ block.shopify_attributes }}>
+            {% if block.settings.image != nil %}
+            <!--           <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+        alt="{{ block.settings.image.alt | escape }}"
+        class="lazyload {{ settings.image_loading_style }}"
+        sizes="100vw"
+        data-src="{{ block.settings.image | img_url: default, format: 'pjpg' }}"
+        srcset="
+        {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+        {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+
+        /> -->
+            {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+            {% endif %}
+            {% unless block.settings.button1_link != blank and block.settings.button2_link != blank %}
+            {% if block.settings.button1_link != blank %}
+            <a href="{{ block.settings.button1_link }}" class="banner-full-link friendbuy-popup">
+              {{ block.settings.title }}
+            </a>          
+            {% endif %}
+            {% endunless %}
+            {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank and block.settings.button2 == blank %}
+            <div class="position-{{ block.settings.text_position }} caption js-caption">
+              <div class="caption-content caption-background-{{ block.settings.caption_background }} caption-transparency-{{ block.settings.caption_background_transparency }} align-{{block.settings.text_align }}">
+                {% if block.settings.pretext != blank %}
+                <div class="pretext">
+                  {{ block.settings.pretext }}
+                </div>
+                {% endif %}
+                {% if block.settings.title != blank %}
+                <p class="headline">
+                  {{ block.settings.title }}
+                </p>
+                {% endif %}
+                {% if block.settings.subtitle != blank %}
+                <div class="subtitle">
+                  {{ block.settings.subtitle }}
+                </div>
+                {% endif %}
+                {% if block.settings.button1 != blank %}
+                <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ block.settings.button1_highlight }} friendbuy-popup">
+                  {{ block.settings.button1 }}
+                </a>
+                {% endif %}              
+              </div>
+            </div>
+            {% endunless %}
+          </div>
+  			{% endif %}
+          {% endif %}
+        
+        {% endfor %}
+        
+        {% endif %}  <!--section.block condition end -->
+</div>
+          
+{% schema %}
+
+{
+  "name": "Custom Footer Section",
+  "class": "custom-footer-section",
+  "settings": [     	
+  ],
+  "blocks": [
+  	{
+        "name": "As Seen Text",
+  		"type": "as_seen_text_section",
+  		"limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "as_seen_title",
+            "label": "As Seen Title",
+            "default": "AS SEEN IN"
+          },
+          {
+            "type": "url",
+            "id": "as_seen_url",
+            "label": "As Seen URL"
+          },
+          {
+            "type": "text",
+            "id": "as_seen_linktitle",
+            "label": "Link Title",
+            "default":"Press + Celebs"
+          },
+          {
+            "type": "image_picker",
+            "id": "as_seen_bg_img_url",
+            "label": "As Seen Background Image"
+          },
+		  {
+            "type": "image_picker",
+            "id": "as_seen_mbl_bg_img_url",
+            "label": "As Seen Mobile Background Image"
+          }
+        ]
+  	},
+  	{
+      "type": "image_with_text_overlay",
+      "name": "Image with text overlay",
+  	  "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1800 x 1000px recommended"
+        },
+        {
+          "type": "richtext",
+          "id": "pretext",
+          "label": "Preheading",
+          "default": "<p>This is</p>"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subheading",
+          "default": "<p>Customize this section</p>"
+        },        
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button1",
+          "label": "First button label",
+          "default": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First button link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button1_highlight",
+          "label": "Highlight first button"
+        }        
+      ]
+    }
+  
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,63 @@
+<div class="newsletter">
+  <div class="popup-signup-show--{{settings.newsletter_popup_form }} clearfix">
+    <span class="message"></span>
+    {% if settings.mailchimp_link != blank %}
+        <form action="{{ settings.mailchimp_link }}" class="mc-embedded-subscribe-form" method="post" name="mc-embedded-subscribe-form" id="contact_form">
+          {% if settings.display_first_name %}
+          <div class="inner-form">
+          <label for="mc-EMAIL">Email Address</label>
+          <input type="email" id="mc-EMAIL"  value="" name="EMAIL" class="contact_email" placeholder="{{ 'general.newsletter_form.placeholder' | t }}">
+          </div>
+          <div class="inner-form">
+          <label for="mc-FNAME">First name</label>
+          <input type="text" value="" class="firstName" name="FNAME" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}">
+          </div>
+            {% endif %}
+          {% if settings.display_last_name %}
+          <div class="inner-form">
+            <label for="mc-LNAME">Last name</label>
+            <input type="text" value="" name="LNAME" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}">
+          </div>
+            {% endif %}
+          <div class="inner-form birthdat-main">
+            <label for="">Birthday</label>
+            <input type="text" value="" id="birthday_date" class="birthday_date dob" name="" placeholder="DD">
+            <input type="text" value="" id="birthday_month" class="birthday_month dob" name="" placeholder="MM">
+            <input type="hidden" name="MMERGE3" />
+          </div>
+          
+          <div class="inner-form">
+            <label for="">How did you hear about us?</label>
+            <input type="text" value="" class="birthday_date" name="MMERGE5" placeholder="">
+          </div>
+          <input type="submit" value="{{ 'general.newsletter_form.submit' | t }}" class="action_button sign_up" name="subscribe" />
+        </form>
+        <div id="mc_embed_signup">
+          <div class="mce-error-response"></div>
+          <div class="mce-success-response"></div>
+        </div>
+    {% else %}
+      {% form 'customer' %}
+         {% if form.posted_successfully? %}
+           <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
+         {% elsif form.errors %}
+           {% for field in form.errors %}
+             <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
+           {% endfor %}
+         {% endif %}
+
+         <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
+         {% if settings.display_first_name %}
+           <input type="text" class="firstName" name="contact[first_name]" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}" />
+         {% endif %}
+         {% if settings.display_last_name %}
+           <input type="text" name="contact[last_name]" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}" />
+         {% endif %}
+
+         <input type="hidden" name="challenge" value="false" />
+         <input type="email" class="contact_email" name="contact[email]" required placeholder="{{ 'general.newsletter_form.placeholder' | t }}" />
+         <input type='submit' class="action_button sign_up" value="{{ 'general.newsletter_form.submit' | t }}" />
+       {% endform %}
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="container">
+<div class="banner-bottom-section">
+  {% if section.blocks.size > 0%}
+  {% for block in section.blocks %}
+  	{% if block.type == "collection" %}
+        <div class="four columns banner-bottom-img-text"> 
+          <div class="gift-section-img">
+            <a href="{{block.settings.link_urk | default:"javascript:;"}}">
+              <div class="gift-img">
+              <img src="{{block.settings.image | img_url:"300x"}}">
+              </div>
+              <h2>{{block.settings.title}}</h2>
+            </a>
+          </div>
+        </div>
+  	{% endif %}
+  {% endfor %}
+  {% endif%}
+</div>
+</div>
+
+{% schema %}
+{
+  "name": "Gift Images",
+  "class": "gift-images",
+  "settings": [
+  ],
+  "blocks": [
+    {
+      "name": "Collection",
+      "type": "collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Featured collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link_urk",
+          "label": "Link URL"      
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gift Images",
+      "category": "Collection",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

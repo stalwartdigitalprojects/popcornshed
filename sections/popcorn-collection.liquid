@@ -1,0 +1,327 @@
+<style>
+ .product-img img {
+    cursor: grab;
+  }
+  div#dropper .product-content, div#dropper .product-button-section,
+  .trash-can .product-img-section.draggable-product {
+    display: none;
+  }
+  .drop-area .sortable-chosen.sortable-ghost {
+    opacity: 0;
+  }
+  .drop-area .sortable-chosen.sortable-ghost img{
+    width:90px;
+  }
+  .trash-can {
+    background: url('https://cdn.shopify.com/s/files/1/1354/3525/files/delete-trunk.png?v=1605696596') no-repeat;
+    background-size: contain;
+    bottom: 220px;
+    height: 0;
+    left: -20px;
+    padding-top: 15%;
+    position: absolute;
+    -webkit-transform: translateX(-190%);
+    -ms-transform: translateX(-190%);
+    transform: translateX(-190%);
+    -webkit-transition: -webkit-transform .3s ease-out;
+    transition: -webkit-transform .3s ease-out;
+    -o-transition: transform .3s ease-out;
+    transition: transform .3s ease-out;
+    transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+    width: 200px;
+    z-index: 2;
+  }
+  .trash-can.f-active {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+  }
+  @media screen and (max-width:991px){
+    .trash-can{
+      bottom: 60px;
+      left: 0px;
+    }
+  }
+</style>
+<section class="main-subscription-section" id="main-subscription-section">
+  <div class="container">
+    <div class="popcorn-trunk-section">
+      <div class="left-box-section">
+        <div class="left-img-part">
+          <div class="trunk-img">
+            <!--           <img src='https://cdn.shopify.com/s/files/1/1354/3525/files/popcorn-trunk-img.png?v=1602759477'> -->
+            <div class="drag-drop-text">
+              <p>Drag and drop your desired <br>popcorn into your box
+<!--                 <img src="https://cdn.shopify.com/s/files/1/1354/3525/files/hand-white.png?v=1602767263" class="hand-icon move-it"> -->
+                <img src="https://cdn.shopify.com/s/files/1/1354/3525/files/key-icon.png?v=1605075546" alt=""  class="f-scrollspy-init-inview f-scrollspy-inview hand-icon">
+              </p>
+            </div>
+            
+            <div class="box-button-img">
+              <p>Box <span id="prod_counter">0</span>/9</p>
+            </div>
+            <div id="dropper" class="drop-area" droppable="true">
+              {% comment %}<div class="product-added" draggable="true" data-id="52"><img src="https://montybojangles.com/wp-content/uploads/2019/01/popcorn-carousel-2.png" alt=""></div>
+              {% endcomment %}
+            </div>
+            <div class="view-buy-trunk">
+              <a href="javascript:;" id="addToCart">
+                <p>View & Buy Bundle </p>
+                <img src='https://cdn.shopify.com/s/files/1/1354/3525/files/Eye-Illustration_Tekengebied-blue.png?v=1605102224'>
+              </a>
+            </div>
+            <div id="trash" class="trash-can dragging" droppable="true"></div>
+          </div>
+        </div>
+      </div>
+      <div class="right-box-section draggable-products-wrapper" id="exampleRight">
+        {% if section.settings.subscription_coll != blank %}
+        {% for product in collections[section.settings.subscription_coll].products %}
+		{% assign box_img = 'https://cdn.shopify.com/s/files/1/1354/3525/files/popcorn-carousel-2_130x.png?v=1603449158' %}
+        {% if product.metafields.custom_fields["product_box_image"] != blank %}
+        	{% assign box_img = product.metafields.custom_fields["product_box_image"] %}
+        {% endif %}
+        <div class="product-img-section draggable-product" data-prod_id="{{product.id}}" data-variant="{{product.selected_or_first_available_variant.id}}" data-handle="{{product.handle}}">
+          <div class="product-img" data-box-image="{{box_img}}">
+            <img class="prod_img_drag" src="{{product.featured_image | img_url:"300x"}}" alt="{{product.title |escape }}">
+          </div>
+          <div class="product-content">
+            <h2>{{product.title}}</h2>
+            <p class="subscription_prd_minitext">
+            {% if  product.metafields.c_f.mini_product_details != blank %}
+            {{product.metafields.c_f.mini_product_details}}
+            {% endif %}
+              </p>
+          </div>
+          <div class="product-button-section">
+            <a href="javascript:;" class="add-to-trunk">Add to Bundle</a>
+            <a href="{{product.url}}" target="_blank" class="ingredients">Ingredients</a>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+  var global_counter = 0;
+  var box_img = 'https://cdn.shopify.com/s/files/1/1354/3525/files/popcorn-carousel-2_130x.png?v=1603449158';
+  $(document).ready(function() {
+    if ($(window).width()>=768) { 
+      var ele = document.getElementById('exampleRight');
+      var exampleRight = new Sortable(ele, {
+        group: {
+          name: 'shared',
+          pull: 'clone',
+          put: false
+        },
+        forceFallback: false,
+        sort: false,
+        setData(dataTransfer, dragEl) {
+          var box_img = $(dragEl).find('.product-img').attr('data-box-image');
+          var crt = dragEl.cloneNode(true);
+          $(crt).find('img').css({'width':'150px'});
+          //         console.log($(crt).find('img'))
+          crt.style.position = "absolute"; crt.style.top = "0px"; crt.style.right = "0px";crt.style.zIndex  = "999";
+          $(crt).find('.product-content,.product-button-section').css({'opacity':0});
+          
+          document.body.appendChild(crt);
+          dataTransfer.setDragImage(crt, 0,0);
+        },
+        onEnd: function (/**Event*/ evt) {
+          //         console.log($(evt.item).attr('data-prod_id'))
+          $(document.querySelectorAll("[data-prod_id='"+$(evt.item).attr('data-prod_id')+"'].sortable-drag")).remove();
+        }
+      })
+      }
+    var dropper = new Sortable(document.getElementById('dropper'), {
+      group: "shared",
+      sort: false,
+      forceFallback: false,
+      disabled: false,
+      // Element is dropped into the list from another list
+      onAdd: function (/**Event*/ evt) {
+        // dragged HTMLElement
+        var itemEl = evt.item;
+        $(itemEl).find('.product-img').addClass('product-added');
+        var box_img = $(itemEl).find('.product-img').attr('data-box-image');
+        $(itemEl).find('img').attr('src',box_img);
+        if(global_counter<=8){
+          var ele_id = makeid(6);
+          $(itemEl).attr('id',ele_id)
+          global_counter++
+          $("#prod_counter").text(global_counter);
+        }
+        else{
+          $("#prod_counter").text(9);
+//           exampleRight.destroy();
+          itemEl.remove();
+          alert('not allowed more than 9');
+        }
+      },
+      onStart: function (/**Event*/ evt, /**Event*/ originalEvent) {
+        $('.trash-can').addClass('f-active');
+      },
+      onEnd: function (/**Event*/ evt) {
+        $('.trash-can').removeClass('f-active');
+      }
+    });
+
+    
+    $("#exampleRight").on('click', '.add-to-trunk', function(e) {
+      e.preventDefault();
+      if(global_counter<=8){
+        
+        console.log(global_counter)
+        var ele_id = makeid(6);
+        var ele = $(this).parents('.product-img-section').clone();
+        var box_img = ele.find('.product-img').attr('data-box-image');
+        ele.find('img').attr('src',box_img);
+        ele.find('.product-img').addClass('product-added');
+        ele.attr('id',ele_id)
+        $("#dropper").append(ele);
+        global_counter++
+        $("#prod_counter").text(global_counter);
+      }
+      else{
+        $("#prod_counter").text(9);
+        alert('not allowed more than 9');
+      }
+
+    });
+  
+
+    var trash = new Sortable(document.getElementById('trash'), {
+      group:{
+        name: 'shared',
+        pull: 'clone'
+      },
+      onAdd: function (/**Event*/ evt) {
+        var itemEl = evt.item; // dragged HTMLElement
+        var id = $(itemEl).attr('id');
+        // console.log(id)
+        $("#dropper .draggable-product[id='"+id+"']").remove();
+        global_counter--;
+        var total_prods = $('.drop-area').find('.draggable-product').length;
+        if($('.drop-area').find('.draggable-product').length==0){
+          global_counter = 0;
+          new Sortable(ele, {
+            group: {
+              name: 'shared',
+              pull: 'clone',
+              put: false
+            },
+            sort: false 
+          });
+        }
+        $("#prod_counter").text(global_counter);
+      }
+    });
+
+
+    // $('.draggable-product .product-img').draggable({
+    // 	cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+    //      revert: "invalid", // when not dropped, the item will revert back to its initial position
+    //      containment: "document",
+    //      helper: "clone",
+    //      cursor: "move"
+    //  });
+    // $("#dropper").droppable();
+    
+    
+    function addAllItems(array){
+      Shopify.queue = [];
+      var quantity = 1;
+      var newArray = array.split(',');
+      for (var i = 0; i < newArray.length; i++) {
+        product = newArray[i]
+        Shopify.queue.push({
+          variantId: product,
+        });
+      }
+      Shopify.moveAlong = function() {
+        // If we still have requests in the queue, let's process the next one.
+        if (Shopify.queue.length) {
+          var request = Shopify.queue.shift();
+          var data = 'id='+ request.variantId + '&quantity=1'
+          $.ajax({
+            type: 'POST',
+            url: '/cart/add.js',
+            dataType: 'json',
+            data: data,
+            success: function(res){
+              Shopify.moveAlong();
+              quantity += 1;
+            },
+            error: function(){
+              // if it's not last one Move Along else update the cart number with the current quantity
+              if (Shopify.queue.length){
+                Shopify.moveAlong()
+              } else {
+              }
+            }
+          });
+        }
+        // If the queue is empty, we add 1 to cart
+        else {
+          quantity += 1;
+          $(this).removeAttr('disabled').find('p').text('View & Buy Trunk');
+          window.location="/cart";
+//           addToCartOk(quantity);
+        }
+      };
+      Shopify.moveAlong();
+    };
+    
+    $("#addToCart").on('click',function(e){
+      e.preventDefault();
+      var lines = [];
+      var items = $("#dropper .draggable-product").each(function(i,ele){
+      	lines.push($(ele).attr('data-variant'));
+      })
+      $(this).attr('disabled','disabled').find('p').text('Adding to cart...');
+      addAllItems(lines.toString());
+    })
+    
+    var waypoint = new Waypoint({
+      element: document.getElementById('main-subscription-section'),
+      handler: function() {
+        var ele = $(this.element);
+        if(!ele.find('img.hand-icon').hasClass('move-it'))
+        	ele.find('img.hand-icon').addClass('move-it');
+      }
+    })
+    
+  })
+
+
+</script>
+
+{% schema %}
+{
+  "name": "Subscription Box",
+  "class": "subscription-box-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Subscription box settings"
+    },
+    {
+      "type": "collection",
+      "id": "subscription_coll",
+      "label": "Select Subscription Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+{% comment %}
+** page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+
+<div class="container">
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="sixteen columns page clearfix">
+  <h1 class="center">
+    {{ page.title }}    
+  </h1>
+  <div class="feature_divider"></div>
+
+  <div>
+     {% include 'page-multi-column', content: page.content %}
+  </div>
+</div>
+</div>
+<style>
+.yotpo-popup-box-medium .yotpo-modal-bottom-line{width: 100%;display:inline-block;}
+.yotpo-nav-content{display: inline-block;}
+/* .yotpo-default-button {display:inline-block;font-weight: 800 !important;border: 2px solid #34c1bb !important;} */
+input.yotpo-default-button.primary-color-btn.pull-right.write-review-button.only-invisible {
+    display: inline-block;
+    font-weight: 800 !important;
+    border: 2px solid #34c1bb !important;
+}
+</style>

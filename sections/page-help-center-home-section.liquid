@@ -1,0 +1,115 @@
+{% include 'help-center-search' %}
+
+<div class="container">
+  <div class="popcorn-help-center-section">
+    <div class="pocorn-icon-section">
+      {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+          {% if block.settings.title != blank %}
+          <div class="four columns">
+            <a href="{{block.settings.page_link}}">
+              <div class="pocorn-icon-text">
+                <img src="{{ block.settings.img1 | img_url:"50x" }}" class="first-img">
+                <img src="{{ block.settings.img2 | img_url:"50x" }}" class="second-img">
+                <h3>{{block.settings.title}}</h3>
+                <div>{{block.settings.subtitle | truncate: 110 }}</div>
+              </div>
+            </a>
+          </div>
+          {% endif %}
+      {% endfor %}
+      {% endif %}
+      
+      <div class="faq-contactus">
+        <div class="sixteen columns padding-top40">
+          <div class="center">
+            <p>Haven't Found What You're Looking For? <a href="/pages/contact-us">Contact Us</a></p>
+          </div>
+        </div>
+      </div>
+
+      {% comment %}
+      <div class="four columns">
+        <a href="#">
+          <div class="pocorn-icon-text">
+            <img src="//cdn.shopify.com/s/files/1/0198/9644/files/questions-hover_50x.png?v=1576061991" class="first-img">
+            <h3>Questions?</h3>
+            <p>Explore or help center to learn more about Forged and our products</p>
+          </div>
+        </a>
+      </div>
+      <div class="four columns">
+        <a href="#">
+          <div class="pocorn-icon-text">
+            <img src="//cdn.shopify.com/s/files/1/0198/9644/files/questions-hover_50x.png?v=1576061991" class="first-img">
+            <h3>Questions?</h3>
+            <p>Explore or help center to learn more about Forged and our products</p>
+          </div>
+        </a>
+      </div>
+      <div class="four columns">
+        <a href="#">
+          <div class="pocorn-icon-text">
+            <img src="//cdn.shopify.com/s/files/1/0198/9644/files/questions-hover_50x.png?v=1576061991" class="first-img">
+            <h3>Questions?</h3>
+            <p>Explore or help center to learn more about Forged and our products</p>
+          </div>
+        </a>
+      </div>
+      {% endcomment %}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Help Center Page",
+    "settings": [
+		{
+          "type": "header",
+          "content": "==> Help center Page"
+        }
+	],
+	"blocks": [
+      {
+        "type": "page",
+        "name": "Page",
+        "settings": [
+          {
+            "type": "url",
+            "id": "page_link",
+            "label": "Page"
+          },
+		  {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+		  {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+          },
+          {
+            "type": "image_picker",
+            "id": "img1",
+            "label": "Icon Image"
+          },
+		  {
+            "type": "image_picker",
+            "id": "img2",
+            "label": "Icon Hover Image"
+          }
+        ]
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,269 @@
+{% assign featured_image = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
+  {% capture list %}
+    {% for image in product.images %}
+      {% comment %}Loop through images only once{% endcomment %}
+      {{ image.id }}`~`{{ image.alt }}`~`{{ image | product_img_url: '100x' }}`~`{{ image | product_img_url: '200x' }}`~`{{ image | product_img_url: '400x' }}`~`{{ image | product_img_url: '600x' }}`~`{{ image | product_img_url: '800x' }}`~`{{ image | product_img_url: '1200x' }}`~`{{ image | product_img_url: '2000x' }}`~`{{-image.width-}}px`~`{{-image.height-}}px{% if forloop.last == false %}^{% endif %}
+    {% endfor %}
+  {% endcapture %}
+  {% assign image_list = list | split: "^" %}
+<!-- product name in mobile version -->
+{% style %}
+.shopify-model-viewer-ui model-viewer {
+--progress-bar-height: 2px;
+--progress-bar-color: #000;
+transform: translateZ(0);
+z-index: 1;
+width: 100%;
+min-height: 500px;
+}
+@media screen and (max-width: 798px){
+.product-gallery__model model-viewer, .product-gallery__video iframe {
+min-height: 45vh!important;
+}
+.flickity-prev-next-button{
+height:80% !important;
+}
+}
+{% endstyle %}
+
+<div class="gallery-wrap js-product-page-gallery clearfix
+            gallery-arrows--{{section.settings.gallery_arrows}}
+            {% if section.settings.product_thumbs %} {{ section.settings.thumbnail_position }} {% endif %}
+            slideshow_animation--{{ section.settings.slideshow_animation }}
+            ">
+  {% if product.metafields.c_f.product_label %}
+  {% assign pro_lbls = product.metafields.c_f.product_label | split:','%}
+    {% for pl in pro_lbls%}  
+      {% if pl == 'New' %}<div class="new-badge thumbnail_banner"></div>{%endif%}
+  	  {% if pl == 'Sold Out' or pl == 'sold-out' %}<div class="soldout-badge thumbnail_banner"></div>{%endif%}
+    {%endfor%}  
+  {% endif %}
+  <div class="product_gallery js-product-gallery product-{{ product.id }}-gallery
+              transparentBackground--{{ settings.slideshow_button_style }}
+              slideshow-transition--{{ section.settings.slideshow_animation }}
+              popup-enabled--{{ section.settings.enable_product_lightbox }}
+              show-gallery-arrows--{{ section.settings.gallery_arrows }}
+              {% if product.media.size > 1 %} multi-image {% else %} single-image {% endif %}"
+            data-thumbnails-enabled="{{ section.settings.product_thumbs }}"
+            data-gallery-arrows-enabled="{{ section.settings.gallery_arrows }}"
+            data-slideshow-speed="{{ section.settings.slideshow_speed }}"
+            data-slideshow-animation="{{ section.settings.slideshow_animation }}"
+            data-thumbnails-position="{{ section.settings.thumbnail_position }}"
+            data-thumbnails-slider-enabled="{{ section.settings.enable_thumbnail_slider }}"
+            data-zoom="{{ section.settings.activate_zoom }}"
+            data-video-loop="{{ section.settings.video_looping }}"
+            data-product-id="{{ product.id }}"
+            data-product-lightbox="{{ section.settings.enable_product_lightbox }}"
+            data-media-count="{{ product.media.size }}"
+            data-product-gallery>
+
+    {% for media in product.media %}
+      <div class="gallery-cell" data-image-id="{{ product.media[forloop.index0].id }}" data-product-id="{{ product.id }}" data-media-type="{{ media.media_type }}" data-thumb="{{ image_large }}" data-title="{% if image_alt contains 'youtube' or image_alt contains 'vimeo' %}{{ product.title }}{% else %}{{ image_alt | escape }}{% endif %}">
+      
+        {% capture thumbnails %}{{thumbnails}}<div class="gallery-cell" data-title="{{ media.alt | escape }}"  data-media-type="{{ media.media_type }}">
+        <img  src="{{ media | img_url: '600x' }}"
+             alt="{{ media.alt | escape }}"
+             data-index="{{ forloop.index0 }}"
+             data-image-id="{{ media.id }}"
+             data-featured-image="{{featured_image.id}}"
+             style="width:100px;height:auto;"/>
+        </div>
+        {% endcapture %}
+        
+        {% case media.media_type %}
+          {% when 'image' %}
+
+            {% capture image_id %}{{ media.id }}{% endcapture %}
+            {% capture image_alt %}{{ media.alt | escape }}{% endcapture %}
+            {% capture image_100x %}{{ media | img_url: '100x' }}{% endcapture %}
+            {% capture image_200x %}{{ media | img_url: '200x' }}{% endcapture %}
+            {% capture image_400x %}{{ media | img_url: '400x' }}{% endcapture %}
+            {% capture image_600x %}{{ media | img_url: '600x' }}{% endcapture %}
+            {% capture image_800x %}{{ media | img_url: '800x' }}{% endcapture %}
+        	{% capture image_1200x %}{{ media | img_url: '1200x' }}{% endcapture %}
+        	{% capture image_1400x %}{{ media | img_url: '1400x' }}{% endcapture %}
+            {% capture image_2000x %}{{ media | img_url: '2000x' }}{% endcapture %}
+            {% capture image_5000x %}{{ media | img_url: '5000x' }}{% endcapture %}
+
+            {% if image_alt contains 'youtube' or image_alt contains 'vimeo' %}
+
+              {% assign alt_text = image_alt | split: ' ' %}
+                {% for property in alt_text %}
+                  {% if property contains "src" %}
+                    {% assign cleanURL =  property | remove: 'src=' | remove: '&quot;' | remove: '"' %}
+                    <div class="product-gallery__video" data-youtube-video>
+                      <iframe src="{{ cleanURL }}" frameborder="0"></iframe>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+            {% else %}
+
+              {% if section.settings.enable_product_lightbox and product.images.size > 0 %}
+                <a  href="{{ image_5000x }}"
+                    class="lightbox"
+                    data-fancybox="{{ product.id }}"
+                    rel="product-lightbox" tabindex="0">
+              {% endif %}
+              <div class="image__container" style="max-width: 600px;">
+                {% if product.images.size > 0 %}
+                  <img  data-zoom-src="{{ image_5000x }}"
+                        alt="{{ image_alt | escape }}"
+                        class=" lazyload {{ settings.image_loading_style }}"
+                        data-image-id="{{ product.media[forloop.index0].id }}"
+                        data-index="{{ forloop.index0 }}"
+                        data-sizes="{% if section.settings.enable_product_lightbox %}100vw{% else %}auto{% endif %}"
+                        data-aspectratio="{{ media.width }}/{{ media.height }}"
+                        data-flickity-lazyload="{{ media | img_url: '600x' }}"
+                        data-srcset=" {{ image_200x }} 200w,
+                                      {{ image_400x }} 400w,
+                                      {{ image_600x }} 600w,
+                                      {{ image_800x }} 800w,
+                                      {{ image_1200x }} 1200w,
+                                      {{ image_1400x }} 1400w,
+                                      {{ image_2000x }} 2000w"
+                        height="{{ media.height }}"
+                        width="{{ media.width }}"
+                        srcset="data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='{{ media.width }}'%20height='{{ media.height }}'></svg>"
+
+                        />
+                {% else %}
+                  <img src="{{ image | img_url: 'master' }}" />
+                {% endif %}
+              </div>
+              {% if section.settings.enable_product_lightbox and product.images.size > 0 %}
+                </a>
+              {% endif %}
+            {% endif %}
+          {% when 'external_video' %}
+            <div class="product-gallery__video" data-youtube-video data-video-loop data-video-loop="true">
+              {{ media | external_video_url: loop: "1", muted: "1"| external_video_tag }}
+            </div>
+          {% when 'video' %}
+            <div class="product-gallery__video" data-html5-video data-video-loop data-video-loop="true">
+              {{ media | video_tag: controls: true, loop:true }}
+            </div>
+          {% when 'model' %}
+            <div class="product-gallery__model">
+              {% comment %}
+              {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true,  image_size: '800x800' }}
+              {% endcomment %}
+              <model-viewer reveal='interaction' toggleable="true" camera-controls="true" data-shopify-feature="0.8" poster="{{media.preview_image | img_url:"800x"}}" {% for m in media.sources %} {% if m.url contains ".usdz" %}ios-src="{{m.url}}"{% else %} src="{{m.url}}" {% endif %} {% endfor %} alt="{{media.alt}}" >
+                <div id="custom-poster" slot="poster"></div>
+              </model-viewer>
+
+<!--               <button class="action_button view-in-your-space" data-shopify-xr data-shopify-model3d-id="{% if media.media_type == 'model' %}{{ media.id }}{% else %}{{ has_model.id }}{% endif %}" data-shopify-title={{ product.title }} style="display: none;">
+                <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9L22.0622 12.5V19.5L16 23L9.93782 19.5V12.5L16 9Z" stroke="#3A3A3A" stroke-width="1.5"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M16 23V15.6024C16.6225 15.2002 16.6225 15.2002 16.6225 15.2002L22 12V19.4082L16 23Z" fill="#3A3A3A"/>
+                </svg>
+                {{ 'View 3D / AR' | capitalize }}
+              </button> -->
+            </div>
+          {% else %}
+            {{ media | media_tag }}
+        {% endcase %}
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% if section.settings.product_thumbs %}
+    {% if product.images.size > 1 and image_width != 'full' %}
+      <div class="product_gallery_nav product-{{ product.id }}-gallery-nav sliderLocation">
+
+          {{thumbnails}}
+      </div>
+    {% endif %}
+  {% endif %}
+     
+</div>
+
+
+
+  {% if section.settings.thumbnail_position == 'bottom-thumbnails' %}
+<style>
+  .gallery-cell{}
+  @media screen and (min-width:320px) and (max-width:768px){
+      .product_gallery_nav .gallery-cell img{margin:0 auto;}
+  .bx-wrapper .bx-prev {
+    left: 5px !important;}
+  .bx-wrapper .bx-next{right: -15px !important} 
+  }
+ 
+</style>
+
+<style>
+  /* DIRECTION CONTROLS (NEXT / PREV) */
+  .bx-wrapper{margin:0 auto;}
+  .bx-wrapper .bx-prev {left: -30px ;background: url({{ 'controls2.png' | asset_url}}) no-repeat 0 -32px;}
+  .bx-wrapper .bx-next {right: -30px ;background: url({{ 'controls2.png' | asset_url}}) no-repeat -43px -32px;left:auto !important;
+  }
+  
+  .bx-wrapper .bx-controls-direction a {
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    outline: 0;
+    width: 32px;
+    height: 32px;
+    text-indent: -9999px;
+    z-index: 9999;
+  }
+  
+  @media screen and (min-width:375px) and (max-width:768px){
+    .bx-wrapper .bx-prev {left: 10px !important;}
+    .bx-wrapper .bx-next {right: -10px !important;left:auto !important;}
+    .gallery-cell img {margin:0 auto;}
+  }
+  
+</style>
+{%elsif section.settings.thumbnail_position =='right-thumbnails'%}
+<style>
+   .stamp.tooltip {
+    position: absolute;
+    
+      right: 20%;}
+  .bx-wrapper{float:right !important;left:-25px;}.bx-wrapper .bx-prev {top: -15px;}.bx-wrapper .bx-prev,.bx-wrapper .bx-next{margin-left: -16px;}
+  @media screen and (max-width:768px){
+    .gallery-wrap.right-thumbnails .product_gallery_nav .gallery-cell{margin-left:15px;}
+   
+    .bx-wrapper .bx-next {
+      left: 60%;}
+    .bx-wrapper .bx-prev {
+      left: 60%;}
+    .stamp.tooltip {
+      position: absolute;
+      top: 25%;
+      left: 4%;
+      width: 35px;
+      z-index: 2;
+    }
+   
+  }
+</style>
+{%endif%}
+{% if section.settings.thumbnail_position == 'left-thumbnails' or section.settings.thumbnail_position =='right-thumbnails'%}
+<style>
+
+  @media screen and (min-width:375px) and (max-width:768px){
+  .soldout-badge 
+    {
+    left: 60% !important;
+    }
+  }
+</style>
+{% endif %}
+{% if section.settings.thumbnail_position == 'left-thumbnails' %}
+<style>
+  .soldout-badge,.new-badge {
+    left: 100px;
+  } 
+   @media screen and (min-width:375px) and (max-width:768px){
+  .soldout-badge,.new-badge 
+    {
+    left: 90% !important;
+    }
+   }
+</style>
+{%endif%}
+

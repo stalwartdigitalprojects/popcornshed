@@ -1,0 +1,367 @@
+
+{% if prod_var != blank %}
+  {% assign variant = prod_var %}
+{% else %}
+	{% assign variant = product.selected_or_first_available_variant %}
+{% endif %}
+    <div class="mobile_product_title center mobile_only">  
+      {% assign variant = product.selected_or_first_available_variant %}
+      <h2 class="product_name" itemprop="name">{{ product.title }}</h2>
+      {% if settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
+      <span itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating" style="display:none;">
+        <span itemprop="ratingValue">4</span>
+      </span> 
+      <span class=" stamped-product-reviews-badge" data-product-sku="{{ product.handle }}" data-id="{{ product.id }}" data-product-type="{{product.type}}" data-product-title="{{product.title}}"  style="display:block;">{{ product.metafields.stamped.badge }}</span>
+      {% endif %}        
+      <!--           <div class="feature_divider"></div> -->
+
+      {% assign product_tags = product.tags | join: ' ' %}
+      {% if product_tags contains 'meta-size-chart-' %}
+      {% for tag in product.tags %}
+      {% if tag contains 'meta-size-chart-' %}
+      <a href="#size-chart{{product.id}}" class="size_chart" data-remodal-target="size-chart{{product.id}}" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+      {% include 'popup-size-chart', product_id: product.id %}
+      {% endif %}
+      {% endfor %}
+      {% elsif settings.size_chart != blank %}
+      <a href="#size-chart" class="size_chart" data-remodal-target="size-chart" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+      {% endif %}
+
+      <div style="display:none !important" itemprop="brand" itemscope itemtype="http://schema.org/Brand" >
+        <span itemprop="name">{{ shop.name | escape }}</span>
+      </div>
+
+      {% if collection_handles contains 'coming-soon' %}
+      <p class="modal_price mr-0 pd-0">{{ 'collections.general.coming_soon' | t }}</p>
+      {% else %}
+      <p class="modal_price mr-0 pd-0" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+        <meta itemprop="seller" content="{{ shop.name | escape }}" />
+        <link itemprop="availability" href="http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}">
+        <meta itemprop="itemCondition" content="New" />
+        <meta itemprop="price" content="{{ variant.price | money_without_currency | remove: "," }}" />
+        <meta itemprop="priceValidUntil" content="{{ 'now' | date: '%s' | plus: 31536000 | date: '%Y-%m-%d' | uri_encode | replace:'+','%20' }}" />
+        <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+
+<!--                       <span class="sold_out">{% if variant.available == false %}{{ 'products.product.sold_out' | t }}{% endif %}</span> 
+        {% if variant.available == false %}<span class="money">{{ product.price_min | money }}</span>{% endif %}-->
+        <span itemprop="price" content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+          <span class="current_price">
+            {% if product.price_min > 0 %}
+            <span class="money">{{ product.price_min | money }}</span>
+            {% else %}
+            {{ settings.free_price_text }}
+            {% endif %}
+          </span>
+        </span>           
+
+        {% if section.settings.display_savings %}
+        <!--<span class="sale savings pd-0 mr-0">
+        {% if variant.price < variant.compare_at_price %}
+        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{{ variant.compare_at_price | minus: variant.price | money }}</span>)
+        {% endif %}
+</span> -->
+        <span class="sale savings">
+          <span class="was_price">
+            {% if variant.price < variant.compare_at_price  %}
+            <span class="money"> {{ variant.compare_at_price | money }}</span>
+            {% endif %}
+          </span>
+          {% if variant.price < variant.compare_at_price  %}
+          <span class="money price-percent-off">({{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% off)</span>
+          {% endif %}
+        </span>
+        {% endif %}
+      </p>
+
+      {% endif %}
+      <!--  Yotpo Review Start Ratings product images -->
+      <div class="yotpo bottomLine mr-0 pd-0"
+           data-appkey="kVi6CyjblnL3Gp0BzGEHq2pkLqpaWSWJbXU0qnZn"
+           data-domain="{{shop.permanent_domain | escape }}"
+           data-product-id="{{ product.id }}"
+           data-product-models="{{ product.id }}"
+           data-name="{{ product.title | escape }}"
+           data-url="{{ shop.url }}{{ product.url }}"
+           data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+           data-description="{{ product.description | escape }}"
+           data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}" style="display:block;float:none;margin-bottom: 10px;">
+      </div>          
+      <!--  Yotpo Review Start Ratings  -->
+    </div> 
+
+<div class="product-date-picker mobile_only">
+  <form action="/action_page.php">
+    <div class="product-date-text">
+      <h3>When will I receive my order?</h3>
+      <!--           <p>Let us know when your occasion is and we'll give you some specific information on delivery.</p> -->
+    </div>
+    <!--         <input type="text" autocomplete="off" placeholder="When's your occasion?" id="datepicker"> -->
+    <div class="delivery_details">
+      <ul>
+        <li>
+          Our Next Estimated Delivery Date Is: <span class="next_eta_date"></span>
+          <!--               all our popcorn has at least <span class="total_weeks">3 months</span> shelf life when it arrives. -->
+        </li>
+        <li>
+          Orders Are Dispatched Via Royal Mail Tracked Parcel Service.  Once Your Order Is Dispatched, You Will Receive An E-mail with A Tracking Code So You Can Track Your Order.
+          <!--               Our next estimated delivery date is: <span class="next_eta_date"></span> -->
+        </li>
+        <li>
+          All Our Popcorn Has At Least 3 Months Shelf Life When It Arrives.
+        </li>
+      </ul>
+    </div>
+  </form>	
+</div>
+
+    <div class="product-detail-tab mobile_hidden">
+        <ul class="tabs">
+          <li><a class="active" href="#tab1" data-no-instant="true">Details</a></li>
+          {% if section.settings.enable_desc_tabs %}
+          {% if section.settings.tab2_title != blank and product.metafields.c_f.allergens != blank %}<li><a href="#tab2" data-no-instant="true">{{ section.settings.tab2_title }}</a></li>{% endif %}
+          {% if section.settings.tab3_title != blank and product.metafields.c_f.ingredients != blank %}<li><a href="#tab3" data-no-instant="true">{{ section.settings.tab3_title }}</a></li>{% endif %}
+          {% if section.settings.tab4_title != blank  and product.metafields.c_f.nutritional != blank  %}<li><a href="#tab4" data-no-instant="true">{{ section.settings.tab4_title }}</a></li>{% endif %}          
+          {% endif %}
+        </ul>     
+        <ul class="tabs-content">
+          <li class="active" id="tab1">
+            {% if product.description != blank %}
+              <div class="description bottom desc-tab" itemprop="description">
+                <div class="smalldata">
+                  <p>{{ product.description | strip_html | slice: 0, 290 | append: "..." }} <a href="javascript:;" class="show-more">[+]</a></p>
+                </div>
+                <div class="bigdata" style="display:none"> {{product.description }} 
+                  
+                  <a href="javascript:;"  class="show-less" >[-]</a>
+                </div>
+              </div>
+            {% endif %}
+          </li>
+          {% if section.settings.tab2_title != blank and product.metafields.c_f.allergens != blank %}
+          <li id="tab2">
+            <div class="description bottom desc-tab" itemprop="description">
+            <p><span>
+               {{ product.metafields.c_f.ingredients }}
+            
+              </span>
+            </p>
+            </div>
+          </li>
+          {% endif %}
+          {% if section.settings.tab3_title != blank and product.metafields.c_f.ingredients != blank %}
+          <li id="tab3">
+            <div class="description bottom desc-tab" itemprop="description">
+            <p><span>
+                  {{ product.metafields.c_f.allergens }}
+              </span>
+            </p>
+            </div>
+          </li>
+          {% endif %}
+          {% if section.settings.tab4_title != blank and product.metafields.c_f.nutritional != blank %}
+          <li id="tab4">
+            <div class="description bottom desc-tab" itemprop="description">
+            <p><span>
+              {{ product.metafields.c_f.nutritional }}
+              </span>
+            </p>
+            </div>
+          </li>
+          {% endif %}          
+        </ul>
+
+      </div>
+    <div class="product-detail-tab mobile_only mobile-tab">
+        <dl class="faqAccordion">
+          <dt><button type="button" aria-controls="panel-01" aria-expanded="true" class="faq-blue">Details</button></dt>
+          <dd id="panel-01" aria-hidden="false" style="display:block !important;">
+            {% if product.description != blank %}
+            <div class="description bottom desc-tab" itemprop="description">
+              <div class="smalldata">
+                <p>{{ product.description | strip_html | slice: 0, 200 | append: "..." }} <a href="javascript:;" class="show-more">[+]</a></p>
+              </div>
+              <div class="bigdata" style="display:none"> {{product.description }}
+                
+                <a href="javascript:;"  class="show-less" >[-]</a>
+              </div>
+            </div>
+            {% endif %}
+          </dd>
+
+          {% if section.settings.enable_desc_tabs %}
+          
+          {% if section.settings.tab2_title != blank and product.metafields.c_f.allergens != blank %}
+          <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ section.settings.tab2_title }}</button></dt>
+          <dd id="panel-01" aria-hidden="false">
+            {{ product.metafields.c_f.ingredients }}
+          </dd>
+          {% endif %}
+          
+          {% if section.settings.tab3_title != blank and product.metafields.c_f.ingredients != blank %}
+          <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ section.settings.tab3_title }}</button></dt>
+          <dd id="panel-01" aria-hidden="false">
+            {{ product.metafields.c_f.allergens }}
+          </dd>
+          {% endif %}
+          
+          {% if section.settings.tab4_title != blank and product.metafields.c_f.nutritional != blank %}
+          <dt><button type="button" aria-controls="panel-01" aria-expanded="true">{{ section.settings.tab4_title }}</button></dt>
+          <dd id="panel-01" aria-hidden="false">
+            {{ product.metafields.c_f.nutritional }}
+          </dd>
+          {% endif %}
+          
+          {% endif %}
+      		</dl>
+</div>
+
+{% if product.metafields.custom_fields["technical_specification"] != blank %}
+<div class="ingrediants-wrapper">
+  <a id="ingrediants_button" href="{{product.metafields.custom_fields["technical_specification"]}}" class="ingrediants_button" target="_blank" title="{{section.settings.product_info_title}} (Open in new tab)">{{section.settings.product_info_title}}</a>
+</div>
+{% endif %}
+
+ 
+
+<form action="/cart/add"
+        method="post"
+        class="clearfix product_form init {% if product.variants.size > 1 or product.options.size > 1 %}product_form_options{% endif %} pf-full"
+        id="product-form-{{ product.id }}"
+        data-money-format="{{ shop.money_format }}"
+        data-shop-currency="{{ shop.currency }}"
+        data-select-id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}"
+        data-enable-state="{% if template contains 'product' %}true{% else %}false{% endif %}"
+        data-product="{{ product | json | escape }}"
+        {% if settings.limit_quantity or settings.display_inventory_left %}
+          data-variant-inventory='[{%- for v in product.variants -%}{"id":{{v.id}},"inventory_quantity":{{v.inventory_quantity}},"inventory_management":"{{v.inventory_management}}","inventory_policy":"{{v.inventory_policy}}"}{% if forloop.last == false %},{% endif %}{%- endfor -%}]'
+        {% endif %}        
+        data-product-id="{{ product.id }}"
+        >
+
+  
+ 
+    
+    {% if product.type == "Subscription" %}
+    <a href="/pages/subscription" class="gift-page-banner action_button first_button highlight-false">
+      More Information
+    </a>
+  	<div class="ro_widget"></div>
+    {% endif %}
+    
+
+    {% if product.options.size > 1 %}
+      <div class="select">
+        <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id" class="multi_select">
+          {% for v in product.variants %}
+            <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% elsif product.options.size == 1 and product.variants.size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
+      <div class="select">
+        <label>{{ product.options[0] }}</label>
+        <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id">
+          {% for v in product.variants %}
+            <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% else %}
+      <input type="hidden" name="id" value="{{ variant.id }}" />
+    {% endif %}
+
+    {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
+      <div class="swatch_options">
+        {% for option in product.options %}
+          {% include 'product-swatch' with option %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if settings.display_inventory_left %}
+      <div class="items_left">
+        {% if variant.inventory_management != blank and variant.inventory_quantity > 0 %}
+          {% capture items_left_text %}
+            {% if variant.inventory_quantity == 1 %}
+              {{ 'products.product.items_left_count.one' | t }}
+            {% else %}
+              {{ 'products.product.items_left_count.other' | t }}
+            {% endif %}
+          {% endcapture %}
+
+          <p><em>{{ variant.inventory_quantity }} {{ items_left_text }}</em></p>
+        {% endif %}
+      </div>
+    {% endif %}
+      
+	<!-- START SOLD OUT BUTTON IN PDP PAGE -->
+    
+    {% if product.type == "Subscription" %}
+    {% else %}
+      {% if settings.display_product_quantity  and product.available %}
+      <div class="product-quantity">
+        <div class="quantity-title">Quantity</div>
+        <div class="product-quantity-box qty-btn-col">
+          <!--         <label for="quantity">{{ 'products.product.quantity' | t }} <span class="icon-minus"></span></label> -->
+          <span class="ss-icon product-minus js-change-quantity plus-minus-btn qty-minus" data-func="minus">-</span>
+          <input type="number" min="1" size="2" class="quantity qty" name="quantity" id="quantity" value="1" {% if settings.limit_quantity and variant.inventory_management != blank and variant.inventory_policy == "deny" %}{% if variant.inventory_quantity > 0 %}max="{{variant.inventory_quantity}}"{% else %}max="1"{% endif %}{% endif %} />
+          <span class="ss-icon product-plus js-change-quantity plus-minus-btn qty-plus" data-func="plus">+</span>
+        </div>
+      </div>
+      {% endif %}
+    {% endif %}
+    
+    
+    
+    {% if product.available %}
+    <div class="purchase clearfix {% if settings.display_product_quantity %}inline_purchase{% endif %} addtocart-btn-col">
+      {% if settings.cart_action == 'reload_page' %}
+      <input type="hidden" name="return_to" value="back" />
+      {% elsif settings.cart_action == 'redirect_checkout' %}
+      <input type="hidden" name="return_to" value="/checkout" />
+      {% endif %}
+
+      {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
+
+      <button type="submit" name="add" class="action_button add_to_cart cart-btn"  data-label={{ add_to_cart_label | json }}>
+        <span class="text">{{ add_to_cart_label }}</span>
+        <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
+          <path fill="none" stroke="{{ settings.btn_text_color }}" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
+        </svg>
+      </button>     
+    </div>
+    {% else %}
+    
+    {% endif %}
+    
+    
+    
+    
+</form>
+
+{% include 'product-notify-me' %}
+<style>
+  span.next_eta_date {
+    font-weight: bold;
+  }
+</style>
+
+<div class="frequently-bought-box-wrapper">
+  <div id="cbb-frequently-bought-box"></div>
+</div>
+
+<div class="product-social-icons">
+  <ul class="social_icons">
+    {% if settings.instagram_link != '' %}
+    <li><a href="{{ settings.instagram_link }}" title="{{ shop.name }} on Instagram" rel="me" target="_blank" class="icon-instagram">share</a></li>
+    {% endif %}
+    {% if settings.facebook_link != '' %}
+    <li><a href="{{ settings.facebook_link }}" title="{{ shop.name }} on Facebook" rel="me" target="_blank" class="icon-facebook">share</a></li>
+    {% endif %}
+
+    {% if settings.twitter_link != '' %}
+    <li><a href="{{ settings.twitter_link }}" title="{{ shop.name }} on Twitter" rel="me" target="_blank" class="icon-twitter">tweet</a></li>
+    {% endif %}  
+  </ul>
+</div>

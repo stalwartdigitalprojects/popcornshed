@@ -1,0 +1,162 @@
+{% assign product_found = false %}
+{% assign skip = false %}
+{% assign collection_group = products | map: 'id' %}
+{% assign collection_group_thumb = collection_group | append : 'thumb' %}
+{% assign collection_group_mobile = collection_group | append : 'mobile' %}
+{% assign temp_img = '' %}
+{% assign ad_index = 0 %}
+{% capture new_row %}
+    <!--<br class="clear product_clear" />-->
+{% endcapture %}
+
+{% assign isRelatedProd = false %}
+{% if template contains "product" %}
+	{% assign isRelatedProd = true %}
+{% endif %}
+
+<div itemtype="http://schema.org/ItemList" class="product-list collection-matrix clearfix">
+  {% for product in products limit: limit %}
+    {% if product.id == skip_product.id or skip == true or product.tags contains "hidden-product" %}
+      {% assign product_found = true %}
+    {% else %}
+      {% if forloop.rindex0 == 0 and product_found == false and forloop.length != products.count and template != 'search' and template != 'index' %}
+        {% assign skip = true %}
+      {% else %}
+  
+  		
+  
+  {% if settings.colored_product_enabled == true and isRelatedProd == false and isFeaturedCollection != true and template != "collection.minipop" %}
+                  {% for product_option in product.options_with_values %}
+  					{% assign tmp_index = forloop.index | times:1 %}
+                  {% assign optname = product_option.name | downcase | strip %}
+                  {% if optname contains "qty" %}
+                            {% for value in product_option.values %}
+  	                            {% assign ad_index = ad_index | plus:1 %}
+  
+                                  {% assign products_count = collection.products_count | plus:0 %}
+
+                                  {% for block in section.blocks %}
+                                  {% if block.type == 'ad_banner' %}
+                                  {% assign adimg = block.settings.ad_bg_img | img_url:"master" %}
+                                  {% assign ad_url = block.settings.ad_link %}
+                                  {% assign adposition = block.settings.tile_position | plus: 0 %}
+                                  {% if ad_index == adposition and block.settings.ad_collection == collection.handle %}
+                                  {% include 'alternate-advertise-image' %}
+                                  {%endif%}
+                                  {%endif%}         
+                                  {%endfor%}
+
+                              {% include 'separate-variant-loop', sidebar: sidebar, colored_pros:'true', tmp_index:tmp_index %}
+
+                                    {% if products_per_row == 2 %}
+                                      {% cycle collection_group: '', new_row %}
+                                    {% elsif products_per_row == 3 %}
+                                      {% cycle collection_group: '', '', new_row %}
+                                    {% elsif products_per_row == 4 %}
+                                      {% cycle collection_group: '', '', '', new_row %}
+                                    {% endif %}
+                          {% endfor %}
+  				  {% else %}
+  <!--normal product starts    -->
+        {% include 'product-thumbnail', sidebar: sidebar %}
+
+            {% if products_per_row == 2 %}
+              {% cycle collection_group: '', new_row %}
+            {% elsif products_per_row == 3 %}
+              {% cycle collection_group: '', '', new_row %}
+            {% elsif products_per_row == 4 %}
+              {% cycle collection_group: '', '', '', new_row %}
+            {% elsif products_per_row == 5 %}
+              {% cycle collection_group: '', '', '', '', new_row %}
+            {% elsif products_per_row == 6 %}
+              {% cycle collection_group: '', '', '', '', '', new_row %}
+            {% elsif products_per_row == 7 %}
+              {% cycle collection_group: '', '', '', '', '', '', new_row %}
+            {% endif %}
+  <!--normal product ends    -->
+                  {%endif%}
+                  {% endfor %}
+  {% elsif isFeaturedCollection == true %}
+  
+  		{% assign ad_index = ad_index | plus:1 %}  
+        {% assign products_count = collection.products_count | plus:0 %}
+
+        {% for block in section.blocks %}
+        {% if block.type == 'ad_banner' %}
+        {% assign adimg = block.settings.ad_bg_img | img_url:"master" %}
+        {% assign ad_url = block.settings.ad_link %}
+        {% assign adposition = block.settings.tile_position | plus: 0 %}
+        {% if ad_index == adposition and block.settings.ad_collection == collection.handle %}
+        {% include 'alternate-advertise-image' %}
+        {%endif%}
+        {%endif%}         
+        {%endfor%}
+  
+    <!--normal product starts    -->
+        {% include 'product-thumbnail', sidebar: sidebar %}
+
+            {% if products_per_row == 2 %}
+              {% cycle collection_group: '', new_row %}
+            {% elsif products_per_row == 3 %}
+              {% cycle collection_group: '', '', new_row %}
+            {% elsif products_per_row == 4 %}
+              {% cycle collection_group: '', '', '', new_row %}
+            {% elsif products_per_row == 5 %}
+              {% cycle collection_group: '', '', '', '', new_row %}
+            {% elsif products_per_row == 6 %}
+              {% cycle collection_group: '', '', '', '', '', new_row %}
+            {% elsif products_per_row == 7 %}
+              {% cycle collection_group: '', '', '', '', '', '', new_row %}
+            {% endif %}
+  <!--normal product ends    -->
+  
+  {% else %}
+  
+        {% assign ad_index = ad_index | plus:1 %}        
+        {% assign products_count = collection.products_count | plus:0 %}
+
+        {% for block in section.blocks %}
+        {% if block.type == 'ad_banner' %}
+        {% assign adimg = block.settings.ad_bg_img | img_url:"master" %}
+        {% assign ad_url = block.settings.ad_link %}
+        {% assign adposition = block.settings.tile_position | plus: 0 %}
+        {% if ad_index == adposition and block.settings.ad_collection == collection.handle %}
+        {% include 'alternate-advertise-image' %}
+        {%endif%}
+        {%endif%}         
+        {%endfor%}
+
+  <!--normal product starts    -->
+        {% include 'product-thumbnail', sidebar: sidebar %}
+
+            {% if products_per_row == 2 %}
+              {% cycle collection_group: '', new_row %}
+            {% elsif products_per_row == 3 %}
+              {% cycle collection_group: '', '', new_row %}
+            {% elsif products_per_row == 4 %}
+              {% cycle collection_group: '', '', '', new_row %}
+            {% elsif products_per_row == 5 %}
+              {% cycle collection_group: '', '', '', '', new_row %}
+            {% elsif products_per_row == 6 %}
+              {% cycle collection_group: '', '', '', '', '', new_row %}
+            {% elsif products_per_row == 7 %}
+              {% cycle collection_group: '', '', '', '', '', '', new_row %}
+            {% endif %}
+  <!--normal product ends    -->
+  	{% endif %}
+  
+  
+      {% endif %}
+    {% endif %}
+	
+  
+  {% endfor %}
+  {% if settings.pagination_type == 'load_more' or settings.pagination_type == 'infinite_scroll' and template contains 'collection' %}
+    {% if paginate.next.url %}
+      <div class="js-load-more load-more">
+        <a href="{{ paginate.next.url }}" data-no-instant class="load-more__btn action_button continue-button">{{ 'collections.general.load_more' | t }}</a>
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+<div class="load-more__icon"></div>

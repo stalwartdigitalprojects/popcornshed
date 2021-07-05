@@ -1,0 +1,27 @@
+{% assign multishipping = 'false' %}
+
+{% for item in cart.items %}
+
+  {% if template.name == 'cart' %}
+
+    {% for p in item.properties %}
+
+      {% if p.first == 'Address' %}
+
+      	{% assign multishipping = 'true' %}
+
+      {% endif %}
+
+    {% endfor %}
+
+  {% endif %}
+
+
+{% endfor %}
+
+{% if multishipping == 'true' and template.name == 'cart' %}
+<script type="text/javascript">
+  window.location = 'https://{{ request.host }}/apps/cart_data/cart/';
+</script>
+<meta http-equiv="refresh" content="0;URL=https://{{ request.host }}/apps/cart_data/cart/" />
+{% endif %}

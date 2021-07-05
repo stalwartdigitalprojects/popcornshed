@@ -1,0 +1,1936 @@
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css"/><a name="pagecontent" id="pagecontent"></a>
+
+<div class="page-corporate-gifting-section">
+  {% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+  {% if block.type == "image_with_text_overlay" or block.type == "featured_video" %}
+  <div {{ block.shopify_attributes }} class="under-menu">
+    {% else %}
+    <div  {{ block.shopify_attributes }}>
+      {% endif %}
+      <!-- Block:- Image with text overlay   -->
+      {% if block.type == "image_with_text_overlay" %}
+      {% assign default = '1400x' %}
+      {% assign size1 = '480x' %}
+      {% assign size2 = '765x' %}
+      {% assign size3 = '900x' %}
+      {% assign size4 = '1000x' %}
+      {% assign size5 = '1100x' %}
+      {% assign size6 = '1300x' %}
+      {% assign size7 = '1500x' %}
+      {% assign size8 = '1700x' %}
+      {% assign size9 = '1900x' %}
+      {% assign size10 = '2000x' %}
+
+      {% if block.settings.full_width == false %}
+      <div class="new_banner_wrapper">
+        <div class="container">
+          {% endif %}
+      <section id="banner-{{block.id}}" class="banner page_banner"> 
+        {% unless block.settings.bg_img == nil and block.settings.background_color == nil%}
+        {% if block.settings.bg_img != nil %}
+        <img  src="{{ block.settings.bg_img | img_url: '100x', format: 'pjpg' }}"
+             alt="{{ block.settings.bg_img.alt | escape }}"
+             class = "gift_bg_banner"
+             class="lazyload {{ block.bg_img_loading_style }}"
+             sizes="100vw"
+             data-src="{{ block.settings.bg_img | img_url: '1900x', format: 'pjpg' }}"
+             srcset="
+                     {{ block.settings.bg_img | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                     {{ block.settings.bg_img | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}}"
+
+             />    
+        {% else %}
+        <div class="business_gift_banner" style="background-color:{{ block.settings.background_color }}">
+          {% endif %}
+          {% endunless %}
+        
+          {% if block.settings.button1_link != blank %}
+          <a href="{{ block.settings.button1_link }}" class="banner-full-link">
+            {{ block.settings.title }}
+          </a>
+          {% endif %}
+          {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank and block.settings.contact_info == blank %}
+          <div class="position-{{ block.settings.text_position }} caption js-caption gift_banner_text">
+            <div class="caption-content 
+                        caption-background-{{block.settings.caption_background}}
+                        caption-transparency-{{ block.settings.caption_background_transparency }}
+                        align-{{ block.settings.text_align }}">
+              {% if block.settings.pretext != blank %}
+              <div class="pretext">
+                {{ block.settings.pretext }}
+              </div>
+              {% endif %}
+              {% if block.settings.title != blank %}
+              <h1 class="headline corporate_text">
+                {{ block.settings.title }}
+              </h1>
+              {% endif %}
+              {% if block.settings.subtitle != blank %}
+              <div class="subtitle">
+                {{ block.settings.subtitle }}
+              </div>
+              {% endif %}
+              {% if block.settings.button1 != blank %}
+              <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} class="gift-page-banner action_button first_button highlight-{{ block.settings.button1_highlight }}">
+                {{ block.settings.button1 }}
+              </a>
+              {% endif %}
+              {% if block.settings.contact_info != blank %}
+              <div class="contact_detail pretext">
+                {{ block.settings.contact_info }}
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+          {% endunless %}
+        </div>
+      </section>
+          {% if block.settings.full_width == false %}
+        </div>
+      </div>
+          {% endif %}
+      {% endif %}
+      
+      <style>
+        #banner-{{block.id}} .subtitle p
+        {
+          color: {{block.settings.collection_subtitle_color | default:"#000" }};
+        }
+        #banner-{{block.id}} .headline{
+          color:{{block.settings.collection_title_color | default:"#000" }};
+        }
+        #banner-{{block.id}} .contact_detail.pretext p{
+          color:{{block.settings.collection_contact_detail_color | default:"#000" }};
+        }
+
+        @media (max-width: 480px){
+          #banner-{{block.id}} .subtitle p
+          {
+            color: {{block.settings.collection_mobilesubtitle_color | default:"#000" }};
+          }
+          #banner-{{block.id}} .headline{
+            color:{{block.settings.collection_mobiletitle_color | default:"#000" }};
+          }
+         	#banner-{{block.id}} .contact_detail .pretext{
+          color:{{block.settings.collection_mobile_contact_detail_color | default:"#000" }};
+        }
+        }
+      </style>
+      
+      
+      
+
+      <!--Block :- Gift page image with text  -->
+
+      {% if block.type == "gift_page_image_with_text" %}
+      <div class="container">
+        <div class="sixteen columns">
+          <div class="homepage_content section {{ block.settings.text_alignment }} clearfix image_with_txt_section">
+            {% if block.settings.title != blank %}
+            <h2 class="title">
+              {{ block.settings.title }}
+            </h2>
+            <div class="feature_divider"></div>
+            {% endif %}
+
+            <div class="{{ block.settings.text_size }} popcorn_gift_pragraph">
+              {% if block.settings.content != blank %}
+              {{ block.settings.content }}
+              {% endif %}
+
+              {% if block.settings.button_label != blank %}
+              <a href="{{ block.settings.button_link }}" class="action_button">
+                {{ block.settings.button_label }}
+              </a>
+              {% endif %}
+              {% if block.settings.image != nil %}
+              <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+                   alt="{{ block.settings.image.alt | escape }}"
+                   class="lazyload {{ block.image_loading_style }}"
+                   sizes="100vw"
+                   data-src="{{ block.settings.image | img_url: '1900x', format: 'pjpg' }}"
+                   srcset="
+                           {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                           {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+                   />
+              
+              {% endif %}
+              <div class="banner-bottm-list">
+                <ul>
+                  {% if block.settings.description_1 != blank %}
+                  <li class="gift_page subtitle">
+                    {{ block.settings.description_1 }}
+                  </li>
+                  {% endif %}
+                  {% if block.settings.description_2 != blank %}
+                  <li class="gift_page subtitle">
+                    {{ block.settings.description_2 }}
+                  </li>
+                  {% endif %}
+                  {% if block.settings.description_3 != blank %}
+                  <li class="gift_page subtitle">
+                    {{ block.settings.description_3 }}
+                  </li>
+                  {% endif %}
+                  {% if block.settings.description_4 != blank %}
+                  <li class="gift_page subtitle">
+                    {{ block.settings.description_4 }}
+                  </li>
+                  {% endif %}
+                  {% if block.settings.description_5 != blank %}
+                  <li class="gift_page subtitle">
+                    {{ block.settings.description_5 }}
+                  </li>
+                  {% endif %}
+                  {% if block.settings.description_6 != blank %}
+                  <li class="gift_page subtitle">
+                    {{ block.settings.description_6 }}
+                  </li>
+                  {% endif %}
+                </ul>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- 	Block :- Image slider	 -->
+      {% if block.type == "image_slide" %}
+      
+     <div class="sixteen columns mobile-view"> <div class="your-class">
+        {% if block.settings.title != blank %}
+        <h2 class="title">
+          {{ block.settings.title }}
+        </h2>
+
+        {% endif %}
+        <div class="container">
+          <div class="gift-slider-nav clearfix">
+            {% if block.settings.tab1 != blank %}
+            <div class="gift_page title" data-slide="0">
+              {{ block.settings.tab1 }}
+            </div>
+            {% endif %}
+            {% if block.settings.tab2 != blank %}
+            <div class="gift_page title" data-slide="1">
+              {{ block.settings.tab2 }}
+            </div>
+            {% endif %}
+            {% if block.settings.tab3 != blank %}
+            <div class="gift_page title" data-slide="2">
+              {{ block.settings.tab3 }}
+            </div>
+            {% endif %}
+            {% if block.settings.tab4 != blank %}
+            <div class="gift_page title" data-slide="3">
+              {{ block.settings.tab4 }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="gift-slider-for">
+
+            {% if block.settings.slide_image1 != nil %}
+            <div  class="slick_slider1">
+              <img  src="{{ block.settings.slide_image1 | img_url: '400x'}}"
+                   alt="{{ block.settings.slide_image1.alt | escape }}"
+                   class="lazyload {{ block.slide_image1_loading_style }}"
+                   data-src="{{ block.settings.slide_image1 | img_url: '400x' }}"
+                   srcset="
+                           {{ block.settings.slide_image1 | img_url: '400x' }} "
+                   />
+
+              {% endif %}
+              {% if block.settings.description1 != blank %}
+              <div class="slider_text pretext">
+                {{ block.settings.description1 }}
+              </div>
+            </div>
+            {% endif %}
+
+            {% if block.settings.slide_image2 != nil %}
+            <div  class="slick_slider1">
+              <img  src="{{ block.settings.slide_image2 | img_url: '400x'}}"
+
+                   alt="{{ block.settings.slide_image2.alt | escape }}"
+                   class="lazyload {{ block.slide_image2_loading_style }}"
+                   data-src="{{ block.settings.slide_image2 | img_url: '400x' }}"
+                   srcset="
+                           {{ block.settings.slide_image2 | img_url: '400x' }} "
+                   />
+              {% endif %}
+              {% if block.settings.description2 != blank %}
+              <div class="slider_text pretext">
+                {{ block.settings.description2 }}
+              </div>
+            </div>  
+            {% endif %}
+
+            {% if block.settings.slide_image3 != nil %}
+            <div  class="slick_slider1">
+              <img  src="{{ block.settings.slide_image3 | img_url: '400x'}}"
+
+                   alt="{{ block.settings.slide_image3.alt | escape }}"
+                   class="lazyload {{ block.slide_image3_loading_style }}"
+                   data-src="{{ block.settings.slide_image3 | img_url: '400x' }}"
+                   srcset="
+                           {{ block.settings.slide_image3 | img_url: '400x' }} "
+                   />
+
+              {% endif %}
+              {% if block.settings.description3 != blank %}
+              <div class="slider_text pretext">
+                {{ block.settings.description3 }}
+              </div>
+            </div>
+            {% endif %}
+
+
+            {% if block.settings.slide_image4 != nil %}
+            <div  class="slick_slider1">
+              <img  src="{{ block.settings.slide_image4 | img_url: '400x'}}"
+
+                   alt="{{ block.settings.slide_image4.alt | escape }}"
+                   class="lazyload {{ block.slide_image4_loading_style }}"
+                   data-src="{{ block.settings.slide_image4 | img_url: '400x' }}"
+                   srcset="{{ block.settings.slide_image4| img_url: '400x' }} "
+                   />
+              {% if block.settings.description4 != blank %}
+              <div class="slider_text pretext">
+                {{ block.settings.description4 }}
+              </div>
+            </div>
+            {% endif %}
+            {% endif %}
+
+          </div>
+          <div class="slider_view_button">
+            {% if block.settings.text_button != blank %}
+            <div class="title">
+              {{ block.settings.text_button }}
+            </div>
+            {% endif %}
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+            <a href="{{ block.settings.button_link }}" class="">
+              {{ block.settings.button_text }}
+            </a>
+            {% endif %}
+          </div>
+        </div>
+       </div></div>
+    </div>
+    {% endif %}        
+
+    <!--  Block :- Featured Collection  -->
+    {% comment %}      
+    {% if block.type == "featured_collection" %}
+
+    <div class="container-fluid trading-product ">
+      {% if block.settings.collection == blank %}
+      {%- assign block_onboarding = true -%}
+      {% assign products_length = block.settings.products_limit | plus: 0 %}
+      {% else %}
+      {%- assign block_onboarding = false -%}
+      {% endif %}
+      <div class="container">
+        <div class="title title-control">
+          <h2 class="clearfix ez-animate gift_collection_title" data-animation="fadeInUp" data-animation-offset="80%" style="margin: 0px 0;"><span class="title-name">{{ block.settings.title }}</span> 
+            {% if block.settings.link_title != blank %}
+            <span class="right"><a href="{% if block.settings.link_url != blank %} {{ block.settings.link_url }} {% else %} {{ collections[block.settings.collection].url }} {% endif %}"  ><span class="title-viewmore">View All {{ block.settings.link_title }}</span><span class="arrow"></span></a></span>
+            {%endif%}
+          </h2>
+        </div>
+
+        <div class="container featured_products product-{{ block.settings.collection_style }} ez-animate" data-animation="fadeInUp" data-animation-offset="95%">
+          <div class="row">
+            <div class="sixteen columns homepage_content">    
+              {% if block.settings.title != blank %}  
+
+              <!--  <a href="{{ collections[block.settings.collection].url }}"><h2 class="title">{{ block.settings.title }}</h2></a> -->
+              <div class="feature_divider"></div>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+
+        {% assign limit = block.settings.products_limit %}
+
+        {% if block.settings.collection_style == 'slider' %}
+        {% assign col = block.settings.collection %}
+        {% assign products = collections[block.settings.collection].products %}
+        {% assign per_slide = block.settings.products_per %}
+
+        <div class="container js-trending-col-product-slider homepage-product-slider full-width {% if per_slide == 2 or per_slide == 4 or per_slide == 6 %}even-num-slides{% endif %} ez-animate slider_arrow" data-animation="fadeInUp" data-animation-offset="80%">
+          {% if block_onboarding == false %}
+          {% if col and collections[col].all_products_count > 0 %}
+          {% include 'product-slider', per_slide: block.settings.products_per, featured_collection: col  %}
+          {% endif %}
+          {% else %}
+          <div class="slider-gallery products-slider products-length-{{ products_length }}"
+               data-products-per-slide="{{ per_slide }}"
+               data-products-limit="{{ limit }}"
+               data-products-available="{{ products_length }}">
+            {% for i in (1..limit) %}
+            {% assign per_slide_num = block.settings.products_per | plus: 0 %}
+            <div class="gallery-cell thumbnail
+                        {% if products_length > per_slide_num %}visible-{{ per_slide }}{% else %}visible-{{ products_length }}{% endif %}
+                        ">
+              <div class="product-wrap">
+                <div class="relative product_image">
+                  <a href="#" itemprop="url">
+                    <object class="placeholder-image">
+                      {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                      {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+                    </object>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% else %}
+        {% if block_onboarding == false %}
+        {% assign limit = block.settings.products_limit %}
+        {% assign collection = collections[block.settings.collection] %}
+        {% assign products = collections[block.settings.collection].products %}
+        {% assign products_per_row = block.settings.products_per %}
+        <div class="container ">
+          <div class="row"> 
+            <div class="sixteen columns ez-animate margin-bottom30" data-animation="fadeInUp" data-animation-offset="80%">
+              {% include 'product-loop' %}
+            </div>
+          </div>
+        </div>
+        {% else %}
+        {% assign products_per_row = block.settings.products_per %}
+        <div class="container ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+          <div class="row">
+            <div class="sixteen columns ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+              {% capture new_row %}
+              <br class="clear product_clear" />
+              {% endcapture %}
+
+              <div itemtype="http://schema.org/ItemList" class="product-list collection-matrix clearfix">
+                {% for i in (1..limit) %}
+                {% comment %}{% assign collection_group = products | map: 'id' %}{% endcomment %}
+                {% assign collection_group_thumb = collection_group | append : 'thumb' %}
+                {% assign collection_group_mobile = collection_group | append : 'mobile' %}
+                <div class="
+                            {% if products_per_row == 2 %}
+                            eight columns {% cycle collection_group_thumb: 'alpha', 'omega' %}
+                            {% elsif products_per_row == 3 %}
+                            one-third column {% cycle collection_group_thumb: 'alpha', '', 'omega' %}
+                            {% elsif products_per_row == 4 %}
+                            four columns {% cycle collection_group_thumb: 'alpha', '', '', 'omega' %}
+                            {% elsif products_per_row == 5 %}
+                            one-fifth column {% cycle collection_group_thumb: 'alpha', '', '', '', 'omega' %}
+                            {% elsif products_per_row == 6 %}
+                            one-sixth column {% cycle collection_group_thumb: 'alpha', '', '', '', '', 'omega' %}
+                            {% else %}
+                            one-seventh column {% cycle collection_group_thumb: 'alpha', '', '', '', '', '', 'omega' %}
+                            {% endif %} thumbnail {% cycle collection_group_mobile: 'even', 'odd' %}">
+
+                  <div class="product-wrap">
+                    <div class="relative product_image swap-{{ settings.collection_secondary_image }}">
+                      <a href="#" itemprop="url">
+                        {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                        {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {% if products_per_row == 2 %}
+                {% cycle collection_group: '', new_row %}
+                {% elsif products_per_row == 3 %}
+                {% cycle collection_group: '', '', new_row %}
+                {% elsif products_per_row == 4 %}
+                {% cycle collection_group: '', '', '', new_row %}
+                {% elsif products_per_row == 5 %}
+                {% cycle collection_group: '', '', '', '', new_row %}
+                {% elsif products_per_row == 6 %}
+                {% cycle collection_group: '', '', '', '', '', new_row %}
+                {% elsif products_per_row == 7 %}
+                {% cycle collection_group: '', '', '', '', '', '', new_row %}
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endif %}        
+      </div>
+    </div>
+    {% endif %}  
+    {% endcomment %}      
+
+    <!-- Block :- Featured Products           -->
+
+    {% if block.type == "featured_products" %}
+    <div class="container">
+      <div class="product-bottom-slider">
+        {% if block.settings.title != blank %}
+        <h2 class="title gift-title">
+          {{ block.settings.title }}
+        </h2>
+        {% endif %}
+        {% if block.settings.text != blank %}
+        <h2 class="subtitle popcorn_gift_pragraph">
+          {{ block.settings.text }}
+        </h2>
+        {% endif %}
+        <div class="container js-choose--products-slider">
+          {% assign default = '1400x' %}
+          {% assign size1 = '480x' %}
+          {% assign size2 = '765x' %}
+          {% assign size3 = '900x' %}
+          {% assign size4 = '1000x' %}
+          {% assign size5 = '1100x' %}
+          {% assign size6 = '1300x' %}
+          {% assign size7 = '1500x' %}
+          {% assign size8 = '1700x' %}
+          {% assign size9 = '1900x' %}
+          {% assign size10 = '2000x' %}
+
+          <div class="product_bar">
+            {% assign slider_counter = 0 | plus:0 %}
+            <div class="slider-gallery products-slider">
+              {% for i in (1..10) %}
+              {% assign imagekey = 'image' | append:i %}
+              {% assign imgfield = block.settings[imagekey] %}
+              {% assign TitleKey = 'pro_title' | append:i %}
+              {% assign TitleField = block.settings[TitleKey] %}
+              {% assign LinkKey = 'link' | append:i %}
+              {% assign LinkField = block.settings[LinkKey] %}
+              {% if imgfield != blank %}
+              <div class="four columns product_items">
+                {% assign slider_counter = slider_counter | plus:1 %}
+                <a href="{{ LinkField }}" class="logo-bar__link">
+                  {% if imgfield != blank %}
+                  <img  src="{{ imgfield | img_url: '1000x' }}"
+                       alt="{{ imgfield.alt | escape }}"
+                       class="lazyload {{ settings.image_loading_style }}"
+                       style="max-width: {{- imgfield.width -}}px;"
+                       data-sizes="auto"
+                       data-src="{{ imgfield | img_url: '400x' }}"
+                       data-srcset=" {{ imgfield | img_url: '300x' }} 300w,
+                                    {{ imgfield | img_url: '400x' }} 400w,
+                                    {{ imgfield | img_url: '500x' }}"
+                       />
+                  {% else %}
+                  {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                  {% if LinkField != blank %}
+                </a>
+                {% endif %}
+                {% if TitleField != blank %}
+                <a class="our-flavours-headline">
+                  {{ TitleField }}
+                </a>
+                {% endif %}
+                {% if LinkField != blank %}
+                <a href="{{ LinkField }}" class="logo-bar__link"></a>
+                {% endif %}
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="products-slider slider_counter" data-slide-count="{{ slider_counter }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    </div> 
+
+    <!-- Block :- Banner with text  -->
+
+    {% if block.type == "banner_with_text" %}
+    {% assign default = '1400x' %}
+    {% assign size1 = '480x' %}
+    {% assign size2 = '765x' %}
+    {% assign size3 = '900x' %}
+    {% assign size4 = '1000x' %}
+    {% assign size5 = '1100x' %}
+    {% assign size6 = '1300x' %}
+    {% assign size7 = '1500x' %}
+    {% assign size8 = '1700x' %}
+    {% assign size9 = '1900x' %}
+    {% assign size10 = '2000x' %}
+
+
+    <section id="banner catalog_bg-{{block.id}}" class="banner catalob_bg"> 
+      <div class="catalog_banner">
+        {% if block.settings.image != nil %}
+        <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+             alt="{{ block.settings.image.alt | escape }}"
+             class="lazyload {{ block.image_loading_style }}"
+             sizes="100vw"
+             data-src="{{ block.settings.image | img_url: '1900x', format: 'pjpg' }}"
+             srcset="
+                     {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+
+             />    
+        {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+        {% endif %}
+      </div>
+
+
+
+      {% unless block.settings.button1_link != blank and block.settings.button2_link != blank %}
+<!--       {% if block.settings.button1_link != blank %}
+      <a href="{{ block.settings.button1_link }}" class="banner-full-link" target="_blank">
+        {{ block.settings.button1 }}
+      </a>
+      {% endif %} -->
+      {% endunless %}
+      {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank %}
+      <div class="position-{{ block.settings.text_position }} caption js-caption catalog_blog">
+        <div class="caption-content caption-background-{{ block.settings.caption_background }} caption-transparency-{{ block.settings.caption_background_transparency }} align-{{ block.settings.text_align }} ez-animate" data-animation="fadeInDown" data-animation-offset="90%">
+          {% if block.settings.pretext != blank %}
+          <div class="pretext catalog_pretext">
+            {{ block.settings.pretext }}
+          </div>
+          {% endif %}
+          {% if block.settings.title != blank %}
+          <h2 class="headline ez-animate catalog_pretext " data-animation="fadeInUp" data-animation-offset="80%" style="color:{{block.settings.collection_title_color | default:"#000"}};">
+            {{ block.settings.title }}
+          </h2>
+          {% endif %}
+          {% if block.settings.subtitle != blank %}
+          <div class="subtitle ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+            {{ block.settings.subtitle }}
+          </div>
+          {% endif %}
+          {% if block.settings.button1 != blank %}
+          <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} target="_blank" class="action_button first_button highlight-{{ block.settings.button1_highlight }} ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+            {{ block.settings.button1 }}
+          </a>
+          {% endif %}
+
+        </div>
+      </div>
+      {% endunless %}
+
+    </section>
+  {% endif %}
+
+  <!-- Block :- Contact Form    -->
+  {% if block.type == "contact_form" %}
+  <div class="container">
+    {% if block.settings.contact_heading != blank %}
+    <div class="form_heading">
+      <h2 class="title center">{{ block.settings.contact_heading }}</h2>
+    </div>
+    {% endif %}
+
+    <div class="">
+      {% if block.settings.contact_subheading != blank %}
+      <h3>{{ block.settings.contact_subheading }}</h3>
+      {% endif %}
+    </div>	
+    <div class="form_design">
+      {% form 'contact',class:'corporate-gifting-form contact-form' %}
+      <input type="hidden" id="contact_subject"name="contact[subject]" value="From Corporate Gifts">
+      {% if form.posted_successfully? %}
+      <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+      {% endif %}
+
+      {% if form.errors %}
+      <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+      {% assign message = 'contact.form.message' | t %}
+      <ul class="center">
+        {% for field in form.errors %}
+        {% if field == 'form' %}
+        <li>
+          {{ form.errors.messages[field] }}
+        </li>
+        {% else %}
+        <li>
+          {% assign field_name = field | replace: 'body', message %}
+          {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="">
+        {% assign fname_attr = 'Firstname'  %}
+        {% assign lname_attr = 'Lastname'  %}	
+        <div class="eight columns">
+          <label for="contactFormFirstName">{{'First name'}}<span class="red">*</span></label>
+          <input type="text" id="contactFormFirstName" name="contact[{{ fname_attr }}]"  autocapitalize="words" value="{% if form[fname_attr] %}{{ form[fname_attr] }}{% elsif customer %}{{ customer.firstname }}{% endif %}" required="required">
+        </div>
+
+        <div class="eight columns">
+          {% assign lname_attr = 'Lastname' | handle %}
+          <label for="contactFormLastName">{{'Last name'}}<span class="red">*</span></label>
+          <input type="text" id="contactFormLastName" name="contact[{{ lname_attr }}]" autocapitalize="words" value="{% if form[lname_attr] %}{{ form[lname_attr] }}{% elsif customer %}{{ customer.lastname }}{% endif %}" required="required">
+        </div>
+
+        <div class="eight columns">
+          <label for="contactFormEmail">{{ 'contact.form.email' | t }}<span class="red">*</span></label>
+          <input type="email" id="contactFormEmail" name="contact[email]"  autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+        </div>
+
+        <div class="eight columns">
+          {% assign name_attr = 'contact.form.phone' | t | handle %}
+          <label for="contactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label>
+          <input type="text" id="contactFormPhone" name="contact[{{ name_attr }}]"  value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+        </div>
+
+        <div class="enquiry_box">
+          <div class="radiobtn_text">
+            <label for="contactFormEvent">{{ 'Date of Event' }} </label>
+            <input type="text" id="contactFormEvent" name="contact[date_event]" value="" data-toggle="datepicker">
+          </div>
+        </div>
+
+        <div class="eight columns">
+          <div class="radiobtn_text">
+            {% assign msgs = block.settings.msg_type | split:'<br/>' %}
+            <label for="contactFormMessageType">{{ 'What Popcorn Shed products are you interested in?'  }}</label>
+            {% if msgs != blank %}            
+            {% for msg in msgs%}
+            <div class="form_radiobtn">
+              <input type="radio" id="msgType-{{forloop.index}}" name="contact[popcorn_product]" value="{{msg | strip_html }}" > 
+              <label class="ctype{{forloop.index}}" for="msgType-{{forloop.index}}">
+                {{msg | strip_html}}
+              </label>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="eight columns">
+          <div class="radiobtn_text">
+            {% assign msgs = block.settings.quantity | split:'<br/>' %}
+            <label for="contactFormQuantitiy">{{ 'Quantities '  }}</label>
+            {% if msgs != blank %}            
+            {% for msg in msgs %}
+            <div class="form_radiobtn">
+              <input type="radio" id="qtyType-{{forloop.index}}" name="contact[quantity]" value="{{msg | strip_html}}" > 
+              <label class="ctype{{forloop.index}}" for="qtyType-{{forloop.index}}">
+                {{msg | strip_html}}
+              </label>
+            </div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <style>
+          .form_radiobtn input[type='radio']:checked:before {background: {{block.settings.radio_checkbox_clr}} !important;}
+          .form_chkbx input[type='checkbox']:checked:before{color: {{block.settings.radio_checkbox_clr}} !important;}
+          .form_chkbx input[type='checkbox']:checked {border: 2px solid {{block.settings.radio_checkbox_clr}};}
+        </style>
+
+        <div class="enquiry_box">
+          <div class="radiobtn_text next">
+            <label for="contactFormMessage">{{ 'Please let us know a short description of your enquiry:'}} </label>
+            <textarea rows="5" id="contactFormMessage" name="contact[body]"  required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          </div>
+        </div>
+
+        <div class="eight columns">
+          <label for="contactFormTextboxNeedFor">{{ 'What do you need this for?' }} </label>
+          <input type="text" id="contactFormTextboxNeedFor"name="contact[need_for]" value="">
+        </div>
+
+        <div class="eight columns">
+          <label for="contactFormTextbox2">{{ 'How did you hear about us?' }} </label>
+<!--           <input type="text" id="contactFormTextbox2"name="contact[hear_about]"value="{% if form.hear_about %}{{ form.hear_about }}{% endif %}"> -->
+<!--block.settings.heard_about:{{block.settings.heard_about}}            -->
+          {% assign hear_about = block.settings.heard_about | split:'<br/>' %}
+          
+          {% if msgs != blank %}
+          <select class="hear-about-select" id="hear-about-select" name="contact[hear_about]">
+            <option value="">-- Select --</option>
+            {% for msg in hear_about %}<option value="{{ msg | strip | strip_html }}">{{msg | strip | strip_html}}</option>{% endfor %}
+            </select>
+            {% endif %}
+        </div>
+
+        <div class="form_chkbx">
+          <input type="checkbox" id="ContactFormchkbx1" name="contact[mailing_list]" value="Mailing List1" checked="checked" /> 
+          <label for="ContactFormchkbx1">{{' Would you like to subscribe to our mailing list? '}}</label>
+        </div>
+
+        <div class="form_chkbx">                        
+          <input type="checkbox" id="ContactFormchkbx2" name="contact[receive_corporate_gift]" value="Mailing List2" checked="checked" />
+          <label for="ContactFormchkbx2">{{' Would you like to receive our corporate gifting catalogues? '}}</label>
+        </div>
+
+        <input type="submit" class="submit action_button" value="{{ 'contact.form.send' | t }}"/>
+        {% endform %}
+        
+        <form style="display:none;" action="{{'https://popcornshed.us13.list-manage.com/subscribe/post-json?u=ccd12e7be94cc008a2de60e1d&amp;id=6898c7e4c3&c=?'}}" method="post" id="gifiting-register-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <div id="mc_embed_signup_scroll">
+            <div class="mc-field-group">
+              <input type="email" name="EMAIL" class="email" id="mce-EMAIL">
+            </div>
+            <div class="field-group">
+              <input type="text" value="" name="CORPO_GIFT" id="mce-CORPO_GIFT">
+            </div>
+            <div aria-hidden="true"><input type="text" name="b_ccd12e7be94cc008a2de60e1d_6898c7e4c3" tabindex="-1" value=""></div>
+          </div>
+<!--           <input type="button" id="mcbtn" class="submit action_button" value="{{ 'contact.form.send' | t }}" /> -->
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %} 
+
+  <!-- Corporate Gift -->
+  {% if block.type == "corporate_gift" %}
+  <div class="container">
+    <div class="gift-slider-section">
+      {% if block.settings.title != blank %}
+      <h2 class="title center gift-head">{{ block.settings.title }}</h2>
+      {% endif %}
+
+      {% if block.settings.text != blank %}
+      <h3>{{ block.settings.text }}</h3>
+      {% endif %}
+
+      <section class="gift-slick-slider gift_black_slideshow">
+        <!-- <div class="introHolder"></div> -->
+        <div class="gift_slidesBox">
+          <div class="gift_blackSlideshow"> 
+
+            <div class="gift_slide" >
+              {% if block.settings.image_1 != nil %}
+              <img  src="{{ block.settings.image_1 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_1.alt | escape }}"
+                   class="lazyload {{ block.image_1_loading_style }}"
+                   data-src="{{ block.settings.image_1 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_1 | img_url: '500x' }} "
+                   />
+              {% endif %}
+              <div class="">
+                {% if block.settings.gift_title1 != blank %}
+                <h2>{{ block.settings.gift_title1 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc1 != blank %}
+                <h3>{{ block.settings.gift_desc1 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="gift_slide">
+              {% if block.settings.image_2 != nil %}
+              <img  src="{{ block.settings.image_2 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_2.alt | escape }}"
+                   class="lazyload {{ block.image_2_loading_style }}"
+                   data-src="{{ block.settings.image_2 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_2 | img_url: '500x' }} "
+                   />
+              {% endif %}
+              <div class="">
+                {% if block.settings.gift_title2 != blank %}
+                <h2>{{ block.settings.gift_title2 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc2 != blank %}
+                <h3>{{ block.settings.gift_desc2 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+
+
+            <div class="gift_slide">
+
+              {% if block.settings.image_3 != nil %}
+              <img  src="{{ block.settings.image_3 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_3.alt | escape }}"
+                   class="lazyload {{ block.image_3_loading_style }}"
+                   data-src="{{ block.settings.image_3 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_3 | img_url: '500x' }} "
+                   />
+              {% endif %}
+              <div class="">
+                {% if block.settings.gift_title3 != blank %}
+                <h2>{{ block.settings.gift_title3 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc3 != blank %}
+                <h3>{{ block.settings.gift_desc3 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+            <div class="gift_slide">
+              {% if block.settings.image_4 != nil %}
+              <img  src="{{ block.settings.image_4 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_4.alt | escape }}"
+                   class="lazyload {{ block.image_4_loading_style }}"
+                   data-src="{{ block.settings.image_4 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_4 | img_url: '500x' }} "
+                   />
+              {% endif %}
+              <div class="">
+                {% if block.settings.gift_title4 != blank %}
+                <h2>{{ block.settings.gift_title4 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc4 != blank %}
+                <h3>{{ block.settings.gift_desc4 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+            <div class="gift_slide">
+              {% if block.settings.image_5 != nil %}
+              <img  src="{{ block.settings.image_5 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_5.alt | escape }}"
+                   class="lazyload {{ block.image_5_loading_style }}"
+                   data-src="{{ block.settings.image_5 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_5 | img_url: '500x' }} "
+                   />
+              {% endif %}
+              <div class="">
+                {% if block.settings.gift_title5 != blank %}
+                <h2>{{ block.settings.gift_title5 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc5 != blank %}
+                <h3>{{ block.settings.gift_desc5 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+            
+            {% if block.settings.image_6 != nil %}
+            <div class="gift_slide">
+              
+              <img  src="{{ block.settings.image_6 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_6.alt | escape }}"
+                   class="lazyload {{ block.image_6_loading_style }}"
+                   data-src="{{ block.settings.image_6 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_6 | img_url: '500x' }} "
+                   />
+              
+              <div class="">
+                {% if block.settings.gift_title6 != blank %}
+                <h2>{{ block.settings.gift_title6 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc6 != blank %}
+                <h3>{{ block.settings.gift_desc6 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            
+            {% if block.settings.image_7 != nil %}
+            <div class="gift_slide">
+              
+              <img  src="{{ block.settings.image_7 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_7.alt | escape }}"
+                   class="lazyload {{ block.image_7_loading_style }}"
+                   data-src="{{ block.settings.image_7 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_7 | img_url: '500x' }} "
+                   />
+              
+              <div class="">
+                {% if block.settings.gift_title7 != blank %}
+                <h2>{{ block.settings.gift_title7 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc7 != blank %}
+                <h3>{{ block.settings.gift_desc7 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            {% if block.settings.image_8 != nil %}
+            <div class="gift_slide">
+              
+              <img  src="{{ block.settings.image_8 | img_url: '500x'}}"
+                   class="lazyloaded"
+                   alt="{{ block.settings.image_8.alt | escape }}"
+                   class="lazyload {{ block.image_8_loading_style }}"
+                   data-src="{{ block.settings.image_8 | img_url: '500x' }}"
+                   srcset="
+                           {{ block.settings.image_8 | img_url: '500x' }} "
+                   />
+              
+              <div class="">
+                {% if block.settings.gift_title8 != blank %}
+                <h2>{{ block.settings.gift_title8 }}</h2>
+                {% endif %}
+
+                {% if block.settings.gift_desc8 != blank %}
+                <h3>{{ block.settings.gift_desc8 }}</h3>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            
+          </div>
+          <div class="gift_blackSlideshowNav"></div>
+        </div>
+      </section>
+
+    </div>      
+    {% endif %}
+    {% endfor %}
+
+  </div>
+  {% endif %}
+  <!-- End corporate Gift -->
+  
+</div>
+<style>
+.title-control{
+ margin-left:5px;
+ margin-right:5px;
+ text-align: center;
+ margin-top: 70px;
+}
+  
+  .page-corporate-gifting #re-captcha{
+    padding: 30px 0px; 
+  }
+
+.banner-bg{
+    background: url('{{ section.settings.image | img_url: 'master' }}') no-repeat ;
+    background-position:center;
+    background-size: cover;
+    height: 644px;
+    display: block;
+  }
+  .first_button{min-height:46px !important;height:46px !important;}
+  .pretext p {
+    font-weight: 600;
+/*   font-size: 25pt; */
+/*     color: {{ settings.banner_color }} */
+  
+}
+  .pretext p {
+    font-weight: 600;
+    color: #000;
+    font-size: 36px;
+    text-align: left;
+    line-height: 1.2;
+    margin-bottom: 18px;
+    font-family: 'CircularStd' !important;
+    text-shadow: none;
+}
+   
+/* .caption-content .action_button{
+  width: 142px !important;
+    border: 2px solid #333 !important;
+
+  } */
+  @media screen and (max-width:800px){
+    .banner-bg{height:270px;background-position: center;}
+    .caption .subtitle{width:100% }
+  
+  }
+  @media screen and (max-width:800px){
+  .caption .subtitle{width:100% !important; }
+  }
+ @media screen and (min-width:320px) and (max-width:768px)
+ {
+   .caption-content .action_button {
+     font-size: 14px;
+   }
+   .subtitle p {
+
+     font-size: 13px;
+   }
+ 
+ }
+</style>
+
+
+{% schema %}
+  {
+    "name": "corporate-gifting",
+    "class": "page-corporate-gifting-section",
+    "max_blocks": 20,
+    "blocks": [
+     {
+      "type": "image_with_text_overlay",
+      "name": "Image with text overlay",
+      "settings": [
+	   {
+          "type": "checkbox",
+          "id": "full_width",
+          "label": "Full width?",
+          "default":false
+       },
+       {
+          "type": "image_picker",
+          "id": "bg_img",
+          "label": "Custom background image",
+          "info": "1800 x 1000px recommended"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "richtext",
+          "id": "pretext",
+          "label": "Preheading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subheading"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+		{
+          "type": "color",
+          "id": "collection_title_color",
+          "label": "Desktop Title Color"
+        },
+        {
+          "type": "color",
+          "id": "collection_subtitle_color",
+          "label": "Desktop Sub-Title Color"
+        },
+		{
+          "type": "color",
+          "id": "collection_contact_detail_color",
+          "label": "Desktop Contact detail Color"
+        },
+        {
+          "type": "color",
+          "id": "collection_mobiletitle_color",
+          "label": "Mobile Title Color"
+        },
+        {
+          "type": "color",
+          "id": "collection_mobilesubtitle_color",
+          "label": "Mobile Sub-Title Color"
+        },
+		{
+          "type": "color",
+          "id": "collection_mobile_contact_detail_color",
+          "label": "Mobile Contact detail Color"
+        },
+		{
+          "type": "checkbox",
+          "id": "caption_background",
+          "label": "Display text background"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable text background transparency"
+        },
+        {
+          "type": "text",
+          "id": "button1",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "Button link URL"
+        },
+        {
+          "type": "richtext",
+          "id": "contact_info",
+          "label": "Preheading"
+        }
+      ]
+    },
+    {
+      "type": "gift_page_image_with_text",
+      "name": "Image with text ",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1400 x 600px recommended"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers.</p><p>Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            {
+              "value": "regular_text",
+              "label": "Regular"
+            },
+            {
+              "value": "featured_text",
+              "label": "Large"
+            }
+          ],
+          "default": "featured_text"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "align_left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "richtext",
+          "id": "description_1",
+          "label": "Description_1"
+        },
+        {
+          "type": "richtext",
+          "id": "description_2",
+          "label": "Description_2"
+        },  
+        {
+          "type": "richtext",
+          "id": "description_3",
+          "label": "Description_3"
+        },
+        {
+          "type": "richtext",
+          "id": "description_4",
+          "label": "Description_4"
+        },
+        {
+          "type": "richtext",
+          "id": "description_5",
+          "label": "Description_5"
+        },
+        {
+          "type": "richtext",
+          "id": "description_6",
+          "label": "Description_6"
+        }
+      ]
+          
+    },
+    {
+          "type": "image_slide",
+          "name": "Image slide",
+          "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "How it works"
+          },
+          {
+          "type": "text",
+          "id": "text_button",
+          "label": "Text"
+          },
+          {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link URL"
+          },
+          {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Label"
+          },
+          {
+            "type": "text",
+            "id": "tab1",
+            "label": "Heading",
+            "default": "Tab1"
+          },
+          {
+            "type": "image_picker",
+            "id": "slide_image1",
+            "label": "Image",
+			"info": "600 x 400px recommended"
+          },
+          {
+            "type": "richtext",
+            "id": "description1",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "tab2",
+            "label": "Heading",
+            "default": "Tab2"
+          },
+          {
+            "type": "image_picker",
+            "id": "slide_image2",
+            "label": "Image",
+			"info": "600 x 400px recommended"
+          },
+          {
+            "type": "richtext",
+            "id": "description2",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "tab3",
+            "label": "Heading",
+            "default": "Tab3"
+          },
+          {
+            "type": "image_picker",
+            "id": "slide_image3",
+            "label": "Image",
+			"info": "600 x 400px recommended"
+          },
+          {
+            "type": "richtext",
+            "id": "description3",
+            "label": "Description"
+          },
+          {
+            "type": "text",
+            "id": "tab4",
+            "label": "Heading",
+            "default": "Tab4"
+          },
+          {
+            "type": "image_picker",
+            "id": "slide_image4",
+            "label": "Image",
+			"info": "600 x 400px recommended"
+          },
+          {
+            "type": "richtext",
+            "id": "description4",
+            "label": "Description"
+          }
+       ]
+      },
+      {
+        "type":"featured_collection",
+  		"name": "Featured collection",
+  		"settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Featured collection"
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          },
+          {
+            "type": "radio",
+            "id": "collection_style",
+            "label": "Collection layout",
+            "default": "grid",
+            "options": [
+              {
+                "value": "slider",
+                "label": "Slider"
+              },
+              {
+                "value": "grid",
+                "label": "Grid"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "collection_description",
+            "label": "Show description",
+            "default": true
+          },
+          {
+            "type": "range",
+            "id": "products_per",
+            "label": "Products per row",
+            "min": 2,
+            "max": 7,
+            "step": 1,
+            "default": 3
+          },
+          {
+            "type": "range",
+            "id": "products_limit",
+            "label": "Limit products",
+            "min": 2,
+            "max": 50,
+            "step": 1,
+            "default": 48
+          }
+  	 ]
+  	},
+  	{
+          "type":"featured_products",
+		  "name": "Featured Products",
+ 		  "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Heading",
+              "default": "Featured collection"
+            },
+  			{
+              "type": "richtext",
+              "id": "text",
+              "label": "Text"
+            },
+			{
+              "type": "image_picker",
+              "id": "image1",
+              "label": "Image1",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title1",
+              "label": "Heading1"
+            },
+            {
+              "type": "url",
+              "id": "link1",
+              "label": "Link1"
+            },
+			{
+              "type": "image_picker",
+              "id": "image2",
+              "label": "Image2",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title2",
+              "label": "Heading2"
+            },
+            {
+              "type": "url",
+              "id": "link2",
+              "label": "Link2"
+            },
+			{
+              "type": "image_picker",
+              "id": "image3",
+              "label": "Image3",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title3",
+              "label": "Heading3"
+            },
+            {
+              "type": "url",
+              "id": "link3",
+              "label": "Link3"
+            },
+			{
+              "type": "image_picker",
+              "id": "image4",
+              "label": "Image4",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title4",
+              "label": "Heading4"
+            },
+            {
+              "type": "url",
+              "id": "link4",
+              "label": "Link4"
+            },
+			{
+              "type": "image_picker",
+              "id": "image5",
+              "label": "Image5",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title5",
+              "label": "Heading5"
+            },
+            {
+              "type": "url",
+              "id": "link5",
+              "label": "Link5"
+            },
+			{
+              "type": "image_picker",
+              "id": "image6",
+              "label": "Image6",
+              "info": "1800 x 1000px recommended"
+            },
+			 {
+              "type": "text",
+              "id": "pro_title6",
+              "label": "Heading6"
+            },
+            {
+              "type": "url",
+              "id": "link6",
+              "label": "Link6"
+            },
+			{
+              "type": "image_picker",
+              "id": "image7",
+              "label": "Image7",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title7",
+              "label": "Heading7"
+            },
+            {
+              "type": "url",
+              "id": "link7",
+              "label": "Link7"
+            },
+			{
+              "type": "image_picker",
+              "id": "image8",
+              "label": "Image8",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title8",
+              "label": "Heading8"
+            },
+            {
+              "type": "url",
+              "id": "link8",
+              "label": "Link8"
+            },
+			{
+              "type": "image_picker",
+              "id": "image9",
+              "label": "Image9",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title9",
+              "label": "Heading9"
+            },
+            {
+              "type": "url",
+              "id": "link9",
+              "label": "Link9"
+            },
+			{
+              "type": "image_picker",
+              "id": "image10",
+              "label": "Image10",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title10",
+              "label": "Heading10"
+            },
+            {
+              "type": "url",
+              "id": "link10",
+              "label": "Link10"
+            }
+
+           	
+       ]
+  	},
+  	{
+  	  "type":"banner_with_text",
+  	  "name":"banner with text",
+  	  "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "1800 x 1000px recommended"
+          },
+          {
+            "type": "richtext",
+            "id": "pretext",
+            "label": "Preheading"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "subtitle",
+            "label": "Subheading"
+          },    
+          {
+            "type": "select",
+            "id": "text_position",
+            "label": "Text position",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "button1",
+            "label": "First button label"
+          },
+          {
+            "type": "url",
+            "id": "button1_link",
+            "label": "First button link"
+          },
+          {
+            "type": "checkbox",
+            "id": "button1_highlight",
+            "label": "Highlight first button"
+          },
+          {
+            "type": "color",
+            "id": "collection_title_color",
+            "label": "Title Color"
+          }
+  	]
+  	},
+	{
+      "type": "contact_form",
+      "name": "Gift Contact form",
+      "settings": [
+		{
+          "type": "checkbox",
+          "id": "enable_captcha",
+          "label": "Enable Captcha",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "contact_heading",
+          "label": "Heading",
+          "default": "Get in touch"
+        },
+        {
+          "type": "text",
+          "id": "contact_subheading",
+          "label": "Subheading",
+          "default": "Leave a message"
+        },
+		{
+          "type": "richtext",
+          "id": "msg_type",
+          "label": "Message Type",
+		  "default": "<p>Message Type 1</p>",
+		  "info":"Enter Message Type with separated by new line"
+    	},
+  		{
+          "type": "richtext",
+          "id": "quantity",
+          "label": "Quantities",
+		  "info":"Enter Quantities with separated by new line"
+    	},
+		{
+          "type": "richtext",
+          "id": "heard_about",
+          "label": "Hear about us options",
+		  "default": "<p>Option 1</p>",
+		  "info":"Enter Options with separated by new line"
+    	},
+		{
+          "type": "color",
+          "id": "radio_checkbox_clr",
+          "label": "Radio and Checkbox Color",
+		  "default":"#202765"
+    	}
+		
+      ]
+    },
+	{
+      "type":"corporate_gift",
+	  "name": "Gift",
+ 	  "settings": [
+		{
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Corporate Gift"
+       },
+  	   {
+          "type": "richtext",
+          "id": "text",
+          "label": "Subtitle"
+       },
+	   {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title1",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc1",
+          "label": "Text"
+       },
+  	   {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title2",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc2",
+          "label": "Text"
+       },
+  	   {
+          "type": "image_picker",
+          "id": "image_3",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title3",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc3",
+          "label": "Text"
+       },
+  	   {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title4",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc4",
+          "label": "Text"
+       },
+  	   {
+          "type": "image_picker",
+          "id": "image_5",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title5",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc5",
+          "label": "Text"
+       },
+	   {
+          "type": "image_picker",
+          "id": "image_6",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title6",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc6",
+          "label": "Text"
+       },
+	   {
+          "type": "image_picker",
+          "id": "image_7",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title7",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc7",
+          "label": "Text"
+       },
+	   {
+          "type": "image_picker",
+          "id": "image_8",
+          "label": "Image"
+       },
+	   {
+          "type": "text",
+          "id": "gift_title8",
+          "label": "Gift Title",
+          "default": "Title"
+       },
+  	   {
+          "type": "richtext",
+          "id": "gift_desc8",
+          "label": "Text"
+       }
+   	 ]
+	}
+]
+ }
+{% endschema %}

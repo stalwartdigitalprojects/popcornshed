@@ -1,0 +1,60 @@
+<div class="container popcorn-icon-container ez-animate" data-animation="fadeInUp" data-animation-offset="95%">
+  {% if section.blocks.size > 0 %}
+  <div class="row">
+    {% for block in section.blocks %}
+    <div class="columns four icon-border">
+      <div class="popcorn-icon-content">
+        <div class="popcorn-icon-img">
+          <img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.title }}" />
+        </div>
+        <div class="popcorn-icon-text">
+          <h3>{{ block.settings.title }}</h3>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <br/>
+  </div>
+  {% endif %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Popcorn Icon",
+     "class":"popcorn-icon-bar",
+    "settings": [],
+	"blocks": [
+      {
+        "type": "image",
+        "name": "Logo",
+        "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "840 x 840px recommended"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        }
+      ]
+     }
+    ],
+	"presets": [
+		{
+          "name": "Popcorn Icon",
+          "category": "Icon",
+          "settings": {}
+    }]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

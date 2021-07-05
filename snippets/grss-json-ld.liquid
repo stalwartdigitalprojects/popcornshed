@@ -1,0 +1,156 @@
+<!-- SEO, JSON‑LD, Schema --> 
+ 
+        {% assign grss_how_to = product.metafields.instructions.grss_how_to %}
+        {{grss_how_to}}
+
+        {% assign grss_faq = product.metafields.instructions.grss_faq %}
+        {{grss_faq}}
+        {% comment %} startLogoGrss {% endcomment %} 
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	"name": "Popcorn Shed",
+	"url": "popcornshed.com",
+	"description": "Have you been trying to find the perfect flavoured gourmet popcorn gifts for you, your friends and family? Our delicious gourmet popcorn is handmade in the UK and made with all natural ingredients. We have vegetarian and vegan options available in 20+ flavours! We have the perfect gift for any foodie or popcorn lover. ",
+	"telephone": "0203 581 2764",
+	"logo": "https://cdn.shopify.com/s/files/1/1354/3525/files/logo-black.png",
+	"sameAs": ["https://twitter.com/popcornshed","https://www.facebook.com/popcornshed/","https://www.instagram.com/popcornshed/"],
+	"address": {
+		"@type": "PostalAddress",
+		"streetAddress": "Popcorn Shedquarters,",
+		"addressLocality": "30 City Road",
+		"addressRegion": "London",
+		"postalCode": "EC1Y 2AB",
+		"addressCountry": "United Kingdom" 
+	}
+}
+</script>
+{% comment %} endLogoGrss {% endcomment %}
+
+{% comment %} startLocalBusinessGrss {% endcomment %}
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "ShoppingCenter",
+	"image": ["https://cdn.shopify.com/s/files/1/1354/3525/files/logo-black.png?v=1613710597","https://cdn.shopify.com/s/files/1/1354/3525/files/mission2_800x.png?v=1535356248"],
+	"name": "Popcorn Shed",
+	"address": {
+		"@type": "PostalAddress",
+		"addressLocality": "30 City Road",
+		"addressRegion": "London",
+		"postalCode": "EC1Y 2AB",
+		"streetAddress": "Shedquarters"
+	},
+	"geo": {
+		"@type": "GeoCoordinates",
+		"latitude": {{ shop.latitude | json }},
+		"longitude": {{ shop.longitude | json }}
+	},
+	"priceRange": " -  GBP",
+	"openingHoursSpecification": [{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday to Sunday"],"opens":"9:00","closes":"17:00"}],
+	"telephone": "0203 581 2764"
+}
+</script>
+{% comment %} endLocalBusinessGrss {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} startProductGrss {% endcomment %} 
+{% if template.name == "product" %}
+{% assign fa_current_variant = product.selected_or_first_available_variant %}
+<script type="application/ld+json" id="grss_product">
+{
+	"@context": "http://schema.org/",
+	"@type": "Product",
+	"url": "{{ shop.url | append: "/products/" | append: product.handle }}",
+	"name": "{{ product.title | escape}}",
+	"image": "{{ product.featured_image.src | img_url: "master" }}",
+	"description": "{{ page_description | escape }}",
+	"sku": "{{ product.selected_or_first_available_variant.sku }}",
+	{%- if product.selected_or_first_available_variant.mpn -%}
+	"mpn": "{{ product.selected_or_first_available_variant.mpn }}",
+			{%- else -%}
+	"mpn": "{{ product.selected_or_first_available_variant.sku }}",
+			{%- endif -%}
+	"brand": {
+		"name": "{{ product.vendor | strip_html | escape}}"
+	},
+	{% if product.metafields.stamped.reviews_count and product.metafields.stamped.reviews_count != 0 %}
+	"aggregateRating": {
+ 		"@type": "AggregateRating",
+  		"ratingValue": "{{ product.metafields.stamped.reviews_average }}" ,
+  		"reviewCount": "{{ product.metafields.stamped.reviews_count }}"
+  	},
+ 	{% endif %}
+
+	"offers": {% if product.variants.size > 1 %}[{% endif %}
+		{%- for variant in product.variants -%}
+		{
+			"@type" : "Offer",
+			"priceCurrency": "{{ cart.currency.iso_code }}",
+			"price": "{{ variant.price | money_without_currency  | strip_html | remove: ',' }}",
+			"itemCondition" : "http://schema.org/NewCondition",
+			"availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+			"url" : "{{ shop.url }}{{ variant.url }}",
+			{%- if variant.image -%}
+			{% assign variant_image_size = variant.image.width | append: 'x' %}
+			"image": "http:{{ variant.image.src | img_url: variant_image_size }}",
+			{%- else -%}
+			"image": "https:{{ product.featured_image.src | img_url: 'grande' }}",
+			{%- endif -%}
+			{%- if variant.title != 'Default Title' -%}
+			"name" : "{{ product.title | strip_html | escape }} - {{ variant.title | escape }}",
+			{%- else -%}
+			"name" : "{{ product.title | strip_html | escape }}",
+			{%- endif -%}
+			 "gtin": "{{product.selected_or_first_available_variant.barcode}}",
+			{%- if variant.barcode.size == 8 -%}
+			"gtin8": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.barcode.size == 12 -%}
+			"gtin12": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.barcode.size == 13 -%}
+			"gtin13": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.barcode.size == 14 -%}
+			"gtin14": "{{ variant.barcode }}",
+			{%- endif -%}
+			{%- if variant.sku != blank -%}
+			"sku": "{{ variant.sku }}",
+			{%- else -%}
+			"sku": "{{ variant.id }}",
+			{%- endif -%}
+			{%- if product.description != blank -%}
+			"description" : {{ product.description | strip_html | json }},
+			{%- endif -%}
+			"priceValidUntil": "{{ 'now' | date: '%s' | plus: 2592000 | date: '%Y-%m-%d' | uri_encode | replace:'+','%20' }}"
+		}
+		{%- unless forloop.last -%},{%- endunless -%}
+		{%- endfor -%}
+		{%- if product.variants.size > 1 -%}]
+		 {%- endif -%}
+}
+</script>
+
+
+
+
+
+
+
+
+{% endif %}
+{% comment %} endProductGrss {% endcomment %}
+

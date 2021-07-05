@@ -1,0 +1,368 @@
+<link rel="stylesheet" type="text/css" href="https://wdsapp.com/APPS/shopify/loginwithsocialmedia/assets/css/social_media.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<div class="clearfix login-popup customer_login center ju_alternativepush ju_forcepush " id="popup-login">
+  
+  <div class="form-login-center animated fadeInUp" id="popup_login_form">
+     <a href="#" ><img src="https://cdn.shopify.com/s/files/1/0002/4294/1958/files/logo.png"></a>
+  <p class="form-login">
+   {% unless shop.checkout.guest_login %}
+        <small  >
+          {{ 'customer.login.new_customer_label' | t }} <a href="#" id="popup-register-btn"> Sign up →</a>
+        </small>
+        {% endunless %}
+  </p>
+    <div class="social_front">    
+      <form method="POST" id="socialdata">
+        <div class="social">
+          <ul><li style="width: 46%;">   <a class="google-plus" href="https://accounts.google.com/o/oauth2/auth?response_type=code&amp;redirect_uri=https%3A%2F%2Fwdsapp.com%2FAPPS%2Fshopify%2Floginwithsocialmedia%2Findex.php%2Fsocial_google&amp;client_id=955327346492-9efp6lmuq45nu5tld2r130l635c818e2.apps.googleusercontent.com&amp;scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&amp;access_type=offline&amp;approval_prompt=force">
+            <span class="fa fa-google-plus"></span>
+            </a> </li>
+            <li style="width: 46%;">   <a class="facebook" href="https://www.facebook.com/dialog/oauth?client_id=889832267811174&amp;redirect_uri=https%3A%2F%2Fwdsapp.com%2FAPPS%2Fshopify%2Floginwithsocialmedia%2Findex.php%2Fsocial_facebook&amp;state=d54d1d4c89b2d058b241395b199de813&amp;sdk=php-sdk-3.2.3&amp;scope=email%2Cuser_birthday%2Cuser_location%2Cuser_work_history%2Cuser_about_me%2Cuser_hometown">
+              <span class="fa fa-facebook"></span>
+              </a> </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+    <form method="post" action="/account/login" id="customer_login_popup" accept-charset="UTF-8" style="">
+      {{ form.errors | default_errors }}
+      <p class="center line ">OR</p>
+      <label for="customer_email_popup" class="login">{{ 'customer.login.email' | t }}</label>
+      <input type="email" value="" name="customer[email]" id="customer_email_popup" class="large" size="30" tabindex="1" />
+
+      <label for="cppassword" class="login">{{ 'customer.login.password' | t }}</label>
+      <input type="password" value="" name="customer[password]" id="cppassword" class="large" size="16" tabindex="2"/>
+      
+      <div class="center">
+        <input class="btn action_button login-btn" type="submit" value="{{ 'customer.login.sign_in' | t }}" style="margin-bottom: 5px !important" tabindex="3" />
+      </div>  
+      <p class="center form-forgot">
+        <small ><em><a href="#" id="forgot-pwd-btn-popup">{{ 'customer.login.forgot_password' | t }}</a></em></small> 
+       
+      </p>
+    </form>
+
+    <div class="large--right">
+      {% if shop.checkout.guest_login %}
+      <span class="or"> {{ 'customer.login.or' | t }} </span>
+      {% form 'guest_login' %}
+      <input class="guest_button" type="submit" value="{{ 'customer.login.guest_title_html' | t }}" />
+      {% endform %}
+      {% endif %}
+    </div>
+
+  </div>
+
+  <div id="recover-password">
+    <div class="form-login-center animated fadeInUp forgot-bg recover-password-popup" style='display:none'>
+
+      <h4>{{ 'customer.recover_password.title' | t }}</h4>
+
+      {% form 'recover_customer_password' %}
+      {{ form.errors | default_errors }}
+
+      {% if form.posted_successfully? %}
+      {% assign reset_success = true %}
+      {% endif %}
+
+      <div id="recover_email" class="clearfix large_form ">
+        <label for="recover-email-popup" class="large  center">{{ 'customer.recover_password.email' | t }}</label>
+        <input type="email" value="" size="30" name="email" id="recover-email-popup" class="large" autocorrect="off" autocapitalize="off" />
+      </div>
+
+      <p>
+        <em class="note">{{ 'customer.recover_password.subtext' | t }}</em>
+      </p>
+
+      <div class="action_bottom">
+        <input class="btn action_button login-btn" type="submit" value="{{ 'customer.recover_password.submit' | t }}" />
+        <span class="note">{{ 'customer.recover_password.or' | t }} <a href="#" id="forgot-cancel-btn-popup" >{{ 'customer.recover_password.cancel' | t }}</a></span>
+      </div>
+      {% endform %}
+    </div>
+  </div>
+
+  <div id="popup_register_form" class="center form-register-center animated fadeInUp" style="display:none;">    
+    <a href="#" ><img src="https://cdn.shopify.com/s/files/1/0002/4294/1958/files/logo.png"></a>
+    <div class="action_bottom" style="padding: 15px 0;font-size: 13px;color: #3F4654;">
+            <p class="center" style="padding-top: 8px;">
+              {{ 'customer.register.returning_customer_label' | t }} <a href="#" id="popup-login-btn">Login →</a>
+            </p>
+
+          </div>
+   
+        <!-- Create Customer -->
+        <div id="create-customer">
+          <div class="social_front2">
+            <form method="POST" id="socialdata2">
+              <div class="social">
+                <ul>
+                  <li style="width: 46%;">
+                  <a class="google-plus" href="https://accounts.google.com/o/oauth2/auth?response_type=code&amp;redirect_uri=https%3A%2F%2Fwdsapp.com%2FAPPS%2Fshopify%2Floginwithsocialmedia%2Findex.php%2Fsocial_google&amp;client_id=955327346492-9efp6lmuq45nu5tld2r130l635c818e2.apps.googleusercontent.com&amp;scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&amp;access_type=offline&amp;approval_prompt=force">
+                    <span class="fa fa-google-plus"></span>
+                  </a>
+                  </li>
+                  <li style="width: 46%;">
+                    <a class="facebook" href="https://www.facebook.com/dialog/oauth?client_id=889832267811174&amp;redirect_uri=https%3A%2F%2Fwdsapp.com%2FAPPS%2Fshopify%2Floginwithsocialmedia%2Findex.php%2Fsocial_facebook&amp;state=d54d1d4c89b2d058b241395b199de813&amp;sdk=php-sdk-3.2.3&amp;scope=email%2Cuser_birthday%2Cuser_location%2Cuser_work_history%2Cuser_about_me%2Cuser_hometown">
+                      <span class="fa fa-facebook"></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </form>
+          </div>
+          {% form 'create_customer' %}
+          {{ form.errors | default_errors }}
+          <p class="center line2 ">OR</p>
+          <div id="first_name" class="clearfix large_form">
+            <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
+            <input type="text" value="" name="customer[first_name]" id="first_name" class="large" size="30" />
+          </div>
+
+          <div id="last_name" class="clearfix large_form">
+            <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
+            <input type="text" value="" name="customer[last_name]" id="last_name" class="large" size="30" />
+          </div>
+
+          <div id="email" class="clearfix large_form">
+            <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
+            <input type="email" value="" name="customer[email]" id="email" class="large" size="30" />
+          </div>
+
+          <div id="password" class="clearfix large_form">
+            <label for="password" class="login">{{ 'customer.register.password' | t }}</label>
+            <input type="password" value="" name="customer[password]" id="password" class="large password" size="30" />
+          </div>
+
+          <div class="acceptsMarketing ">
+            <input type="checkbox" id="customer[accepts_marketing]" name="customer[accepts_marketing]">
+            <label for="customer[accepts_marketing]">{{ 'customer.register.accepts_marketing' | t }}</label>
+
+
+          </div>
+
+          
+          <div class="center">
+            <input class="btn action_button login-btn" type="submit" value="{{ 'customer.register.sign_up' | t }}" />
+          </div>
+          <p class="login " style="margin-top:15px;">By signing up, you agree to Idecoz's Terms of Service.</p>
+
+          {% endform %}
+        </div><!-- /#create-customer -->
+      </div>
+    </div>
+  
+
+<style> 
+  .center.form-forgot a {color: #3F4654;font-style: normal;font-weight: 600;font-size: 13px;line-height: 5;}
+  .form-login{margin: 0;line-height: 5;color: #3F4654;font-weight: 700;font-size: 13px;}
+  .login-popup .form-login-center {
+    width: 100%;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    /* -webkit-box-align: center; */
+    height: auto;
+    margin: 0 auto;
+/*     padding: 15px 15px 0; */
+    background: #fff;
+/*     margin-bottom: 40px; */
+  }
+  .login-popup .social ul, #create-customer .social ul{padding:0;}
+  .login-popup .social ul li, #create-customer .social ul li{
+    list-style: none;
+    float: left;
+    margin: 0 1%;
+    width: 100% !important;
+    margin-bottom: 5px;
+    margin-left:0px;
+    margin-right:0px;
+  }
+  .login-popup .social ul li a, #create-customer .social ul li a {
+    font-size: 18px!important;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    -moz-border-radius:0 !important;
+    border-radius: 0 !important; 
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  .login-popup span.fa.fa-google-plus:after, #create-customer span.fa.fa-google-plus:after {
+    content: 'Login with Google';
+    font-family: Montserrat;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+
+  .login-popup span.fa.fa-facebook:after, #create-customer span.fa.fa-facebook:after {
+    content: 'Login with Facebook';
+    font-family: Montserrat;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .login-popup .login,div#recover_email label { font-weight: 700;text-transform: uppercase;font-size: 10px;color: #8f9ca3;margin-bottom:0;}
+  .login-popup .login-btn{width: 180px !important;    background: #f74f67 !important;
+   
+    border:none !important;width: 100% !important;
+    margin: 10px 0;}
+  .login-popup .login-btn:hover{    background:#fb5970 !important;border:none !important;}
+  .login-popup form.customer_login a {
+    font-style: normal;
+    font-size: 15px;
+    color: #fc61ed;
+    letter-spacing: 0.5px;
+  }
+  .login-popup form.customer_login input{height:43px;text-align:center;}
+
+  .login-popup .social span, #create-customer .social span{font-weight: 600;}
+  div.content{padding-top:0;}
+  form {margin-bottom:0px;}
+  .login-popup .forgot-bg {background: #fff;text-align: center;}
+  input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 9999px white;
+  }
+  p.center.line,p.center.line2 {
+  position: static;
+    font-weight: bold;
+    color: #526380;
+    font-size: 10px;
+    display: inline-block;
+    background: #ffffff;
+    z-index: 1;
+    padding: 7px;
+}
+   p.center.line:before{
+  width: 81%;
+    /* display: block; */
+    height: 1px;
+    background: #7f91ad80;
+    clear: both;
+    content: "";
+    /* line-height: 8; */
+    position: absolute;
+    top: 47%;
+    left: 48px;
+     z-index: -1;}
+    
+.line2:before{
+  width: 86%;
+    /* display: block; */
+    height: 1px;
+    background: #7f91ad80;
+    clear: both;
+    content: "";
+   
+    position: absolute;
+    top: 38%;
+    left: 35px;
+     z-index: -1;}
+/*   p.center.line:after {
+    width: 35%;
+    display: block;
+    height: 1px;
+    background: #7f91ad80;
+    clear: both;
+    content: "";
+   
+    position: absolute;
+    top: 47%;
+    right: 50px;
+} */
+/*   p.center.line:before {
+    width: 35%;
+    display: block;
+    height: 1px;
+    background:#7f91ad80;
+    clear: both;
+    content: "";
+    /* line-height: 8; */
+/*     position: absolute;
+    top: 47%;
+} */ 
+/*   .line2:before{
+      width: 37%;
+    display: block;
+    height: 1px;
+    background: #7f91ad80;
+    clear: both;
+    content: "";
+    
+    position: absolute;
+    top: 38%;
+  }
+/*  .line2:after{
+      width: 37%;
+    display: block;
+    height: 1px;
+    background: #7f91ad80;
+    clear: both;
+    content: "";
+    
+    position: absolute;
+    top: 38%;
+    right: 35px;
+  } */
+  .social{margin-bottom: 15px;}
+  #popup_login_form input{outline: none;border: none;border-bottom: 1px solid #e5e5e5;transition: 0.2s;padding: 0;color: #526380;font-weight: 700;}
+  #popup_login_form input:focus{border-bottom-color:#000;}
+  #create-customer input{outline: none;border: none;border-bottom: 1px solid #e5e5e5;transition:0.2s;padding:0;color:#526380;font-weight:700;}
+  #create-customer input:focus{border-bottom-color:#fc61ed}
+  #create-customer .login{color: #8f9ca3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0;}
+  #create-customer .acceptsMarketing {text-align:left;}
+ #create-customer .acceptsMarketing label {
+    display: inline;
+    margin-left: 5px;
+    color: #8f9ca3;
+    font-weight: 700;
+   text-align:left;
+ }
+  #popup_login_form input :: placeholder{color: #8f9ca3;}
+  #create-customer input :: placeholder{color: #8f9ca3;}
+  
+  .login-btn{color:#fff !important;}
+  .action_bottom{color: #526380;font-weight: 700;}
+
+  @media screen and (min-width:320px) and (max-width:798px){
+    div#c580-0afb_ribbon_container {
+    z-index: 0 !important;
+}
+    .login-popup .form-login-center {width: 90%;height:100vh;}   
+    .form-login-center a img{padding:15%;}
+/*     .form-login-center p{line-height:5;}
+    .popup-close{padding-top: calc(40px + 40px);} */
+    .form-register-center {
+      width: 90%;
+      margin: 0 auto;
+    }
+    .popup-inner {
+      width: 100%;
+      padding: 0px;
+      overflow-y: scroll;
+      height: 100vh;
+    }
+    /*      p.center.line:after{
+    top:  270px;;
+    right:38px;
+    } */
+    p.center.line:before {
+
+      top:  277px;
+    }
+    p.center.line2:before {top:  285px;}
+    /*     p.center.line2:after{top:  282px; right:22px;} */
+
+
+    div#popup_register_form {padding-top: 15px;}
+  }
+</style>

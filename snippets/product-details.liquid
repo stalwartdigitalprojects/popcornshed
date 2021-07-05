@@ -1,0 +1,41 @@
+{% assign collection_handles = product.collections | map: 'handle' %}
+<div class="thumbnail-overlay {% if settings.enable_product_overlay == false and settings.enable_add_to_cart_btn == true %} no-overlay {% elsif settings.enable_product_overlay == false and settings.enable_add_to_cart_btn == false %} no-overlay {% endif %}">
+  <a href="{{ product.url | within: collection }}" itemprop="url" title="{{ product.title }}" class="hidden-product-link">{{ product.title }}</a>
+
+  <div class="info">
+
+    {% if settings.thumbnail_hover_enabled and settings.quick_shop_enabled %}
+
+    {% include 'quick-shop-button' %}
+    {% elsif settings.thumbnail_hover_enabled %}
+    {% include "product-info" %}
+    {% elsif settings.quick_shop_enabled %}
+    {% include 'quick-shop-button' %}
+    {% endif %}
+  </div>
+
+</div>
+<div class="banner_holder" style="left:0 !important;right:unset !important;">
+  {% if product.metafields.c_f.product_label %}
+  {% assign pro_lbls = product.metafields.c_f.product_label | split:','%}
+  {% for pl in pro_lbls%}  
+  {% if pl == 'New' %}<div class="new-badge thumbnail_banner"></div>{%endif%}
+  {% if pl == 'Sold Out' or pl == 'sold-out' %}<div class="soldout-badge thumbnail_banner"></div>{%endif%}
+  {%endfor%}  
+  {% endif %}
+
+  {% if product.available %}
+<!--   settings.sale_banner_enabled{{settings.sale_banner_enabled}} -->
+  {% if settings.sale_banner_enabled and product.compare_at_price_max > product.price %}
+  <div class="sale_banner thumbnail_banner">{{ 'collections.general.sale' | t }}</div>
+  
+  {% elsif collection_handles contains 'new' %}
+  <div class="new_banner thumbnail_banner">{{ 'collections.general.new' | t }}</div>
+  
+  {% elsif collection_handles contains 'pre-order' %}
+  <div class="preorder_banner thumbnail_banner">{{ 'collections.general.pre_order' | t }}</div>
+  {% endif %}
+  {% endif %}
+</div>
+
+<style></style>

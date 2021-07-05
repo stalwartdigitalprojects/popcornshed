@@ -1,0 +1,104 @@
+<!-- <div class="container">
+  <div class="title"><h2 class="clearfix" style="margin: 30px 0 10px 0;"><span class="title-name">{{ section.settings.as_seen_title | upcase }}</span>
+    {% if section.settings.as_seen_linktitle != blank%}
+     	<span class="right"><a href="{{ section.settings.as_seen_url }}"><span class="title-viewmore">View All {{section.settings.as_seen_linktitle}}</span><span class="arrow"></span></a></span>
+    {%endif%}
+    </h2>
+  </div>
+</div> -->
+<div class="container">
+  <div class="row">
+    <div class="four columns client-demo">
+      <h3 class="" style="margin:0;"><span class="title-name">{{ section.settings.as_seen_title | upcase }}</span></h3>
+    </div>
+    <div class="twelve columns mobile_hidden">
+      {% if section.blocks.size > 0 %}
+        <div class="as-seen-slider" data-count="{{section.blocks.size}}">
+          {% for block in section.blocks %}
+          <div class="gallery-cell center"><a href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}{{ 'javascript:;' }}{% endif %}"><img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.alt }}"/></a></div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+     <div class="twelve columns mobile_only">
+      {% if section.blocks.size > 0 %}
+        <div class="as-seen-slider-mobile">
+          {% for block in section.blocks %}
+          <div class="gallery-cell container center"><a href="{% if block.settings.link != blank %}{{ block.settings.link }}{% else %}{{ 'javascript:;' }}{% endif %}"><img src="{{ block.settings.image | img_url:'master' }}" alt="{{ block.settings.alt }}"/></a></div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  
+  </div>
+ 
+  </div>
+
+<style> 
+  .as-seen-slider .gallery-cell {
+    width: 25%; /* half-width */  
+  }
+  @media screen and (max-width:800px){
+    .client-demo h3{width:100%;    margin-bottom: 30px !important;}
+    .client-demo {
+      display: block;
+      justify-content: left;
+      align-items: center;
+      padding: 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "As Seen Section",
+  "settings": [
+        {
+          "type": "text",
+          "id": "as_seen_title",
+          "label": "As Seen Title",
+          "default": "AS SEEN IN"
+        }
+      
+	],
+
+      "blocks": [
+      {
+        "type": "image",
+        "name": "Logo",
+        "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "840 x 840px recommended"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+		{
+          "type": "text",
+          "id": "alt",
+          "label": "Image Alt Text"
+        }
+      ]
+     }
+    ],
+    "presets": [
+		{
+          "name": "Image As Seen",
+          "category": "Collection",
+          "settings": {
+			}
+    }]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

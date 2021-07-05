@@ -1,0 +1,38 @@
+<div class="mobile-product-per-row-{{ settings.mobile_products_per_row }} {% if products_per_row == 2 %}eight columns {% cycle collection_group_thumb: 'alpha', 'omega' %}{% elsif products_per_row == 3 %}one-third column {% cycle collection_group_thumb: 'alpha', '', 'omega' %}
+    {% elsif products_per_row == 4 %}four columns {% cycle collection_group_thumb: 'alpha', '', '', 'omega' %}{% elsif products_per_row == 5 %}one-fifth column {% cycle collection_group_thumb: 'alpha', '', '', '', 'omega' %}
+    {% elsif products_per_row == 6 %}one-sixth column {% cycle collection_group_thumb: 'alpha', '', '', '', '', 'omega' %}{% else %}one-seventh column {% cycle collection_group_thumb: 'alpha', '', '', '', '', '', 'omega' %}
+    {% endif %} thumbnail {% cycle collection_group_mobile: 'even', 'odd' %} collection_add">
+  {% if settings.align_height %}
+    {% assign collection_height = settings.collection_height | plus: 0 %}
+    {% assign product_aspect_ratio = product.featured_image.aspect_ratio | plus: 0 %}
+    {% assign product_set_width = product_aspect_ratio | times: collection_height %}
+
+    {% if product.featured_image.width >= product.featured_image.height %}
+      {% assign align_height_value = 'width: 100%; height: auto;' %}
+    {% else %}
+      {% assign align_height_value = 'width: 100%;' %}
+    {% endif %}
+
+  {% endif %}
+  	
+    <div class="product-wrap">
+    <a href="{{block.settings.ad_link | default:" javascript:; " }}" class="product-info__caption ">
+      <div class="relative product_image">
+        <div class="product_container swap-false">
+          <div class="image__container" style="{% if settings.align_height %} max-width: {{ product_set_width }}px; {% else %} max-width: {{- product.featured_image.width -}}px; {% endif %};">
+            <img  src="{{ block.settings.ad_bg_img | img_url: '800x' }}"
+                 alt="{{ alt_text | escape }}"
+                 class="lazyload {{ settings.image_loading_style }}"
+                 style="{{ align_height_value }} max-width: {{- product.featured_image.width -}}px;"/>
+          </div>
+        </div>
+        <div class="info product-details"><span class="title" itemprop="name" style="color: {{ block.settings.ad_text_color | default:" #fff " }};">{{ block.settings.ad_title }}</span>
+          <p class="c_f_mini_product_details">{{ block.settings.ad_description }}</p>
+        </div>
+      </div>
+     
+      
+    </a>
+      
+  </div>
+</div>

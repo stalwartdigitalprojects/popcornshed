@@ -1,0 +1,29 @@
+{%capture blog_type%}{{blog_type}}{%endcapture%}
+<div class="news-article">
+  <div class="news-image">
+    {% if article.image %}
+    <a href="{{ article.url }}">
+      <img  src="{{ article.image | img_url: '100x' }}"
+           class="lazyload {{ settings.image_loading_style }}"
+           alt="{% if article.image.alt != blank %}{{ article.image.alt }}{% else %}{{ article.title | escape }}{% endif %}"
+           style="max-width: {{- article.image.width -}}px;"
+           data-sizes="auto"
+           data-src="{{ article.image | img_url: '650x' }}"
+           data-srcset=" {{ article.image | img_url: '200x' }} 200w,
+                        {{ article.image | img_url: '400x' }} 400w,
+                        {{ article.image | img_url: '600x' }} 600w"
+           />
+    </a>
+    {% endif %}              
+  </div>
+  <div class="news-content">
+    <h3><a href="{{ article.url }}">{{ article.title | upcase | strip_html | truncatewords :9 }}</a></h3>
+    {% if section.settings.article_content  %}
+    	<div class="excerpt">{{article.content | strip_html | truncatewords :20 }} </div>
+    {% endif %}
+    {% if section.settings.read_more_link %}
+    <a href="{{ readmore_link }}" class="link-more">{{ readmore }} <span class="arrow"></span></a>              
+    {% endif %}
+
+  </div>
+</div>

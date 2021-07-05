@@ -1,0 +1,201 @@
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="row sixteen columns clearfix collection_nav">
+  <h1>{{ 'customer.register.title' | t }}</h1>
+  <!--   <div class="feature_divider"></div> -->
+</div>
+
+<div class="section clearfix" id="customer">
+  <div class="form-register-center">
+    <br class="clear" />
+    <div id="customer">
+      <!-- Create Customer -->
+      <div id="create-customer">
+
+        {% form 'create_customer' %}
+        {{ form.errors | default_errors }}
+
+        <div id="first_name" class="clearfix large_form">
+          <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" value="" name="customer[first_name]" id="first_name" class="large" size="30" />
+        </div>
+
+        <div id="last_name" class="clearfix large_form">
+          <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" value="" name="customer[last_name]" id="last_name" class="large" size="30" />
+        </div>
+
+        <div id="email" class="clearfix large_form">
+          <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
+          <input type="email" value="" name="customer[email]" id="email" class="large" size="30" />
+        </div>
+
+        <div id="password" class="clearfix large_form">
+          <label for="password" class="login">{{ 'customer.register.password' | t }}</label>
+          <input type="password" value="" name="customer[password]" id="password" class="large password" size="30" />
+        </div>
+
+        <div class="acceptsMarketing center">
+          <input type="checkbox" id="customer[accepts_marketing]" name="customer[accepts_marketing]" checked>
+          <label for="customer[accepts_marketing]">{{ 'customer.register.accepts_marketing' | t }}</label>
+
+
+        </div>
+
+        <div class="action_bottom">
+          <p class="center" style="padding-top: 8px;">
+            {{ 'customer.register.returning_customer_label' | t }} {{ 'customer.register.sign_in_html' | t | customer_login_link }}
+          </p>
+
+        </div>
+        <div class="center">
+          <input class="btn action_button login-btn" type="submit" value="{{ 'SIGN UP' }}" />
+        </div>
+        <p class="center margin-top15 ">OR</p>
+        {% endform %}
+      </div><!-- /#create-customer -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .Smart_sl_social_front .list-inline li>a {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .Smart_sl_social_front .Smart_sl_wds_icons.Smart_sl_wds_iconflat .fa {
+    border-radius: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+  .Smart_sl_social_front .Smart_sl_wds_icons.Smart_sl_wds_rotate .fa:active, .Smart_sl_social_front .Smart_sl_wds_icons.Smart_sl_wds_rotate .fa:hover {
+    transform: unset !important;
+    box-shadow: none !important;
+  }
+  div.content {
+    padding-bottom: 0px;
+  }
+  .action_button {
+    width: 180px !important;
+    background: #202765 !important;
+    border: 2px solid #202765 !important;
+    transition: 0.2s;
+  }
+  .action_button:hover {
+    background: transparent !important;
+    border: 2px solid #202765 !important;
+  }
+  div#customer {
+    background: url('{{ section.settings.register_bg_image | img_url:"master" }}');
+      background-size: cover;
+      background-position: 50%;
+      background-repeat: no-repeat;
+      margin-bottom:0;
+      }
+  .collection_nav{width:100%;}
+  .collection_nav h1{color:#fff;text-transform: uppercase;margin-bottom: 0;text-align:center;}
+  .form-register-center {
+    width: 500px;
+    margin: 0 auto;
+    margin-bottom: 140px;
+
+  }
+  div#create-customer {
+    background: #fff;
+    padding:15px;
+  }
+  #socialdata{margin-bottom:0;}
+  .social ul{padding:0;}
+  .social ul li {
+    list-style: none;
+    float: left;
+    margin: 0 0;
+    width: 100% !important;
+    margin-bottom: 5px;
+  }
+  .social ul li a {
+    font-size: 18px!important;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    -moz-border-radius:0 !important;
+    border-radius: 0 !important; 
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+  }
+  span.fa.fa-google:after {
+    content: 'Login with Google';
+    font-family: Montserrat;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+
+  span.fa.fa-facebook:after {
+    content: 'Login with Facebook';
+    font-family: Montserrat;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .login {font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;text-align:center;}
+
+  form#create_customer input{height:43px;text-align:center;}
+  .collection_nav {
+    margin: 40px 0;
+  }
+  .social span {
+    font-weight: 600;
+  }
+  input[type=checkbox]{height:auto !important;}
+  div.content{padding-top:0;}
+  .acceptsMarketing {
+    margin-bottom:0px;
+  }
+  form {
+    margin-bottom:0px;
+  }
+  input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    -webkit-box-shadow: inset 0 0 0px 9999px white;
+  }
+  @media screen and (min-width:769px) and (max-width:998px){
+    .form-register-center{width:50%;}
+
+  }
+  @media screen and (min-width:320px) and (max-width:768px){
+    .form-register-center {width: 90%;}
+    .container div.collection_nav {margin-bottom: 0px;}
+    .collection_nav h1 {margin: 10px auto;}
+    .collection_nav {
+      margin: 20px 0;
+    }
+  }
+</style>
+
+{% schema %}
+
+{
+"name": "Custom Register Page",
+"class": "custom-register-section",
+"settings": [
+{
+"type": "image_picker",
+"id": "register_bg_image",
+"label": "SignUp Background Image"
+}
+]  
+}
+
+{% endschema %}

@@ -1,0 +1,2008 @@
+{% comment %}
+** Collections - default view **
+- Collection template
+- Uses blocks
+{% endcomment %}
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+{% assign size10 = '2000x' %}
+
+<div class="minipop-collection-section">
+  {% if section.settings.featured_collection_image %}
+  {% capture sizes %}100x,480x,765x,1400x,2048x{% endcapture %}
+  {% assign sizes = sizes | split: ',' %}
+  {% assign bg_img = '' %}
+  {% if collection.image %}            
+  {% assign bg_img =  collection.image | img_url: 'master' %}            
+  {% elsif section.settings.image != blank -%}          
+  {% assign bg_img = section.settings.image | img_url: 'master' %}
+  {% if section.settings.mobile_image != blank %}
+  {% assign bg_img1 = section.settings.mobile_image | img_url: 'master' %}
+  {% else %}
+  {% assign bg_img = section.settings.image | img_url: 'master' %}
+  {% endif %}
+  {% else %}            
+  {% assign bg_img = collection.products.first.featured_image | product_img_url: 'master' %}
+  {% endif %}
+  
+  <div class="mobile_hidden">
+    <header class="banner center page_banner mobile-size-banner dark-overlay-{{ section.settings.image_darken }}" style="">
+      <!--     <style>
+header.bg-img{background: url({{ collection.image | img_url:"2000x" }}) no-repeat;background-size: cover;background-position: center center;display: flex;height:200px;}
+</style> -->
+      <img src="{{ bg_img }}">
+      <div class="">
+        <div id="mobile-{{section.id}}" class="{% if section.settings.enable_position != blank %} mobile-position {% endif %}{% if section.settings.enable_content_position != blank %}desktop-position{% endif %} caption position-{{section.settings.text_position}} js-caption" data-animation="fadeIndown"  >
+          <div class="caption-content
+                      caption-background-{{section.settings.caption_background}}
+                      caption-transparency-{{ section.settings.caption_background_transparency }}
+                      align-{{section.settings.text_align}}">
+            {% if section.settings.collection_title != blank %}
+            <h1 class="headline" style="color:{{section.settings.collection_title_color | default:"#fff" }}">{{ section.settings.collection_title | upcase }}</h1>
+            {% endif %}
+            <p class="sub-title" style="color:{{section.settings.collection_subtitle_color | default:"#fff" }}">
+              {{ section.settings.collection_subtitle }}
+            </p>
+            <div class="mini-pop-banner-button">
+              <a href="javascript:;" data-offset="120" data-target="{{ section.settings.first_button_url }}" class="mini-pop-button action_button first_button highlight" id="mionipop_banner_button1" style="width: 130px;">{{ section.settings.banner_button1 }}</a>
+              <a href="javascript:;" data-offset="120" data-target="{{ section.settings.second_button_url }}" class="mini-pop-button action_button first_button highlight" id="mionipop_banner_button2" style="width: 130px;">{{ section.settings.banner_button2 }}</a>	
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+  
+  <div class="mobile_only">
+    <header class="banner center page_banner mobile-size-banner dark-overlay-{{ section.settings.image_darken }}" style="">
+      <!--     <style>
+header.bg-img{background: url({{ collection.image | img_url:"2000x" }}) no-repeat;background-size: cover;background-position: center center;display: flex;height:200px;}
+</style> -->
+      <img src="{{ bg_img1 }}">
+      <div class="">
+        <div id="mobile-{{section.id}}" class="{% if section.settings.enable_position != blank %} mobile-position {% endif %}{% if section.settings.enable_content_position != blank %}desktop-position{% endif %} caption position-{{section.settings.text_position}} js-caption" data-animation="fadeIndown"  >
+          <div class="caption-content
+                      caption-background-{{section.settings.caption_background}}
+                      caption-transparency-{{ section.settings.caption_background_transparency }}
+                      align-{{section.settings.text_align}}">
+            {% if section.settings.collection_title != blank %}
+            <h1 class="headline" style="color:{{section.settings.collection_title_color | default:"#fff" }}">{{ section.settings.collection_title | upcase }}</h1>
+            {% endif %}
+            <p class="sub-title" style="color:{{section.settings.collection_subtitle_color | default:"#fff" }}">
+              {{ section.settings.collection_subtitle }}
+            </p>
+            <div class="mini-pop-banner-button">
+              <a href="javascript:;" data-offset="120" data-target="{{ section.settings.first_button_url }}" class="mini-pop-button action_button first_button highlight" id="mionipop_banner_button1" style="width: 130px;">{{ section.settings.banner_button1 }}</a>
+              <a href="javascript:;" data-offset="120" data-target="{{ section.settings.second_button_url }}" class="mini-pop-button action_button first_button highlight" id="mionipop_banner_button2" style="width: 130px;">{{ section.settings.banner_button2 }}</a>	
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+  {% if section.settings.display_collection_title %}
+  <div class="caption captionOverlay--true">
+    <div class="position-center caption js-caption">
+      <h1 class="headline" style="color:{{section.settings.collection_title_color | default:"#fff" }}">{{ collection.title | upcase }}</h1>
+    </div>
+  </div>
+  {% endif %} 
+  <style>
+    div#mobile-{{ section.id }}.desktop-position{
+      position:absolute;
+      top:{{ section.settings.top_content_position }}% !important;
+      left:{{ section.settings.left_content_position }}% !important;
+    }
+    @media screen and (max-width:1024px){
+      div#mobile-{{ section.id }}.mobile-position{
+        top:{{ section.settings.top_position }}% !important;
+        left:{{ section.settings.left_position }}% !important;
+      }
+    }     
+  </style>
+  {% endif %}  
+  
+  <a name="pagecontent" id="pagecontent"></a> 
+  {% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}   
+
+  <!-- Minipop Collection About Minipop Block -->
+  
+  {% if block.type == "about_minipop" %}
+  <section class="about-minipop" id="about-minipop">
+    <div class="about-minipop-container">
+      <div class="about-minipop-content">
+        <div class="about-minipop-box">
+          <h2>{{ block.settings.title }}</h2>
+          <p>{{ block.settings.text }}</p>
+        </div>
+        <!--       <a href="javascript:;" class="mini-pop-button about-minipop-btn action_button first_button highlight-" style="width: 130px;">Read More</a>	 -->
+      </div>
+      <div class="about-minipop-images"> 
+        
+        <img src="{{ block.settings.about_img1 | img_url:"master" }}" />
+        <!--<div class="js-about-minipop-images aboutMinipop_slickSlider"> -->
+
+        {% if block.settings.about_img1 != nil%}
+        <!--         <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img1 | img_url:"master" }}" />
+        </div> -->
+        {% endif %}
+        <!-- {% if block.settings.about_img2 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img2 | img_url:"master" }}" />
+        </div>
+        {% endif %}
+        {% if block.settings.about_img3 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img3 | img_url:"master" }}" />
+        </div>
+        {% endif %}
+        {% if block.settings.about_img4 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img4 | img_url:"master" }}" />
+        </div>
+        {% endif %}
+        {% if block.settings.about_img5 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img5 | img_url:"master" }}" />
+        </div>
+        {% endif %}
+        {% if block.settings.about_img6 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img6 | img_url:"master" }}" />
+        </div>
+        {% endif %}
+        {% if block.settings.about_img7 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img7 | img_url:"master" }}" />
+        </div>
+        {% endif %}
+        {% if block.settings.about_img8 != nil%}
+        <div class="about-image-item imgslide">
+        <img src="{{ block.settings.about_img8 | img_url:"master" }}" />
+        </div>
+        {% endif %} -->
+        <!-- <div class="about-image-item">
+        <img src="{{ block.settings.about_img | img_url:"master" }}" />
+        </div>
+        <div class="about-image-item">
+        <img src="{{ block.settings.about_img | img_url:"master" }}" />
+        </div> -->
+
+        <!-- </div> -->
+      </div>
+    </div>
+  </section>
+  {% endif %}  
+
+  <!-- Minipop Collection Image with Text Block -->
+  
+  
+  {% if block.type == "image_with_text" %}
+  
+    <div class="" {% if block.settings.image == nil %}style="background-color:{{ block.settings.background_color }}"{% endif %}>
+      
+    <section id="banner catalog_bg-{{block.id}}" class="banner catalob_bg"> 
+    <div class="minipop-content-banner">
+      
+        {% if block.settings.image != nil %}
+        <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+             alt="{{ block.settings.image.alt | escape }}"
+             class="lazyload {{ block.image_loading_style }}"
+             sizes="100vw"
+             data-src="{{ block.settings.image | img_url: '1900x', format: 'pjpg' }}"
+             srcset="
+                     {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                     {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+
+             />    
+        {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+        {% endif %}
+      </div>  
+  
+      <div class="minipop-content-section">
+         <div class="container" >
+      <div class="homepage_content {{ block.settings.text_alignment }} clearfix image_with_txt_section">
+        {% if block.settings.title != blank %}
+        <h2 class="title">
+          {{ block.settings.title }}
+        </h2>
+        <div class="feature_divider"></div>
+        {% endif %}
+        <style>
+          .minipop_pragraph li{
+            font-size:{{block.settings.font_size}}px;
+          }        
+        </style>
+        <div class="{{ block.settings.text_size }} minipop_pragraph">
+          {% if block.settings.content != blank %}
+          {{ block.settings.content }}
+          {% endif %}
+
+          {% if block.settings.button_label != blank %}
+          <a href="{{ block.settings.button_link }}" class="action_button">
+            {{ block.settings.button_label }}
+          </a>
+          {% endif %}
+          {% if block.settings.image != nil %}
+<!--           <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+               alt="{{ block.settings.image.alt | escape }}"
+               class="lazyload {{ block.image_loading_style }}"
+               sizes="100vw"
+               data-src="{{ block.settings.image | img_url: '1900x', format: 'pjpg' }}"
+               srcset="
+                       {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                       {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+               /> -->
+          {% endif %}
+        </div>
+      </div>
+    </div>
+      </div>
+      
+      </section>
+      
+
+  </div>
+  {% endif %}
+
+  <!-- Minipop Collection Featured Products Block -->
+  
+  {% if block.type == "featured_products" %}
+  <div class="container">
+    <div class="product-bottom-slider" id="minipop-flavour-section">
+      {% if block.settings.title != blank %}
+      <h2 class="title minipop-title">
+        {{ block.settings.title }}
+      </h2>
+      {% endif %}
+      {% if block.settings.text != blank %}
+      <h2 class="subtitle minipop_flavour_pragraph">
+        {{ block.settings.text }}
+      </h2>
+      {% endif %}
+      <div class="container minipop-product-slider">
+        {% assign default = '1400x' %}
+        {% assign size1 = '480x' %}
+        {% assign size2 = '765x' %}
+        {% assign size3 = '900x' %}
+        {% assign size4 = '1000x' %}
+        {% assign size5 = '1100x' %}
+        {% assign size6 = '1300x' %}
+        {% assign size7 = '1500x' %}
+        {% assign size8 = '1700x' %}
+        {% assign size9 = '1900x' %}
+        {% assign size10 = '2000x' %}
+
+        <div class="product_bar">
+          {% assign slider_counter = 0 | plus:0 %}
+          <div class="slider-gallery products-mp-slider">
+            {% for i in (1..10) %}
+            {% assign imagekey = 'image' | append:i %}
+            {% assign imgfield = block.settings[imagekey] %}
+            {% assign TitleKey = 'pro_title' | append:i %}
+            {% assign TitleField = block.settings[TitleKey] %}
+            {% assign LinkKey = 'link' | append:i %}
+            {% assign LinkField = block.settings[LinkKey] %}
+            {% assign Prod_desc = 'pro_desc' | append:i %}
+            {% assign ProdDescField = block.settings[Prod_desc] %}
+            {% assign Prod_price = 'prod_price' | append:i %}
+            {% assign ProdpriceField = block.settings[Prod_price] %}
+            
+            {% if imgfield != blank %}
+            <div class="four columns product_items">
+              {% assign slider_counter = slider_counter | plus:1 %}
+              <a href="{{ LinkField }}" class="logo-bar__link">
+                {% if imgfield != blank %}
+                <img  src="{{ imgfield | img_url: '1000x' }}"
+                     alt="{{ imgfield.alt | escape }}"
+                     class="lazyload {{ settings.image_loading_style }}"
+                     style="max-width: {{- imgfield.width -}}px;"
+                     data-sizes="auto"
+                     data-src="{{ imgfield | img_url: '400x' }}"
+                     data-srcset=" {{ imgfield | img_url: '300x' }} 300w,
+                                  {{ imgfield | img_url: '400x' }} 400w,
+                                  {{ imgfield | img_url: '500x' }}"
+                     />
+                {% else %}
+                {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+                
+                {% if LinkField != blank %}
+                {% endif %}
+
+                <div class="minipop_productDetails">
+                  {% if TitleField != blank %}
+                  <h2 class="headline">
+                    {{ TitleField }}
+                  </h2>
+                  {% endif %}
+                  {% if ProdpriceField != blank %}
+                  <span class="price">
+                    <span class="money">{{ProdpriceField}}</span>
+                  </span>
+                  {% endif %}
+                </div>       
+                
+                {% if ProdDescField != blank %}
+                {{ProdDescField}}
+                {% endif %}
+                
+              </a>
+              {% if LinkField != blank %}
+              <a href="{{ LinkField }}" class="logo-bar__link"></a>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <div class="products-mp-slider slider_counter" data-slide-count="{{ slider_counter }}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Minipop Collection Minipop Science Block -->
+
+  {% if block.type == "minipop_science" %}
+  <section class="the-science" style="background: url('{{ block.settings.science_banner_img | img_url:"master" }}') no-repeat;background-size: cover;background-position: 100% 100%;">
+    <div class="container">
+      <div class="the-science-title center">
+        <h2>{{ block.settings.title }}</h2>
+        <p>{{ block.settings.text }}</p>
+      </div>
+      <div class="the-science-wrapper "> 
+        <div class="inner-layer">
+          <div class="inner-content">
+            <h3>{{ block.settings.inner_title }}</h3>
+            <span>{{ block.settings.inner_subtitle }}</span>
+            <p>{{ block.settings.inner_text }}</p>
+          </div>
+        </div>
+        <div class="middle-layer">
+          <img src="{{ block.settings.science_img | img_url:"master" }}"/>
+        </div>
+        <div class="outer-layer">
+          <div class="outer-content">
+            <h3>{{ block.settings.outer_title }}</h3>
+            <span>{{ block.settings.outer_subtitle }}</span>
+            <p>{{ block.settings.outer_text }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %} 
+
+  <!-- Minipop Collection Minipop Benefits Block -->
+  
+  {% if block.type == "minipop_benefits" %}
+  <section class="benefits ez-animate" data-animation-offset="95%" data-animation="fadeInUp">
+    <div class="container">
+      <div class="benefits-section">
+        <h2 class="title">{{ block.settings.title }}</h2>
+      </div>
+      <div class="main-benefits">
+        <div class="one-third column">
+          <div class="benefits-content">
+            <div class="icon-title ez-animate" data-animation="fadeInLeft" data-animation-offset="95%" data-animation-delay="0.2s">
+              <div class="title-content">
+                <p>{{ block.settings.benefit_icon_title1 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon1 | img_url:"master" }}">
+            </div>
+            <div class="icon-title ez-animate" data-animation="fadeInLeft" data-animation-offset="95%" data-animation-delay="0.5s">
+              <div class="title-content">
+                <p>{{ block.settings.benefit_icon_title2 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon2 | img_url:"master" }}">
+            </div>
+            <div class="icon-title ez-animate" data-animation="fadeInLeft" data-animation-offset="95%" data-animation-delay="0.7s">
+              <div class="title-content">
+                <p>{{ block.settings.benefit_icon_title3 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon3 | img_url:"master" }}">
+            </div>
+            <div class="icon-title ez-animate" data-animation="fadeInLeft" data-animation-offset="95%" data-animation-delay="0.9s">
+              <div class="title-content">
+                <p>{{ block.settings.benefit_icon_title4 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon4 | img_url:"master" }}">
+            </div>
+          </div>
+        </div>
+        <div class="one-third column">
+          <div class="center-content ez-animate" data-animation="fadeInBottom" data-animation-offset="95%" data-animation-delay="0.2s">
+            <img src="{{ block.settings.banefit_img | img_url:"master"}}">                   
+          </div>
+        </div>
+        <div class="one-third column">
+          <div class="benefits-content-right">
+            <div class="icon-title right-img ez-animate" data-animation="fadeInRight" data-animation-offset="95%" data-animation-delay="0.2s">
+              <div class="title-content right-part">
+                <p>{{ block.settings.benefit_icon_title5 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon5 | img_url:"master" }}">
+            </div>
+            <div class="icon-title right-img ez-animate" data-animation="fadeInRight" data-animation-offset="95%" data-animation-delay="0.5s">
+              <div class="title-content right-part">
+                <p>{{ block.settings.benefit_icon_title6 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon6 | img_url:"master" }}">
+            </div>
+            <div class="icon-title right-img ez-animate" data-animation="fadeInRight" data-animation-offset="95%" data-animation-delay="0.7s">
+              <div class="title-content right-part">
+                <p>{{ block.settings.benefit_icon_title7 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon7 | img_url:"master" }}">
+            </div>
+            <div class="icon-title right-img ez-animate" data-animation="fadeInRight" data-animation-offset="95%" data-animation-delay="0.9s">
+              <div class="title-content right-part">
+                <p>{{ block.settings.benefit_icon_title8 }}</p>
+              </div>
+              <img src="{{ block.settings.benefit_icon8 | img_url:"master" }}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+  {% endfor %}
+  {% endif %}    
+    
+  <div class="container" id="minipop-collection">
+    <div class="row"> 
+<!--       <div class="benefits-section" >
+        <h2 class="title">{{ collection.title | upcase }}</h2>
+      </div> -->
+      {% assign ad_img_count = 0 %}
+      {% for block in section.blocks %}
+      {% if block.type == 'ad_banner' %}
+      {% assign ad_img_count = ad_img_count | plus : 1 %}
+      {% endif %}
+      {% endfor %}
+      {% assign total_page = section.settings.pagination_limit | minus: ad_img_count %}
+
+      {% paginate collection.products by total_page %}
+      {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}                
+      {% if block.type == 'as_seen_text_section' or  block.type == 'image_with_text_overlay' or block.type == 'ad_banner' %}
+      {% assign sidebar = false %}  
+      {% else %}
+      {% assign sidebar = false %}
+      {% endif %}  
+      {% endfor %}
+      {% else %}  
+      {% assign sidebar = false %}      
+      {% endif %}
+
+      {% if sidebar %}
+      {% include 'sidebar' %}
+      <div class="twelve columns minipop-slider">
+        {% else %}
+        <div class="sixteen columns minipop-slider">
+          {% endif %}
+          {% if collection.description != blank %}
+          <div class="section clearfix collection_description">
+            {{ collection.description }}
+            <div class="center shrink-read"> <a class="action_button" href="javascript:;">Shrink reading</a></div>
+          </div>
+          <div class="continuereading-div center"><button class="ModuleMoreLink action_button  highlight-false" type="button">Continue reading</button></div>
+          {% endif %}
+
+          {% if collection.products.size == 0 %}
+          <div class="section clearfix collection-matrix">
+<!--             <p class="quote">{{ 'collections.general.no_matches' | t }}</p> -->
+          </div>
+          {% else %}
+
+          {% assign products_per_row = section.settings.products_per_row %}
+          {% include 'product-loop', sidebar: sidebar %}
+          {% endif %}
+
+          {% if settings.pagination_type == 'basic_pagination' %}
+          {% include 'pagination' with sidebar %}
+          {% endif %}	
+
+        </div>
+        {% endpaginate %}
+      </div>       
+    </div>
+  </div>
+</div>
+
+<style>
+  div#mobile-collection-minipop-template.desktop-position{
+    top: 50% !important;
+  }
+  .about-minipop-box2 {
+    /*     max-height: 230px; */
+    height: 100%;
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  .mt-50{
+    margin-top:50px !important;
+  }
+  .benefits-section {
+    width: 100%;
+  }  
+  .benefits-content {
+    float:right;
+    padding-top:25px;
+  }
+  .icon-title p {
+    font-size: 24px;
+    text-transform: uppercase;
+    margin: 13px 0 0 0;
+    font-family: Poppins;
+    padding-bottom:30px;
+  }
+  .icon-title img {
+    float: right;
+  }
+  .icon-title{
+    clear: both;
+    width:100%;
+    display:inline-block;
+    padding-bottom: 20px;
+  }
+  .title-content{
+    float:left;
+    width:80%;
+    text-align:right;
+  }
+  .center-content {
+    text-align: center;
+  }
+  .main-benefits {
+    padding: 50px 0 0px;
+    display: inline-block;
+    width: 100%;
+  }
+  .benefits-content-right{
+    float:left;
+    padding-top:25px;
+  }
+  .right-part {
+    float: right;
+    text-align:left;
+  }
+  .right-part img {
+    float: left;
+  }
+  .right-img img {
+    float: left;
+  }
+
+  .collection-template-section .thumbnail:nth-child({{products_per_row}}n+1) {
+    clear: both;
+  }
+  .mini-pop-banner-button {
+    margin-top: 30px;
+  }
+  .mini-pop-button {
+    text-transform: uppercase !important;
+    padding: 0 !important;
+    margin: 0 10px;
+  }
+  .banner-context-overlay {
+    background: #171515ab;
+    width: 60%;
+    margin: 0 auto;
+    padding: 5%;
+  }
+  .js-about-minipop-images {
+    line-height:0;
+  }
+  .about-minipop-images img {width:100%;}
+  .about-minipop-container {
+    display: flex;
+    /*     align-items: center; */
+    flex-flow:row wrap;
+  }
+
+  .about-minipop-content,.about-minipop-images {
+    flex:1 0 50%; 
+  }
+
+  .about-minipop-images{background-position:center !important; background-repeat:no-repeat !important; background-size:cover !important;}
+  .about-minipop-content {
+    padding:1% 5%;
+    width: 45%;
+    display: block;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 96px 100px;
+    float: left;
+    left: 0;
+  }
+  .about-minipop-content h2 {
+    font-family: 'CircularStd' !important;
+    font-size: 36px;
+    margin-bottom: 18px;
+  }
+  .about-minipop-content p {
+    font-family: Poppins;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .about-minipop-content .mini-pop-button{
+    margin:0;
+  }
+  section.the-science {
+    background: url(https://cdn.shopify.com/s/files/1/1354/3525/files/the-science-bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 60px 0;
+  }
+  .the-science-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .the-science-wrapper .inner-layer,.the-science-wrapper .outer-layer {
+    flex: 1 0 30%;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    flex-wrap: nowrap;
+    text-align: center;
+    min-height: 330px;
+    position:relative;
+  }
+  .the-science-wrapper .inner-layer{
+    align-items: flex-end;
+  }
+  .the-science-wrapper .outer-layer{
+    align-items: flex-start;
+  }
+  .the-science-wrapper .middle-layer {
+    flex: 1 0 9%;
+    text-align: center;
+    min-height: 330px;
+  }
+  .the-science-title{
+    width: 60%;
+    margin: 0 auto;
+    margin-bottom:70px;
+  }
+  .the-science-title p {
+    font-family: poppins;
+    letter-spacing: 0.5px;
+  }
+  .the-science-title h2 {
+    font-family: 'CircularStd' !important;
+    font-size: 35px;
+    margin-bottom: 18px;
+    margin-top: 0;
+  }
+  .the-science-wrapper .inner-content h3 {
+    color: #b74013;
+    font-family: 'CircularStd';
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-size: 28px;
+    margin-bottom: 0;
+
+  }
+  .the-science-wrapper .outer-content h3 {
+    color: #b74013;
+    font-family: 'CircularStd';
+    font-weight: normal;
+    letter-spacing: 1px;
+    font-size: 28px;
+    margin-bottom: 0;
+
+  }
+  .the-science-wrapper .inner-content,.the-science-wrapper .outer-content {
+    margin: 0 auto;
+    width: 83%;
+    background: #fff;
+    border: 2px solid #b74013;
+    border-radius: 0px 80px;
+    padding: 7% 8%;
+    z-index:1;
+  }
+  .the-science-wrapper .inner-content span,.the-science-wrapper .outer-content span {
+    font-family: poppins;
+    color: #949292;
+    font-size: 16px;
+    text-transform:capitalize;
+  }
+  .the-science-wrapper .inner-content p,.the-science-wrapper .outer-content p {
+    font-family: poppins;
+    letter-spacing: 0.5px;
+  }
+  .the-science-wrapper .inner-layer:before {
+    content: url(https://cdn.shopify.com/s/files/1/1354/3525/files/Picture16.png?6);
+    position: absolute;
+    right: -15%;
+    top: -82px;
+    transform: rotate(367deg);
+  }
+  .the-science-wrapper .outer-layer:after {
+    content: url(https://cdn.shopify.com/s/files/1/1354/3525/files/Picture17.png?64637);
+    position: absolute;
+    bottom: -58px;
+    left: -14%;
+    transform: rotate(382deg);
+  }
+
+  @media screen and (max-width:1800px){
+    .about-minipop-content{
+      padding: 0px 100px !important;
+    }
+  }
+  @media screen and (max-width:1620px){
+    .collection-minipop p.sub-title {
+      padding: 0 20%;
+      font-size:14px;
+    }
+  }
+
+  @media screen and (max-width:1250px){
+    .about-minipop-content{
+      padding: 0px 50px !important;
+    }
+    div#mobile-collection-minipop-template.desktop-position{
+      left:14% !important;
+    }
+  }
+
+  @media screen and (max-width:1400px){
+    .the-science-wrapper .inner-layer:before{
+      right:-14%;
+    }
+    .title-content{
+      width:70%;
+    }
+    .about-minipop-content {
+      padding: 2%;
+    }
+    .icon-title p {
+      font-size: 20px;
+    }
+  }
+  @media screen and (max-width:1024px){
+    .about-minipop-content p{
+      font-size:13px;
+    }
+    .about-minipop-content {
+      padding: 3px 20px !important;
+    }
+    div#mobile-collection-minipop-template.mobile-position {
+      width: 80%;
+    }
+    .mini-pop-banner-button {
+      margin-top: 0px;
+    }
+    div#mobile-collection-minipop-template h1.headline {
+      font-size: 36px;
+    }
+    .title-content {        
+      width: 70%;         
+    }
+    .icon-title p {
+      font-size: 18px;
+    }
+    .about-minipop-content p {
+      font-size: 16px !important;
+      line-height: 26px !important;
+    }
+    .about-minipop-images, .about-minipop-images img{
+      height:auto;
+    }
+  }
+
+  @media screen and (max-width:798px) {
+    .mt-50 {
+      margin-top: 0px !important;
+    }
+    .minipop-collection-section .banner{
+      min-height:auto;
+      height:auto !important;
+    }
+    .minipop-collection-section .caption-content.align-center {margin: 0 auto;}
+    .about-minipop-images{
+      height:auto;
+    }
+    .about-minipop-content {
+      padding:8% 15px !important;
+    }
+    .benefits-content{
+      float:none;
+    }
+    .title-content {
+      float: right;
+      width: 86%;
+      text-align: left;
+    }
+    .center-content {
+      text-align: left;
+      padding-bottom: 30px;
+    }
+    .icon-title img {
+      float: left;
+    }
+    section.the-science {
+      padding: 20px 0;
+    }
+    .the-science-wrapper .inner-content, .the-science-wrapper .outer-content{
+      width: 90%;
+      border-radius: 0px 50px;
+      padding: 2% 2%;
+    }
+    .the-science-wrapper .outer-layer:after{
+      bottom: -48px;
+      left: -25%;
+      transform: rotate(368deg);
+    }
+    .the-science-wrapper .inner-layer:before {
+      right: -22%;
+      top: -66px;
+      transform: rotate(361deg);
+    }
+    .about-minipop-content,.about-minipop-images{
+      flex:1 0 100%;
+    } 
+    .about-minipop-content {
+      padding: 0% 4% 9% 6%;
+    }
+    .the-science-title {
+      width: 96%;
+    }
+    .mini-pop-banner-button {
+      margin-top: 8px;
+    }
+    .collection-minipop p.sub-title {
+      font-size: 11px;
+      padding:0 10%;
+    }
+
+
+  }
+  @media (max-width:768px){
+    div#mobile-collection-minipop-template.desktop-position {
+      left: 0% !important;
+      width:100% !important;
+    }
+    .page_banner {
+      height: 298px !important;
+    }
+
+    .page_banner {
+      min-height: 298px;
+    }
+    div#mobile-collection-minipop-template.mobile-position {
+      /*       top: 19% !important;
+      left: 18% !important; */
+      width:72%;
+    }
+  }
+
+
+  @media (max-width:767px){
+    .main-benefits{display:block !important;}
+    div#mobile-collection-minipop-template.desktop-position{
+      padding-top:0;
+    }
+    .about-minipop-images{
+      height:auto;
+    }
+    .center-content {
+      text-align: left;
+      padding-bottom: 30px;
+    }
+    .main-benefits{
+      padding: 10px 0 0px;
+    }
+    .benefits-section h2 {
+      padding-top: 30px;
+    }
+    .icon-title img {
+      float: left;
+    }
+    .title-content{float: right;text-align: left; width:70%;}
+    .icon-title p{
+      font-size:18px;
+      letter-spacing:2px;
+      margin-top:18px;
+    }
+    .icon-title{
+      padding-bottom:10px;
+    }
+    .about-minipop-content h2{
+      font-size:32px;
+    }
+    .the-science-wrapper .inner-content, .the-science-wrapper .outer-content{
+      width:95%;
+      padding: 4% 5%;
+    }
+    .the-science-wrapper .outer-layer:after {
+      bottom: auto;
+      left: -2%;
+      top: -146px;
+      transform: rotate(480deg);
+    }
+    div#shopify-section-collection-minipop-template .banner-context-overlay {
+      width: 100%;
+      padding: 6px;
+    }
+    .mini-pop-banner-button {
+      margin-top: 10px;
+    }
+    .collection-minipop p.sub-title{
+      font-size:12px;
+      padding:0;
+    }
+    div#mobile-collection-minipop-template.mobile-position{
+      width:100%;
+    }
+    .the-science-wrapper .inner-layer, .the-science-wrapper .outer-layer{
+      min-height: 250px;
+    }
+    section.the-science{
+      padding:20px 0;
+    }
+    .the-science-wrapper{
+      display:inline-block;
+    }
+    .the-science-title {
+      width: 100%;
+      margin: 0 auto;
+      margin-bottom: 0px;
+    }
+    .the-science-wrapper .middle-layer{
+      margin:80px 0 30px;
+    }
+    .the-science-wrapper .inner-layer:before {
+      right: auto;
+      top: auto;
+      bottom: -133px;
+      transform: rotate(113deg);
+    }
+  }
+  @media (max-width:475px){
+    .page_banner {
+      height: 140px !important;
+    }
+    div#mobile-collection-minipop-template {
+      position: inherit !important;
+      margin: 0;
+    }
+
+    .page_banner {
+      margin-bottom: 20px;
+      min-height: 160px;
+    }
+  }
+  @media (max-width:375px){
+    .the-science-wrapper .outer-layer:after{
+      left: -8%;
+    }
+    .page_banner {
+      margin-bottom: 20px;
+      min-height: 145px;
+    }
+
+  }
+  @media (max-width:320px){
+    .the-science-wrapper .outer-layer:after{
+      left: -18%;
+    }
+  }
+</style>
+
+<script>
+  {% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+  {% if block.type == "ad_banner" %}
+  {% if block.settings.ad_collection == collection.handle %}
+  $(function(){          
+    var ad_position = "{{block.settings.tile_position}}";
+    var $coll_add = $('<div class="four columns  thumbnail collection_add"><div class="product-wrap"><a href="{{block.settings.ad_link | default:"javascript:;" }}" class="product-info__caption "><div class="relative product_image"><div class="product_container swap-false"><div class="image__container" style=" max-width: 319.6875px; "><img class="lazyloaded" src="{{ block.settings.ad_bg_img | img_url:"master"}}" ></div></div></div><div class="info product-details"><span class="title" itemprop="name" style="color: {{ block.settings.ad_text_color | default:"#fff" }};">{{ block.settings.ad_title }}</span><p class="c_f_mini_product_details">{{ block.settings.ad_description }}</p></div></a></div></div>');
+                      //$( ".collection-matrix .thumbnail:nth-child("+ad_position+")" ).before($coll_add);
+                      });
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</script>
+
+{% schema %}
+{
+  "name": "Collection Mini Pop",
+  "class": "collection-minipop-template-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+      {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Custom background image",
+      "info": "1800 x 1000px recommended"
+      },
+    {
+      "type": "range",
+      "id": "pagination_limit",
+      "label": "Products per page",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 48
+    },
+    {
+      "type": "checkbox",
+      "id": "display_collection_title",
+      "label": "Show collection title"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_breadcrumb",
+      "label": "Show breadcrumb links",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_tags",
+      "label": "Enable filtering by product tag"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_sort",
+      "label": "Enable collection sorting"
+    },
+    {
+      "type": "header",
+      "content": "Banner image"
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_collection_image",
+      "label": "Show top banner image",
+      "info": "The collection's featured image will be used by default. Optionally upload a banner image as a fallback."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image",
+      "info": "1600 x 1000px recommended"
+    },
+	{
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+	{
+      "type": "text",
+      "id": "collection_title",
+      "label": "Title"
+  	},
+  	{
+      "type": "text",
+      "id": "collection_subtitle",
+      "label": "Sub Title",
+      "default": "Popcorn Shed is the first brand in the UK to launch this NEW exciting, innovative range."
+  	},
+	{
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+       {
+          "value": "left",
+          "label": "Left"
+      	},
+      	{
+          "value": "center",
+          "label": "Center"
+      	},
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      	"default": "center"
+     },
+     {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text alignment",
+        "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+       ],
+       	 "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background",
+      "label": "Display text background"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background_transparency",
+      "label": "Enable text background transparency"
+    },
+	{
+      "type": "header",
+      "content": "Desktop Position"
+	},
+    {
+      "type": "checkbox",
+      "id": "enable_content_position",
+      "label": "Enables Desktop Slider Content Position ?",
+      "default": false
+	},
+    {
+      "type": "range",
+      "id": "top_content_position",
+      "min": 2,
+      "max": 100,
+      "step": 1,
+      "label": "Position Top to Bottom",
+      "default": 6
+    },
+	{
+      "type": "range",
+      "id": "left_content_position",
+      "min": 2,
+      "max": 100,
+      "step": 1,
+      "label": "Position Left to Right",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Mobile Position"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_position",
+      "label": "Enables Mobile Slider Content Position ?",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "top_position",
+      "min": 2,
+      "max": 100,
+      "step": 1,
+      "label": "Position Top to Bottom",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "left_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Position Left to Right",
+      "default": 6
+    },
+  	{
+      "type": "text",
+      "id": "banner_button1",
+      "label": "First Button Name",
+      "default": "Shop Now"
+  	},
+  	{
+      "type": "text",
+      "id": "first_button_url",
+      "label": "First Button URL",
+      "default": "#"
+  	},
+  	{
+      "type": "text",
+      "id": "banner_button2",
+      "label": "Second Button Name",
+      "default": "Learn More"
+  	},
+  	{
+      "type": "text",
+      "id": "second_button_url",
+      "label": "Second Button URL",
+      "default": "#"
+  	},
+    {
+      "type": "checkbox",
+      "id": "image_darken",
+      "label": "Darken banner image",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "collection_title_color",
+      "label": "Collection Title Color"
+    },
+	{
+      "type": "color",
+      "id": "collection_subtitle_color",
+      "label": "Collection Subtitle Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle",
+      "label": "Toggle sidebar content",
+      "default": false
+    }  	
+  ],
+  "blocks": [  
+	 {
+      "type": "image_with_text",
+      "name": "Image with text ",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1400 x 600px recommended"
+        },
+		{
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "html",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers.</p><p>Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "Font Size",
+          "min": 10,
+          "max": 64,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            {
+              "value": "regular_text",
+              "label": "Regular"
+            },
+            {
+              "value": "featured_text",
+              "label": "Large"
+            }
+          ],
+          "default": "featured_text"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "align_left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        }
+      ]
+          
+     },
+	{
+          "type":"featured_products",
+		  "name": "Featured Products",
+ 		  "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Heading",
+              "default": "Featured collection"
+            },
+  			{
+              "type": "richtext",
+              "id": "text",
+              "label": "Text"
+            },
+			{
+              "type": "image_picker",
+              "id": "image1",
+              "label": "Image1",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title1",
+              "label": "Heading1"
+            },
+			{
+              "type": "text",
+              "id": "prod_price1",
+              "label": "Product Price1"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc1",
+              "label": "Product Description1"
+            },
+            {
+              "type": "url",
+              "id": "link1",
+              "label": "Link1"
+            },
+			{
+              "type": "image_picker",
+              "id": "image2",
+              "label": "Image2",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title2",
+              "label": "Heading2"
+            },
+			{
+              "type": "text",
+              "id": "prod_price2",
+              "label": "Product Price2"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc2",
+              "label": "Product Description2"
+            },
+            {
+              "type": "url",
+              "id": "link2",
+              "label": "Link2"
+            },
+			{
+              "type": "image_picker",
+              "id": "image3",
+              "label": "Image3",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title3",
+              "label": "Heading3"
+            },
+			{
+              "type": "text",
+              "id": "prod_price3",
+              "label": "Product Price3"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc3",
+              "label": "Product Description3"
+            },
+            {
+              "type": "url",
+              "id": "link3",
+              "label": "Link3"
+            },
+			{
+              "type": "image_picker",
+              "id": "image4",
+              "label": "Image4",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title4",
+              "label": "Heading4"
+            },
+			{
+              "type": "text",
+              "id": "prod_price4",
+              "label": "Product Price4"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc4",
+              "label": "Product Description4"
+            },
+            {
+              "type": "url",
+              "id": "link4",
+              "label": "Link4"
+            },
+			{
+              "type": "image_picker",
+              "id": "image5",
+              "label": "Image5",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title5",
+              "label": "Heading5"
+            },
+			{
+              "type": "text",
+              "id": "prod_price5",
+              "label": "Product Price5"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc5",
+              "label": "Product Description5"
+            },
+            {
+              "type": "url",
+              "id": "link5",
+              "label": "Link5"
+            },
+			{
+              "type": "image_picker",
+              "id": "image6",
+              "label": "Image6",
+              "info": "1800 x 1000px recommended"
+            },
+			 {
+              "type": "text",
+              "id": "pro_title6",
+              "label": "Heading6"
+            },
+			{
+              "type": "text",
+              "id": "prod_price6",
+              "label": "Product Price6"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc6",
+              "label": "Product Description6"
+            },
+            {
+              "type": "url",
+              "id": "link6",
+              "label": "Link6"
+            },
+			{
+              "type": "image_picker",
+              "id": "image7",
+              "label": "Image7",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title7",
+              "label": "Heading7"
+            },
+			{
+              "type": "text",
+              "id": "prod_price7",
+              "label": "Product Price7"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc7",
+              "label": "Product Description7"
+            },
+            {
+              "type": "url",
+              "id": "link7",
+              "label": "Link7"
+            },
+			{
+              "type": "image_picker",
+              "id": "image8",
+              "label": "Image8",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title8",
+              "label": "Heading8"
+            },
+			{
+              "type": "text",
+              "id": "prod_price8",
+              "label": "Product Price8"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc8",
+              "label": "Product Description8"
+            },
+            {
+              "type": "url",
+              "id": "link8",
+              "label": "Link8"
+            },
+			{
+              "type": "image_picker",
+              "id": "image9",
+              "label": "Image9",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title9",
+              "label": "Heading9"
+            },
+			{
+              "type": "text",
+              "id": "prod_price9",
+              "label": "Product Price9"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc9",
+              "label": "Product Description9"
+            },
+            {
+              "type": "url",
+              "id": "link9",
+              "label": "Link9"
+            },
+			{
+              "type": "image_picker",
+              "id": "image10",
+              "label": "Image10",
+              "info": "1800 x 1000px recommended"
+            },
+            {
+              "type": "text",
+              "id": "pro_title10",
+              "label": "Heading10"
+            },
+			{
+              "type": "text",
+              "id": "prod_price10",
+              "label": "Product Price10"
+            },
+			{
+              "type": "richtext",
+              "id": "pro_desc10",
+              "label": "Product Description10"
+            },
+            {
+              "type": "url",
+              "id": "link10",
+              "label": "Link10"
+            }     	
+       ]
+  	},
+  	 {
+      "type": "minipop_benefits",
+      "name": "Minipop Benefits",
+      "settings": [
+       {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "image_picker",
+          "id": "banefit_img",
+          "label": "Banefits Image"        
+        },
+        {
+          "type": "header",
+          "content": "Left Side Block"
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_icon1",
+          "label": "Benefit Icon1"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title1",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "image_picker",
+          "id": "benefit_icon2",
+          "label": "Benefit Icon2"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title2",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "image_picker",
+          "id": "benefit_icon3",
+          "label": "Benefit Icon3"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title3",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "image_picker",
+          "id": "benefit_icon4",
+          "label": "Benefit Icon4"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title4",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "header",
+          "content": "Right Side Block"
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_icon5",
+          "label": "Benefit Icon1"        
+        },
+        {
+          "type": "text",
+          "id": "benefit_icon_title5",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "image_picker",
+          "id": "benefit_icon6",
+          "label": "Benefit Icon2"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title6",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "image_picker",
+          "id": "benefit_icon7",
+          "label": "Benefit Icon3"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title7",
+          "label": "Icon Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "image_picker",
+          "id": "benefit_icon8",
+          "label": "Benefit Icon4"        
+        },
+  		{
+          "type": "text",
+          "id": "benefit_icon_title8",
+          "label": "Icon Title",
+          "default": "Heading"
+        }
+      ]
+    },
+  	{
+      "type": "about_minipop",
+      "name": "About Minipop",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Popcorn Shed’s Mini Pop! Kernels have a significantly thinner hull that most popcorn brands.</p>"
+        },
+        {
+        "type": "image_picker",
+        "id": "about_img1",
+        "label": "Image"        
+        }
+
+      ]
+    },
+  	{
+      "type": "minipop_science",
+      "name": "Minipop Science",
+      "settings": [
+		{
+        "type": "image_picker",
+        "id": "science_banner_img",
+        "label": "Image"        
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Sub Text",
+          "default": "<p>Popcorn Shed’s Mini Pop!® kernels have a significantly thinner hull than standard popcorn brands.</p>"
+        },
+        {
+        "type": "image_picker",
+        "id": "science_img",
+        "label": "Image"        
+        },
+        {
+        "type": "header",
+        "content": "Inner Layer"
+        },
+  		{
+          "type": "text",
+          "id": "inner_title",
+          "label": "Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "text",
+          "id": "inner_subtitle",
+          "label": "Sub Title",
+          "default": "inner layer"
+        },
+  		 {
+          "type": "richtext",
+          "id": "inner_text",
+          "label": "Inner Text",
+          "default": "<p>This inner layer is made of soluble fiber.It remains stuck to the popped kernel.</p>"
+        },
+  		{
+        "type": "header",
+        "content": "Outer Layer"
+        },
+  		{
+          "type": "text",
+          "id": "outer_title",
+          "label": "Title",
+          "default": "Heading"
+        },
+  		{
+          "type": "text",
+          "id": "outer_subtitle",
+          "label": "Sub Title",
+          "default": "Outer layer"
+        },
+  		{
+          "type": "richtext",
+          "id": "outer_text",
+          "label": "Outer Text",
+          "default": "<p>This outer layer is made of a non-soluble fiber.</p>"
+        }  		
+      ]
+    },
+    {
+      "type": "ad_banner",
+      "name": "Advertisement Banner",
+      "settings": [
+		{
+          "type": "collection",
+          "id": "ad_collection",
+	 	  "label": "Select Collection"
+        },
+        {
+          "type": "range",
+          "id": "tile_position",
+          "min": 1,
+          "max": 12,
+          "step": 1,
+          "unit": "pos",
+          "label": "Ad Position",
+          "default": 5
+        },
+        {
+          "type": "color",
+          "id": "ad_bg_color",
+          "label": "Advertisement Background color",
+          "default": "#f6f3ee",
+          "info": "Advertisement Background color"
+        },
+		{
+          "type": "color",
+          "id": "ad_text_color",
+          "label": "Advertisement Text color",
+          "default": "#fff",
+          "info": "Advertisement Text color"
+        },
+        {
+          "type": "image_picker",
+          "id": "ad_bg_img",
+          "label": "Ad Background Image"        
+        },
+        {
+          "type": "text",
+          "id": "ad_title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "ad_description",
+          "label": "Desctiption",
+		  "default": "Desctiption"
+        },
+        {
+          "type": "url",
+          "id": "ad_link",
+          "label": "Link"        
+        }
+      ]
+    },
+    {
+      "type": "filter_by_collection",
+      "name": "Collection list",
+      "limit": 1
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "custom_menu_linklist",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "page",
+          "id": "content_page",
+          "label": "Page"
+        }
+      ]
+    },
+    {
+      "type": "recently_viewed",
+      "name": "Recently viewed products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "To test the recently viewed products, view your online store outside of the Editor and visit multiple product pages ([?](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115008765228))"
+        },
+        {
+          "type": "text",
+          "id": "sidebar_rv_title",
+          "label": "Title",
+          "default": "Recently Viewed"
+        },
+        {
+          "type": "range",
+          "id": "sidebar_rv_per",
+          "label": "Products limit",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type": "filter",
+      "name": "Tag filter",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_name",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "filter_tags",
+          "label": "Filter tags",
+          "info": "Add a comma-separated list of product tags. Only the tags found in the collection will be displayed as filters ([?](https://help.outofthesandbox.com/hc/en-us/articles/115008642047))"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_filter_swatches",
+          "label": "Display color swatches"
+        }
+      ]
+    },
+    {
+      "type": "filter_by_tag",
+      "name": "Tag list",
+      "limit": 1
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Text area can be used for special announcements or general information.</p>"
+        }
+      ]
+    },
+    {
+      "type": "filter_by_type",
+      "name": "Type list",
+      "limit": 1
+    },
+    {
+      "type": "filter_by_vendor",
+      "name": "Vendor list",
+      "limit": 1
+    }
+  ]
+}
+
+{% endschema %}

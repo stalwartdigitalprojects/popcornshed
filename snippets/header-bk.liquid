@@ -1,0 +1,186 @@
+{% comment %}Main navigation{% endcomment %}
+{% comment %}
+<header class="{% if feature_image %}feature_image{% endif %} {% if section.settings.logo_home != nil %}secondary_logo--true{% endif %}">
+  <div class="header {% if feature_image and settings.header_background == false %}is-absolute {% endif %} header-fixed--{{ section.settings.fixed_header }} {% if settings.header_background %}header-background--solid{% endif %}">
+<!--     {% if section.settings.promo_text != blank %}
+      <div class="promo_banner">
+        {{ section.settings.promo_text }}
+        <div class="promo_banner-close"></div>
+      </div>
+    {% endif %} -->
+    <div class="top_bar clearfix">
+      <div class="container ">
+      <div id="topbar--sidepromo">
+            <a href="{{ section.settings.top_left_text_url }}" data-remodal-target="newsletter" class="topbar--sidepromo-link">{{ section.settings.top_left_text }}</a></div>
+        {% if section.settings.social_icons_header %}
+        	{% include 'social-icons' %}
+        {% endif %}
+         {% capture logo %}
+          <div class="logo text-align--{{ section.settings.logo_alignment }}">
+            <a href="{{ shop.url }}" title="{{ shop.name }}">
+              {% if section.settings.logo_home != nil %}
+                <img src="{{ section.settings.logo_home | img_url: '410x' }}" class="secondary_logo" alt="{{ shop.name | escape }}" />
+              {% endif %}
+              {% if section.settings.logo != nil %}
+                <img src="{{ section.settings.logo | img_url: '410x' }}" class="primary_logo" alt="{{ shop.name | escape }}" />
+              {% else %}
+                {{ shop.name }}
+              {% endif %}
+            </a>
+          </div>
+        {% endcapture %}
+      <ul class="menu left">
+        {% if section.settings.phone_number != blank %}
+          <li><a href="tel:+{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a></li>
+        {% endif %}
+        {% if section.settings.top_bar_menu != blank %}
+          {% for link in linklists[section.settings.top_bar_menu].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+   {% if section.settings.promo_text != blank %}
+        <div class="promo_banner promo_height">
+          {{ section.settings.promo_text }}
+<!--           <div class="promo_banner-close"></div> -->
+        </div>
+  {% endif %}
+        {% comment %}
+      {% if section.settings.show_cart %}
+        <div class="cc cart_container">
+          <a href="javascript:void(0);" id="open_filter" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}icon-bag{% endif %}  dropdown_link my-cart" data-no-instant>
+           MY CART <span class="cart_count my-count-cart">{{ final_cart_count }}</span>
+          </a>          
+        </div>
+      {% endif %}
+        {% endcomment %}
+
+        <ul class="menu right">
+          <li>
+            <a href="https://popcorn-shed.gogecko.com/" target="_blank" class="" title="{{ 'WHOLESALE'  }}">WHOLESALE <i class="fa fa-external-link"></i></a>
+          </li>
+        {% if settings.show_multiple_currencies %}
+          <li>
+            {% include 'currencies-switcher' %}
+          </li>
+        {% endif %}
+        
+        {% if shop.customer_accounts_enabled %}
+          
+        {% endif %}
+        
+      </ul>
+      </div>
+    </div>
+
+    <div class="main_nav_wrapper">
+      <div class=" main_nav clearfix menu-position--{{ section.settings.menu_position }} logo-align--{{ section.settings.logo_position }}">
+       <div class="container nav-center clearfix">
+       
+
+        {% assign vertical_menu = section.settings.vertical_menu %}
+
+        {% capture menu_left %}
+          {% if vertical_menu %}
+            {% include 'vertical-menu' with section.settings.main_linklist %}
+          {% else %}
+            {% include 'menu' with section.settings.main_linklist %}
+          {% endif %}
+        {% endcapture %}
+
+        {% capture menu_right %}
+          {% if vertical_menu %}
+            {% include 'vertical-menu' with section.settings.main_linklist2 %}
+          {% else %}
+            {% include 'menu' with section.settings.main_linklist2 %}
+          {% endif %}
+          {% if section.settings.search_enabled %}
+            <li class="search_container">
+              <form action="/search" class="search_form">
+                {% if settings.search_option != 'everything' %}
+                  <input type="hidden" name="type" value="product" />
+                {% endif %}
+                <span class="icon-search "></span>
+                <input type="text" name="q" class="search_input" placeholder="{{ 'general.search.title' | t: shop_name: shop.name }}..." value="{% if search and search.results.first.price %}{{ search.terms }}{% endif %}" autocapitalize="off" autocomplete="off" autocorrect="off" />
+              </form>
+            </li>
+            <li class="search_link">
+              <a href="/search" class="icon-search dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search"></a>
+            </li>
+          {% endif %}
+           {% if shop.customer_accounts_enabled %}
+           <li>
+             <a href="/account" class="icon-user" title="{{ 'layout.customer.my_account' | t }}{% if customer %}({{ customer.email }}){% endif %}"> <span>{% if customer %}{{ 'layout.customer.my_account' | t }}</span>{% else %}<span data-popup-open="popup-1">{{ 'layout.customer.log_in' | t }}{% endif %}</span></a>
+           </li>
+           {% endif %}
+         <li>
+           
+           {% if section.settings.show_cart %}
+           {% if template contains "cart" %}
+           
+           
+           <a href="cart" class="popcorn-cart open_filter2" id="" title="{{ 'Cart' }}"><span class="cart-totals cart_count">{{final_cart_count }}</span>
+             <!--<span id="cart-full" class="{% if cart.item_count == 0 %}empty-cart{% endif %}" >
+<img class="popcorn-cart-empty" src="{{'cart-icon-full-2.png' | file_img_url:'master' }}" />
+</span>
+<span id="cart-empty">
+<img class="popcorn-cart-empty" src="{{'cart-icon-empty-2.png' | file_img_url:'master' }}" /></span> -->
+             <span class="{% if final_cart_count == 0 %}empty-cart{% endif %}">
+               <img class="popcorn-full" src="{{'popcorn-full.png' | file_img_url:'master' }}"  alt="cart"/>
+             </span>
+             <span><img class="popcorn-cart-empty" src="{{'cart-icon-empty-2.png' | file_img_url:'master' }}" alt="cart" /></span>
+           </a>           
+           {% else %}
+           <a href="javascript:;" class="popcorn-cart open_filter" id="open_filter" title="{{ 'Cart' }}"><span class="cart-totals cart_count">{{final_cart_count }}</span>
+             <span class="{% if final_cart_count == 0 %}empty-cart{% endif %}">
+               <img class="popcorn-full" src="{{'popcorn-full.png' | file_img_url:'master' }}" alt="cart" />
+             </span>
+             <span><img class="popcorn-cart-empty" src="{{'cart-icon-empty-2.png' | file_img_url:'master' }}" alt="cart" /></span>
+           </a>
+           {% endif%}
+           {% endif %}
+         </li>
+        {% endcapture %}
+      
+        {% if section.settings.logo_position == "left" or section.settings.menu_position == "block" %}
+          {{ logo }}
+          <div class="nav">
+            <ul class="menu menu-desktop {{ section.settings.menu_alignment }} clearfix">
+              {{ menu_left }}
+              {{ menu_right }}
+            </ul>
+          </div>
+        {% else %}
+          <div class="nav menu-left">
+            <ul class="menu {{ section.settings.menu_alignment }} clearfix">
+              {{ menu_left }}
+            </ul>
+          </div>
+          {{ logo }}
+          <div class="nav menu-left">
+            <ul class="menu {% if section.settings.menu_alignment == 'align_left' %}align_right{% elsif section.settings.menu_alignment == 'align_right' %}align_left{% else %}{{ section.settings.menu_alignment }}{% endif %} clearfix">
+              {{ menu_right }}
+            </ul>
+          </div>
+        {% endif %}
+        </div>
+        {% if section.settings.search_enabled %}
+          <div class="dropdown_container center" data-dropdown="search">
+            <div class="dropdown">
+              <form action="/search" class="header_search_form">
+                {% if settings.search_option != 'everything' %}
+                  <input type="hidden" name="type" value="product" />
+                {% endif %}
+                <span class="icon-search search-submit"></span>
+                <input type="text" name="q" placeholder="{{ 'general.search.title' | t: shop_name: shop.name }}..." autocapitalize="off" autocomplete="off" autocorrect="off" class="search-terms" />
+              </form>
+            </div>
+          </div>
+        {% endif %}
+        {% include 'sub-menu' with section.settings.main_linklist %}
+        {% include 'sub-menu' with section.settings.main_linklist2 %}
+      </div>
+    </div>
+  </div>
+</header>
+{% endcomment %}

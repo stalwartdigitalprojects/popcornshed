@@ -1,0 +1,81 @@
+{% comment %}
+** Image with text (half and half view) - homepage partial **
+- Draggable section
+- Uses blocks
+{% endcomment %}
+
+<div class="our-story-container ez-animate" data-animation="fadeInUp" data-animation-offset="80%">
+  <div class="giving-back" style="text-align:center;">
+    <img src="{{ section.settings.homepage_banner_image | img_url: 'master' }}" alt="{{ section.settings.img-headline }}">
+
+  </div>
+  <div class="giving-back-text">
+    <span>{{section.settings.homepage_intro_header_text}}</span>
+  </div>
+  <div class="read-our-story">    
+    <a href="{{section.settings.homepage_banner_button_link}}">{{section.settings.homepage_banner_button_text}}</a>
+  </div>
+</div>
+
+<style>    
+ 
+ 
+</style>
+{% schema %}
+  {
+  "name": "Homepage Image with text",
+  "class": "homepage-image-with-text-section",  
+  "settings": [    
+    {
+	  "type": "text",
+      "id": "img-headline",
+      "label": "Headline",
+      "default": "Award Winning Gourmet Popcorn"
+    },
+	{
+    "type": "select",
+    "id": "homepage_text_align",
+    "label": "Text alignment",
+    "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+      ]
+    },   
+    {
+      "type": "image_picker",
+      "id": "homepage_banner_image",
+      "label": "Homepage Intro Image"
+    },
+	{
+      "type": "richtext",
+      "id": "homepage_intro_header_text",
+      "label": "Homepage Intro",
+      "default": "<p>Intro Text</p>"
+    },
+	{
+      "type": "url",
+      "id": "homepage_banner_button_link",
+      "label": "Homepage Intro Link URL"
+    },
+	{
+      "type": "text",
+      "id": "homepage_banner_button_text",
+      "label": "Homepage Intro Title"
+    }
+    ],
+      "presets": [{
+      "name": "Homepage Image with text for Intro",
+      "category": "Image"
+    }]
+  }
+{% endschema %}

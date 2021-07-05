@@ -1,0 +1,451 @@
+{% comment %}
+** Cart page - default view **
+- Template section
+{% endcomment %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="section clearfix">
+  <div class="sixteen columns">
+    <h1 class="majortitle center">{{ 'cart.general.title' | t  | upcase}}</h1>
+    <h3 class="shipping-title center"> Congrats! You've Earned Free Shipping!</h3>
+    <div class="feature_divider"></div>
+  </div>
+</div>
+
+
+{% if cart.item_count == 0 %}
+
+  <div class="sixteen columns">
+    <div class="section clearfix">
+      <div class="six columns offset-by-five">
+        <p class="quote">{{ 'cart.general.continue_browsing_html' | t }}</p>
+        <a href="{% if cart.items.first.product.collections != blank %}{{ cart.items.first.product.collections.last.url }}{% else %}/collections/all{% endif %}" class="action_button continue-button add_to_cart">{{ 'cart.general.continue_shopping_link_html' | t }}</a>
+      </div>
+      <br class="clear" />
+    </div>
+  </div>
+
+{% else %}
+
+  <form action="/cart" method="post" id="cart_form" class="page-cart"  data-money-format="{{ shop.money_format }}" data-shop-currency="{{ shop.currency }}" data-shop-name="{{ shop.name | escape }}">
+   <div class="row">
+    <div class="sixteen columns  clearfix ">
+       
+    </div>
+    </div>
+    <div class="section row clearfix">
+      
+      <div class="sixteen cart-container ">
+        <div class="upper-checkout-button" style="float:right;">
+        <p class="left">
+          <input type="submit" class="action_button add_to_cart checkout-btn" style="width:300px;" id="checkout" name="checkout" value="{{ 'cart.general.checkout' | t | upcase}}" />
+        </p>
+      </div> 
+        {% assign total_saving = 0 %}
+        {% for item in cart.items %}
+          {% if item.variant.compare_at_price > item.variant.price %}
+            {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+            {% assign total_saving = saving | plus: total_saving %}
+          {% endif %}
+
+          <div class=" clearfix border-top">
+            <div class="cart-image  alpha">
+              <a href="{{ item.url }}" title="{{ item.title | escape }}" class="cart_page_image thumb-img">
+                <img  src="{{ item | img_url: '100x' }}"
+                      alt="{{ item.title | escape }}"
+                      class="lazyload {{ settings.image_loading_style }}"
+                      style="max-width: {{- item.image.width -}}px"
+                      data-sizes="auto"
+                      data-src="{{ item | img_url: '900x' }}"
+                      data-srcset=" {{ item | img_url: '300x' }} 300w,
+                                    {{ item | img_url: '600x' }} 600w,
+                                    {{ item | img_url: '900x' }} 900w"
+                       />
+              </a>
+            </div>
+
+            <div class="cart-product-title" style="text-align:left;">
+              <h3 class="cart-product-vmiddle name">
+                <a href="{{ item.url }}">{{ item.product.title }}
+<span class='booster-cart-item-success-notes' data-key='{{item.key}}'></span><span class='booster-cart-item-upsell-notes' data-key='{{item.key}}'></span></a>
+              </h3>
+
+              {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+                <p class="meta">
+                  {% for option in item.product.options %}
+                    <span class="label">{{ option }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />
+                  {% endfor %}
+                </p>
+              {% endunless %}
+
+              {% if item.properties %}
+                <p>
+                  {% for p in item.properties %}
+                    {% unless p.last == blank %}
+                      {% if p.last contains '/uploads/' %}
+                        <div>
+                          {{ p.first }}: <a class="lightbox" href="{{ p.last }}">{{ 'cart.general.uploaded_file' | t }}</a>
+                        </div>
+                      {% else %}
+                        <div>
+                          {{ p.first }}: {{ p.last }}
+                        </div>
+                      {% endif %}
+                    {% endunless %}
+                  {% endfor %}
+                </p>
+              {% endif %}
+        </div>
+        <div class="cart-qty omega " style="text-align:left;">
+           <div class="product-quantity-box right cart-product-vmiddle-count quantity-row" >
+              <a href="javascript:void(0);" class="btn-subtract js-change-quantity qty-minus"  data-func="minus">
+                <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><title>- icon</title><g fill="none" fill-rule="evenodd"><circle stroke="#CCD2D7" cx="12.5" cy="12.5" r="12"></circle><path fill="#CCD2D7" d="M7 12h11v1H7z"></path></g></svg>
+              </a>
+<!--               <span class="ss-icon product-minus js-change-quantity plus-minus-btn qty-minus" data-func="minus"><span class="icon-minus"></span></span> -->
+              <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" {% if settings.limit_quantity and item.variant.inventory_management != blank and item.variant.inventory_quantity > 0 and item.variant.inventory_policy == "deny" %}max="{{ item.variant.inventory_quantity }}"{% endif %} />
+              <a href="javascript:void(0);" class="btn-add js-change-quantity qty-plus" data-func="plus">
+                <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><title>+ icon</title><g fill="none" fill-rule="evenodd"><circle stroke="#CCD2D7" cx="12.5" cy="12.5" r="12"></circle><path fill="#CCD2D7" d="M7 12h11v1H7z"></path><path fill="#CCD2D7" d="M12 18V7h1v11z"></path></g></svg>
+              </a>
+<!--               <span class="ss-icon product-plus js-change-quantity plus-minus-btn qty-plus" data-func="plus"><span class="icon-plus"></span></span> -->
+            </div>
+        </div>
+        <div class="cart-remove" style="text-align:left;">
+        <p class="right  remove-cart item cart-product-vmiddle-count">
+          <a class="js-change-quantity remove toggler bold-ro-remove" href="#" data-func="remove" data-qty="0" data-line-id="{{ forloop.index }}">x</a>
+        </p>
+        <p class="modal_price right cart-price">
+            {% if item.price > 0 %}
+            	<span class="money"><div class="pn-price-item" data-id="{{ item.key }}">{{ item.price | money }}</div></span>
+            {% else %}
+            {{ settings.free_price_text }}
+            {% endif %}
+
+            {% if item.price < item.variant.compare_at_price %}
+            	<span class="money was_price">{{ item.variant.compare_at_price | money }}</span>
+            {% endif %}
+          </p>
+        </div>
+          </div>
+        {% endfor %}
+      <div class="follow-scroll right" style="text-align:right;">
+            <p class="js-cart_subtotal">
+              <span style="font-size: 18px;">{{ 'cart.general.subtotal' | t | upcase }}</span>
+              <span style="display:block;">
+                <span class="money majortitle"><span class="wh-original-cart-total">{{ cart.total_price | money }}</span><span class="wh-cart-total"></span><div class="additional-notes"><span class="wh-minimums-note"></span><span class="wh-extra-note"></span></div></span>
+              </span>
+              
+            </p>
+
+            {% if section.settings.display_savings %}
+              <p class="cart_savings sale">
+                {% if total_saving > 0 %}
+                  <span class="right">
+                    <span class="money">{{ total_saving | money }}</span>
+                  </span>
+                  <span>{{ 'layout.general.savings' | t }}</span>
+                {% endif %}
+              </p>
+            {% endif %}
+
+            {% if settings.show_multiple_currencies %}
+              <p>
+                <small>
+                  {{ 'cart.general.orders_processed_in_currency_html' | t: currency: shop.currency }}
+                </small>
+              </p>
+            {% endif %}
+
+            {% if section.settings.display_special_instructions %}
+              <label for="note">{{ 'cart.general.note' | t: shop_name: shop.name }}:</label>
+              <textarea id="note" name="note" rows="2">{{ cart.note }}</textarea>
+            {% endif %}
+
+            {% if section.settings.display_tos_checkbox %}
+              <p>
+                <input type="checkbox" class="tos_agree" id="cart_agree" required />
+                  <label class="tos_label" for="cart_agree">
+                    {{ 'cart.general.agree_to_terms_html' | t }}
+                  </label>
+                {% if settings.tos_page != blank %}
+                  <a href="{{ pages[settings.tos_page].url }}" target="_blank" class="tos_icon">{{ 'cart.general.view_terms' | t }}</a>
+                {% endif %}
+              </p>
+            {% endif %}
+
+            {% if section.settings.cart_message != blank %}
+              <div>
+                {{ section.settings.cart_message }}
+              </div>
+            {% endif %}
+
+            
+
+            {% if content_for_additional_checkout_buttons %}
+              <div class="additional-checkout-buttons">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+            {% endif %}
+
+            {% if cart.item_count > 0 %}
+              <div class="featured-links">
+<!--                 <a href="{% if cart.items.first.product.collections != blank %}{{ cart.items.first.product.collections.last.url }}{% else %}/collections/all{% endif %}" class="secondary_button">{{ 'cart.general.continue_shopping_link_html' | t }}</a> -->
+                <p class="left">
+                  <input type="submit" class="action_button add_to_cart checkout-btn" style="width:300px;" id="checkout" name="checkout" value="{{ 'cart.general.checkout' | t | upcase}}" />
+                </p>
+              </div>
+            {% endif %}
+          </div>
+      <div class="divider"></div>
+        <div style="clear:both;"></div>
+      <div><h3 style="text-align: right;font-size:23px;font-family: Montserrat;text-transform: uppercase;">Hurry! These items<br> will go fast!</h3></div>
+      <!-- Powr.io Timer Widget	 -->
+      <script src="//www.powr.io/powr.js?external-type=bigcommerce"></script> 
+      <div class="powr-countdown-timer right" id="a61510d9_1508429482"></div>
+      <!-- Powr.io Timer Widget	 -->
+      
+    </div> <!--end cart-container -->
+     
+
+<!--       <div class="five columns offset-by-eleven bottom-checkout">
+        <div class="section clearfix">
+          
+        </div>
+      </div> -->
+ 
+    
+  </form>
+
+  {% include 'cart-shipping-calculator' %}
+
+  
+
+    <!--  Product Footer Icon  -->  
+    <div id="product-detail-section-tiles">
+      <h2>{% if section.settings.product_icon_title != blank %} {{section.settings.product_icon_title}} {%endif%}</h2>
+      <ul>
+        <li>
+          {% if section.settings.product_icon1_img != blank %} {{ section.settings.product_icon1_img | img_url:"master" | img_tag }}
+          <!--           <p>{% if section.settings.product_icon1_title != blank %}{{section.settings.product_icon1_title}}{%endif%}</p>  -->
+          {% endif %}
+        </li>
+        <li>
+          {% if section.settings.product_icon2_img != blank %} {{ section.settings.product_icon2_img | img_url:"master" | img_tag }}
+          <!--           <p>{% if section.settings.product_icon2_title != blank %}{{section.settings.product_icon2_title}}{%endif%}</p>  -->
+          {% endif %}
+        </li>
+        <li>
+          {% if section.settings.product_icon3_img != blank %} {{ section.settings.product_icon3_img | img_url:"master" | img_tag }}
+          <!--           <p>{% if section.settings.product_icon3_title != blank %}{{section.settings.product_icon3_title}}{%endif%}</p>  -->
+          {% endif %}
+        </li>
+        <li>
+          {% if section.settings.product_icon4_img != blank %} {{ section.settings.product_icon4_img | img_url:"master" | img_tag }}
+          <!--           <p>{% if section.settings.product_icon4_title != blank %}{{section.settings.product_icon4_title}}{%endif%}</p>  -->
+          {% endif %}
+        </li>
+        <li class="hide-mobile">
+          {% if section.settings.product_icon5_img != blank %} {{ section.settings.product_icon5_img | img_url:"master" | img_tag }}
+          <!--           <p>{% if section.settings.product_icon5_title != blank %}{{section.settings.product_icon5_title}}{%endif%}</p>  -->
+          {% endif %}
+        </li>
+      </ul>
+    </div>  
+    <div style="clear:both;"></div>
+    <!-- End Product Footer Icon  -->
+
+{% endif %}
+<style>
+  .border-top:last-child{border-bottom: 1px solid #ccc;}
+  .cart-container{width:1200px !important;margin:0 auto !important;}
+  .nav ul.menu{display:none;}
+  #topbar--sidepromo, #open_filter, .icon-user{visibility:hidden}
+  div.logo{width:100%;}
+  div.logo img{margin:0 auto;}
+  .main_nav{border-bottom: 1px solid #f7f8f9;}
+   div.content{padding:0;}
+  
+  .subtotal-box{background: #fff;padding: 30px 15px;z-index: 9999;border: 1px solid grey;}
+  h1.majortitle,.majortitle {margin: 3px 0;font-size:32px;}
+  .shipping-title{font-size:23px !important;margin-bottom:33px;}
+  .js-cart_subtotal span{display:block;margin-bottom:15px;letter-spacing:normal;}
+  .border-top{clear: both;list-style: none;position: relative;border-top: 1px solid #ccc;padding: 10px 0;}
+  .divider{border-bottom: 1px solid #ccc;}  
+  .cart-product-vmiddle{font-size:18px;margin:16.5% 0px 0 0 !important;display:inline-block;}
+  .cart-product-vmiddle-count{margin-top:8% !important;}
+  .follow-scroll {
+    margin-top: 25px;
+}
+  .checkout-btn{margin-bottom: 5px !important;}
+  .featured-links {
+    padding-top: 5px;
+}
+  .cart-product-remove p {margin-top: 3.3%;margin-bottom: 0;padding-bottom: 0;}
+  p.modal_remov_cart.right.remove-cart {margin-top: 7.5%;}
+  .remove-cart a.remove,a:visited.remove {color: #333 !important;font-size: 15x;font-weight: 600;letter-spacing: 1px;}
+  h3 > a.name, a:visited.name{color: #333 !important;}
+  .qty{width: 33.3333% !important;}
+  .plus-minus-btn:hover {background-color: #eee !important;}
+  .plus-minus-btn {background-color: #fff !important;}
+  .plus-minus-btn {width: 33.333% !important;height: 47px !important;}
+  .qty-minus {border-right: 0 !important;line-height: 45px !important;font-size: 15px !important;}
+  .qty-plus {border-left: 0 !important;font-size: 15px !important;line-height: 45px !important;}
+  .product-quantity-box{width:130px !important;}
+  
+  
+.template-cart .quantity-row button {
+    border: 0;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+.quantity-row button {
+    color: #979797;
+}
+.quantity-row a, .quantity-row input.quantity {
+    float: left;
+    width: 33.333%;
+    padding: 8px 0;
+    line-height: 45px;
+    background: #fff !important;
+    border: 0;
+    color: #333;
+    text-align: center;
+    box-sizing: border-box;
+  	height: 47px !important;font-size:15px !important;
+}
+.quantity-row button:hover {
+    background-color: #eee !important;
+    color: #979797 !important;
+  	border:0 !important;
+}
+.item a.remove {
+    color: #CCD2D7 !important;
+    font-size: 28px;
+    line-height: 1em;
+    font-weight: 100;
+    right: 0;
+    top: calc(50% - 22px);
+}
+  @media only screen and (max-width: 767px){
+     .nav ul.menu{display:none;}
+  div.logo{width:100%;}
+  div.logo img{margin:0 auto;}
+    #pagecontent,.mobile_nav,#open_mble_cart{display:none !important;}
+    .top_bar{border-bottom: 1px solid #f7f8f9;}
+    div.content{padding:0;}
+    
+    .shipping-title {font-size: 14px !important;margin-bottom: 0;}
+    .upper-checkout-button {border-top: 1px solid #ccc;padding-top: 20px;padding-bottom:14px;}
+    .product-quantity-box{display: block;float: none;width:130px !important;margin-top: 16px !important;}
+    p.left{margin-bottom: -5px !important;}
+    .bottom-checkout{padding: 20px 0 0 0 !important;}
+    .modal_price{left: 0% !important;margin-top: -36px !important;display: inline-block !important;}
+    .remove-cart{margin: 70px 0 0 0 !important;}    
+    .cart_content_info .name {margin-top: 30px !important;font-size: 15px;margin-right: 45px !important;}    
+    .thumb-img img {float: none;margin: 0 auto;width:40% !important;text-align: center;    margin-top: 25px;}
+    .js-cart_subtotal{text-align:center !important;margin-bottom:30px;}
+    .remove-cart a.remove {position: absolute;color: #000;font-weight: 400;font-size: 30px;padding: 10px 10px 10px 15px;right: -45px;top: -50px;}
+    a:visited.remove{color: #000;}
+    .promo_banner-show.mobile_nav-fixed--true #pagecontent{padding:0 !important;}
+    .checkout-btn{width:300px;}
+    .input.action_button{margin-bottom: 1.8em !important;}
+    .follow-scroll{margin-top:0;}
+  }
+</style>
+{% schema %}
+
+{
+  "name": "Cart page",
+  "class": "cart-section container",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_special_instructions",
+      "label": "Show \"note\" text box"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_tos_checkbox",
+      "label": "Show \"agree to terms\" checkbox"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_savings",
+      "label": "Show total savings",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "cart_message",
+      "label": "Cart message"
+    },
+	{
+    "type": "header",
+    "content": "Product Icon Setting"
+    },
+    {
+    "type": "text",
+    "id": "product_icon_title",
+    "label": "Title",
+    "default": "Why Shop at iDecoz?"
+    },
+    {
+    "type": "image_picker",
+    "id": "product_icon1_img",	   
+    "label": "Icon Image 1"      
+    },
+    {
+    "type": "text",
+    "id": "product_icon1_title",
+    "label": "Icon 1 Title",	   
+    "default": "100% Satisfaction Guaranteed"
+    },
+    {
+    "type": "image_picker",
+    "id": "product_icon2_img",	   
+    "label": "Icon Image 2"      
+    },
+    {
+    "type": "text",
+    "id": "product_icon2_title",
+    "label": "Icon 2 Title",	   
+    "default": "100% Satisfaction Guaranteed"
+    },
+    {
+    "type": "image_picker",
+    "id": "product_icon3_img",	   
+    "label": "Icon Image 3"      
+    },
+    {
+    "type": "text",
+    "id": "product_icon3_title",
+    "label": "Icon 3 Title",	   
+    "default": "100% Satisfaction Guaranteed"
+    },
+    {
+    "type": "image_picker",
+    "id": "product_icon4_img",	   
+    "label": "Icon Image 4"
+    },
+    {
+    "type": "text",
+    "id": "product_icon4_title",
+    "label": "Icon 4 Title",	   
+    "default": "100% Satisfaction Guaranteed"
+    },
+    {
+    "type": "image_picker",
+    "id": "product_icon5_img",	   
+    "label": "Icon Image 5"
+    },
+    {
+    "type": "text",
+    "id": "product_icon5_title",
+    "label": "Icon 5 Title",	   
+    "default": "100% Satisfaction Guaranteed"
+    }
+  ]
+}
+
+{% endschema %}

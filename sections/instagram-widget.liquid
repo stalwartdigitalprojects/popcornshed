@@ -1,0 +1,155 @@
+{% comment %}
+** instagram widget (half and half view) - homepage partial **
+- Draggable section
+- Uses blocks
+{% endcomment %}
+
+<div class="container">
+  <!--  Instagram widget  -->
+  <div class="title"><h2 class="clearfix" style="margin: 35px 0 10px 0;"><span class="title-name">SHOP OUR INSTA</span>
+    <!--     <a href="{{ section.settings.instagram_url}}" class="title-insta" target="_blank">{{ section.settings.instagram_username }}</a> -->
+    <span class="right"><a href="{{ section.settings.instagram_page_link}}" ><span class="title-viewmore">View All Insta</span><span class="arrow"></span></a></span>
+    </h2>
+  </div>
+  <div class="instagram_div inner">
+    <div>
+      <script src="https://like2have.it/embed.js?id=bd7d34e1-8967-462d-ad2f-0dff53400674&type=stackingGrid&numPhotos=8&size=300&ts=large" id="l2h-widget-bd7d34e1-8967-462d-ad2f-0dff53400674" async></script>
+
+      <style>
+        div.l2h-thumbnail a div.l2h-hover-content .l2h-content-wrap .haveit-btn {
+          border: 2px solid #ffffff;
+          background: transparent;
+          color: #fff;
+/*           position: absolute; */
+          font-weight: 700;
+          z-index: 111;
+          margin: 0 auto;
+/*           left: 0;
+          right: 0; */
+/*           width: 152px; */
+          transition:0.2s;
+        }
+        .haveit-btn:hover{background:#fff !important;color:#333 !important;}
+        .title-insta{font-size:18px;}
+        .title-insta:hover{border-bottom:2px solid #ff95f4;}
+        div.fs-has-links {
+          text-indent: -9999px;
+          position: static;
+          font-weight: 500;
+        }
+
+        .fs-has-links::after {
+          padding: 5px 7.5px;
+          background-color: #fff;
+          color: rgba(0, 0, 0, 0.8);
+          content: "SHOP IT";
+          text-indent: 0;
+          display: block;
+          font-size: 10pt;
+          margin: 10px;
+        }
+
+        .fs-desktop .fs-timeline-entry div.fs-text-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          display: -webkit-flex;
+          -webkit-flex-direction: column;
+          -webkit-align-items: center;
+          -webkit-justify-content: center;
+          display: -ms-flexbox;
+          -ms-flex-direction: column;
+          -ms-flex-align: center;
+          -ms-flex-pack: center;
+          transition: opacity .25s;
+        }
+/* 
+        .fs-desktop .fs-timeline-entry .fs-text-container:hover {
+          opacity: 1;
+        } */
+
+        .fs-wrapper div.fs-text-container .fs-entry-title,
+        div.fs-detail-title {
+          font-family: Times New Roman, serif;
+          font-style: italic;
+          font-weight: normal;
+        }
+
+        div.fs-text-container .fs-entry-date,
+        div.fs-detail-container .fs-post-info,
+        div.fs-wrapper div.fs-has-links::after,
+        .fs-text-product,
+        .fs-overlink-text {
+          font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+          font-style: normal;
+          font-weight: bold;
+        }
+
+        .fs-wrapper div.fs-text-container * {
+          color: #fff
+        }
+
+        .fs-wrapper div.fs-text-container {
+          background-color: rgba(0, 0, 0, 0.8);
+          margin: 0px
+        }
+
+        div.fs-entry-date {
+          display: none
+        }
+
+        div.fs-entry-title {
+          display: none
+        }
+
+        .fs-wrapper div.fs-timeline-entry {
+          margin: 1px
+        }
+      </style>
+
+    </div>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $(".l2h a").on('click',function(e){
+        //       e.preventDefault();
+        //       var img_id = $(this).parents().find("div[data-id=*]");
+        //       alert('asd');
+        //       $('div[data-id="2408841"]').trigger('click');
+      });
+    });
+  </script>
+  <!-- End insta widget   -->  
+</div>
+{% schema %}
+{
+"name": "Instagram Widget",
+"class": "instagram-widget-section",
+"settings": [      
+{
+"type": "url",
+"id": "instagram_url",
+"label": "Instargam URL",
+"info": "https://www.idecoz.com/shop-our-instagram"
+},
+{
+"type": "url",
+"id": "instagram_page_link",
+"label": "Instargam Page URL",
+"info" : "https://www.myshopify.com/shop-our-instagram"
+}
+],
+"presets": [{
+"name": "Instagram Widget",
+"category": "Image",
+"settings": { }
+}]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

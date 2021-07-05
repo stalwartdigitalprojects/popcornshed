@@ -1,0 +1,435 @@
+{% comment %}
+** Contact page - custom view **
+- Page template
+{% endcomment %}
+
+{% if section.settings.image != nil %}
+<div class="new_banner_wrapper">
+  <div class="container">
+    <header class="banner center page_banner dark-overlay-{{ section.settings.image_darken }}" style="background: url({{ section.settings.image | img_url: "master"}}) no-repeat;
+                                                                                                      background-size: cover;background-position: center center;display: flex;height:584px;">
+      <!--     <img  src="{{ section.settings.image | img_url: '100x' }}"
+alt="{% if section.settings.image.alt != blank %}{{ section.settings.image.alt | escape }}{% else %}{{ page.title | escape }}{% endif %}"
+class="lazyload {{ settings.image_loading_style }}"
+data-src="{{ section.settings.image | img_url: '1400x', format: 'pjpg' }}"
+sizes="100vw"
+srcset="{{ section.settings.image | img_url: '480x', format: 'pjpg' }} 480w,
+{{ section.settings.image | img_url: '765x', format: 'pjpg' }} 765w,
+{{ section.settings.image | img_url: '1400x', format: 'pjpg' }} 1400w,
+{{ section.settings.image | img_url: '2048x', format: 'pjpg' }} 2048w"
+/> -->
+      {% if section.settings.title != blank %}
+      <div class="position-center caption js-caption">          
+        <!--       <h1 class="headline">{{ section.settings.title }}</h1> -->
+        <h1 class="headline">{{ page.title | upcase }}</h1>      
+        <p class="subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+      {% endif %}
+    </header>
+  </div>
+</div>
+{% endif %}
+
+<a name="pagecontent" id="pagecontent"></a>
+<div class="contact-bg">
+<div class="container main">
+{% if section.settings.image == nil %}
+      <h1 class="center heading">{{ page.title }}</h1>
+      <div class="feature_divider"></div>
+    {% endif %}
+  <br class="clear" />
+  <div class="contact-info ">
+    <div class="contact-wrapper">
+      <div class="contact-inner" style="text-align:left;">
+          <p><strong>Mailing Address</strong></p>
+          
+        <p><strong>{{section.settings.address_title}}</strong></p>  
+        <p>{{section.settings.address_line1}}</p>
+          <p>{{section.settings.address_line2}}</p><br/>
+        
+        <p><strong>Online order enquiries</strong></p>
+        <p>{{section.settings.hours_operation}}</p>
+<!--           <p>{{section.settings.working_timing}}</p><br/> -->
+        
+<!--           <p>Phone: {{section.settings.phone_number}}</p> -->
+        <br/>
+        <p><strong>PR, Events & Marketing</strong></p>
+         {{section.settings.fax_number}}
+        <br/>
+<!--         <p>Email {{section.settings.email_id}}</p> -->
+        <br/>
+        <p><strong>Career enquiries</strong></p> 
+        {{section.settings.wholesale_inq}}
+        <br/><br/>
+        <p><strong>Stockist & Retail enquiries</strong></p> 
+        {{section.settings.press_inq}}
+      </div>
+    </div>
+  </div>
+  <div class="container contact-form contact-form-bg text-center clearfix">
+    <h2 class="contact-title ">Send Us a Message</h2>
+	{% if section.settings.show_page_content %}
+    {{ page.content }}
+    {% endif %}
+
+    {% form 'contact', class:"row contact-form2" %}
+      {% if form.posted_successfully? %}
+        <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+      {% endif %}
+
+      {% if form.errors %}
+        <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+       {% assign message = 'contact.form.message' | t %}
+        <ul class="center">
+          {% for field in form.errors %}
+            {% if field == 'form' %}
+              <li>
+                {{ form.errors.messages[field] }}
+              </li>
+            {% else %}
+              <li>
+                {% assign field_name = field | replace: 'body', message %}
+                {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+              </li>
+            {% endif %}
+          {% endfor %}
+         </ul>
+      {% endif %}
+
+       <br class="clear" />
+       <div class="eight columns alpha ">
+        {% assign name_attr = 'contact.form.name' | handle %}
+<!--         <label for="contactFormName">{{ 'contact.form.name' | t }} <span class="red">*</span></label> -->
+        <input type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+       </div>
+       <div class="eight columns omega">
+<!--         <label for="contactFormEmail">{{ 'contact.form.email' | t }} <span class="red">*</span></label> -->
+        <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+       </div>
+    <div class="eight columns alpha">
+<!--       <label for="contactFormCompany">{{ 'Company'   }} <span class="red">*</span></label> -->
+      <input type="text" id="contactFormCompany" name="contact[company]" placeholder="{{ 'Company' }}" autocorrect="off" autocapitalize="off" value="{% if form.company %}{{ form.company }}{% endif %}" required="required">
+    </div>
+    <div class="eight columns omega">
+      {% assign name_attr = 'contact.form.phone' | t | handle %}
+<!--       <label for="contactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label> -->
+      <input type="text" id="contactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}"  value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">            
+    </div>
+    <div class="sixteen columns alpha">
+<!--       <label for="contactFormMessage">{{ 'contact.form.message' | t }} <span class="red">*</span></label> -->
+      <textarea rows="5" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+    </div>
+    <div class="sixteen columns alpha center">
+<!--       <div class="g-recaptcha" data-sitekey="6LeipU4UAAAAAJUpm0N0iMbHTI3ZpGhJ7GE6YJKD"></div> -->
+    </div>
+    <div class="sixteen columns left">
+      <input type="submit" class="submit action_button" value="{{ 'contact.form.send' | t }}" style="width:200px;display: inline; " />
+    </div>  
+      {% endform %}
+    
+    
+  </div>
+
+</div>
+</div>
+
+{% if section.settings.show_map and section.settings.contact_address != blank %}
+  {% if section.settings.map_stretch %}
+    <div class="embed-container maps margin-bottom100">
+      <iframe width="100%" height="{{ section.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={{ section.settings.contact_address | replace: ' ', '+' }}&amp;z={{ section.settings.zoom_level }}&amp;output=embed"></iframe>
+    </div>
+  {% else %}
+    <div class="container">
+      <div class="ten columns offset-by-three">
+          <div class="embed-container maps margin-bottom100">
+            <iframe width="100%" height="{{ section.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={{ section.settings.contact_address | replace: ' ', '+' }}&amp;z={{ section.settings.zoom_level }}&amp;output=embed"></iframe>
+          </div>
+      </div>
+    </div>
+  {% endif %}
+{% elsif section.settings.show_map %}
+  {% if section.settings.map_stretch %}
+    <div class="map-placeholder">
+      {% capture i %}{% cycle "1", "2" %}{% endcapture %}
+      {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--map' }}
+    </div>
+  {% else %}
+    <div class="container">
+      <div class="ten columns offset-by-three">
+        <div class="map-placeholder">
+          {% capture i %}{% cycle "1", "2" %}{% endcapture %}
+          {{ 'lifestyle-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--map' }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+
+<style>
+  .mb-20{margin-bottom: 92px !important; }
+  .caption .headline{text-align:center; 
+/*     color: #fff !important; */
+  }
+  .contact-form{width:65%;float:left;}
+  .contact-form h2{margin-bottom:35px;letter-spacing: 0; color: #b74013;}
+  .contact-form2 label{font-size: 16px;text-transform: uppercase;}
+  .contact-info{
+    width: 30%;
+    float: right;
+    margin-top: 6%;
+    background: #f8f8f8;
+    margin-top: 20px;
+  }
+  .contact-inner p:first-child {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #b74013;
+  }
+  .contact-inner { padding-left:16%;padding-top: 60px;padding-bottom:60px;}
+  .contact-inner p {font-size: 16px;margin: 0;}  
+  .contact-bg{padding:100px 0;}
+  .contact-form-bg {
+
+/*     margin:100px 0 110px !important; */
+    padding:0 50px;
+  }
+  .contact-form-bg  form#contact_form input,textarea#contactFormMessage{
+    border: none;
+    font-family: 'ClarendonBT-Roman';
+    transition: 0.2s;
+    border-bottom: 1px #ccc solid;
+    margin-bottom: 40px;
+  }
+    .page-contact-us .contact-form-bg form#contact_form input.submit {
+    margin-top: 30px;
+      border-bottom:none ;
+}
+  form#contact_form input.submit.action_button:disabled:hover{
+  border-color:transparent !important;
+  }
+  .contact-form-bg  textarea#contactFormMessage {
+    border: 1px #ccc solid;
+    margin-top: 40px;
+    min-height: 173px;
+  }
+  .contact-form-bg  form#contact_form input:focus,.contact-form-bg textarea#contactFormMessage:focus {
+    border-color: #b74013;
+  }  
+  .contact-form-bg .contact-title{font-size: 20px;text-transform: uppercase;font-weight: 600;margin-bottom: 40px;}
+  .contact-form-bg  input.newsletter_contact_email[type="email"] input[type="text"], .contact-form-bg input[type="password"],.contact-form-bg input[type="email"],.contact-form-bg input[type="search"],.contact-form-bg input[type="url"],.contact-form-bg input[type="tel"], input[type="number"],.contact-form-bg input[type="date"], input[type="month"],.contact-form-bg input[type="week"],.contact-form-bg input[type="time"],.contact-form-bg input[type="range"],.contact-form-bg input[type="color"], select
+  {
+    height:35px;
+    min-height:35px;
+  }
+  .contact-form-bg  input.submit.action_button{
+    padding:0 !important;
+    margin-bottom:0 !important;
+  }
+  .contact-form-bg input.submit.action_button:hover {
+    border: 1px solid #000 !important;
+  }
+  @media screen and (min-width:320px) and (max-width:768px){
+    .contact-form{width:100%;float:none;margin-top:30px;padding:0;}
+    .contact-bg{padding:0px 0 50px;}
+    .contact-info{width:100%;float:right;}
+    div.content{padding:0 ;}
+    .contact-inner {border-left: none;padding-left: 15px;}
+     .contact-form h2{margin-right:0;margin-bottom:35px;letter-spacing: 0;margin-top:30px;}
+    .contact-info{margin-bottom:35px;}
+  }
+  {% if section.settings.map_greyscale %}
+    .maps {
+      filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+ */
+      filter: gray; /* IE6-9 */
+      -webkit-filter: grayscale(99%); /* Chrome 19+ & Safari 6+ */
+      -webkit-backface-visibility: hidden;  /* Fix for transition flickering */
+    }
+  {% endif %}
+  {% if section.settings.map_scrolling %}
+    .maps iframe {
+      pointer-events: auto;
+    }
+  {% endif %}
+  @media only screen and (max-width: 767px) {
+    .maps iframe{
+      height: {{ section.settings.map_height | divided_by: 1.5 | round }}px;
+    }
+   
+  }
+  .map-placeholder {
+    width: 100%;
+    height: {{ section.settings.map_height }}px;
+  }
+ 
+</style>  
+
+{% schema %}
+
+{
+  "name": "Contact",
+  "class": "contact-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1600 x 600px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_darken",
+      "label": "Darken banner image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_captcha",
+      "label": "Enable Captcha",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Get in touch"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+	{
+      "type": "checkbox",
+      "id": "show_page_content",
+      "label": "Display Page Content ?",
+      "default": false
+    },
+	{
+        "type": "header",
+        "content": "Mailing Address"
+    },
+	{
+      "type": "text",
+      "id": "address_title",
+      "label": "Address Title",
+	  "default": "iDecoz Inc"
+    },
+	{
+      "type": "text",
+      "id": "address_line1",
+      "label": "Address Line 1",
+	  "default": "<p>iDecoz Inc240 Kent Avenue</p></br>"
+    },
+	{
+      "type": "text",
+      "id": "address_line2",
+      "label": "Address Line 2",
+	  "default": "<p>1st. Floor Brooklyn NY 11249</p>"
+    },
+	{
+      "type": "text",
+      "id": "hours_operation",
+      "label": "Online order enquiries",
+	  "default": "onlineorders@popcornshed.com "
+    },
+	{
+      "type": "text",
+      "id": "working_timing",
+      "label": "Working Timing",
+	  "default": "9:00am – 5:00pm EST"
+    },	
+	{
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone",
+	  "default": "1.888.645.1460"
+    },
+	{
+      "type": "text",
+      "id": "fax_number",
+      "label": "FAX",
+	  "default": "1.888.220.2710"
+    },
+	{
+      "type": "text",
+      "id": "email_id",
+      "label": "EMail",
+	  "default": "CustomerService@iDecoz.com"
+    },
+	{
+      "type": "text",
+      "id": "wholesale_inq",
+      "label": "Wholesale Inquiries",
+	  "default": "info@iDecoz.com"
+    },
+	{
+      "type": "text",
+      "id": "press_inq",
+      "label": "Press Inquiries",
+	  "default": "press@iDecoz.com"
+    },
+    {
+        "type": "header",
+        "content": "Map"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_map",
+      "label": "Show map",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "contact_address",
+      "label": "Street address",
+      "info": "The full address that will be placed on the map."
+    },
+    {
+      "type": "range",
+      "id": "zoom_level",
+      "label": "Map zoom level",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "map_height",
+      "min": 250,
+      "max": 500,
+      "step": 50,
+      "unit": "px",
+      "label": "Height",
+      "default": 400
+    },
+    {
+      "type": "checkbox",
+      "id": "map_stretch",
+      "label": "Stretch to fill page",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "map_greyscale",
+      "label": "Enable greyscale map",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "map_scrolling",
+      "label": "Enable scrolling",
+      "default": false
+    }
+  ],
+  "blocks": []
+}
+
+{% endschema %}

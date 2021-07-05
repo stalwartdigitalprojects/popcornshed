@@ -1,0 +1,145 @@
+<div class="container">
+  <div class="row vertical-align">
+  <div class="eight columns">
+    <div class="award-winning-left-section">
+       {% if section.settings.enable_video == true %}
+          {% if section.settings.video_url != blank %}
+          <div class="mobile_hidden">
+            <video id="banner-home-video" role="presentation" loop="true" width="100%" muted="true" playsinline="" webkit-playsinline="" {% if section.settings.autoplay_video ==true %} autoplay="autoplay" {% else %} controls{% endif %} poster="{{ video_poster}}">
+              <source src="{{ section.settings.video_url }}" type="video/webm">
+              <source src="{{ section.settings.video_url }}" type="video/mp4">
+              Your browser does not support the video tag. <a href="{{ section.settings.video_url }}" target="_blank" tilte="Video of {{section.settings.title}}">Open Video in New window</a>
+            </video> 
+          </div>
+          {% endif %}
+
+          {% if section.settings.video_url_mobile != blank %}
+          <div class="mobile_only">
+            <video id="mobile-banner-home-video" role="presentation" loop="true" width="100%"  title="Mobile Video - {{section.settings.title}}" playsinline="" webkit-playsinline="" muted="true" {% if section.settings.autoplay_video ==true %} autoplay="autoplay" {% else %} controls{% endif %} poster="{{ mobile_video_poster}}">
+              <source src="{{ section.settings.video_url_mobile }}" type="video/webm">
+              <source src="{{ section.settings.video_url_mobile }}" type="video/mp4">
+              Your browser does not support the video tag. <a href="{{ section.settings.video_url }}" target="_blank" tilte="Video of {{section.settings.title}}">Open Video in New window</a>
+            </video>
+          </div>
+          {% endif %}
+      
+      {% else %}
+      
+        {% if section.settings.enable_video != true %}
+        <img src="{{ section.settings.image | img_url:'700x' }}" alt="{{ section.settings.title }}" /> 
+        {% endif %}
+      
+      {% endif %}
+    </div>
+  </div>
+  <div class="eight columns">
+      <div class="award-winning-right-section">
+        <h1>{{ section.settings.title }}</h1>
+        <div class="description">
+          <h2>{{ section.settings.pretext }}</h2>
+        </div>
+        <div class="award-winning-button">
+          <a href="{{ section.settings.button1_link }}" class="shop-now">{{ section.settings.button1 }}</a>
+          <a href="{{ section.settings.button2_link }}" class="about-popcorshed">{{ section.settings.button2 }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Award Winning",
+     "class":"popcorn-award-winning",
+    "settings": [
+		{
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "840 x 840px recommended"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_video",
+          "label": "Enable Video ?",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay_video",
+          "label": "Autoplay Video ?",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "MP4 Video URL for Desktop",
+          "info": "1920 x 1080px recommended"
+        },
+        {
+          "type": "text",
+          "id": "video_url_mobile",
+          "label": "MP4 Video URL for Mobile",
+          "info": "768 x 1024px recommended"
+        },
+		{
+          "type": "video_url",
+          "id": "video",
+          "label": "Video link",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    	},
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Award winning <br>gourment popcorn"
+        },
+		{
+          "type": "richtext",
+          "id": "pretext",
+          "label": "Preheading",
+			"default":"<p>We’re making gourmet popcorn the way it should be: by hand, using all natural ingredients, carefully sourced, lovingly crafted and free of any nasty preservatives or additives. Popcorn Shed’s range is suitable for vegetarians and completely gluten-free</p>"
+        },
+		{
+          "type": "text",
+          "id": "button1",
+          "label": "First button label",
+		"default":"Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First slide link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button1_highlight",
+          "label": "Highlight first button"
+        },
+        {
+          "type": "text",
+          "id": "button2",
+          "label": "Second button label",
+		"default":"About PopcornShed"
+        },
+        {
+          "type": "url",
+          "id": "button2_link",
+          "label": "Second slide link"
+        },
+        {
+          "type": "checkbox",
+          "id": "button2_highlight",
+          "label": "Highlight second button"
+        }
+	],
+	"presets": [
+		{
+          "name": "Award Winning",
+          "category": "text",
+          "settings": {}
+    }]
+  }
+{% endschema %}

@@ -1,0 +1,59 @@
+{% assign ppKey = 'blog_product' %}
+{% for i in (1..4) %}
+{% assign ppKey = 'blog_product' | append:i %}
+{% assign lbMetafield = article.metafields.c_f[ppKey] %}
+{% if lbMetafield != blank %}
+{%- assign product = all_products[lbMetafield] -%}
+{%- assign collection_handles = product.collections | map: 'handle' -%}
+<div class="product-wrap">
+  <div class="relative product_image swap-false">
+    <a href="{{ product.url }}" itemprop="url">
+      <div class="image__container" style="max-width: {{'350px'}};">
+        <img  src="{{ product.featured_image | img_url:'master' }}" alt="{{ product.title | escape }}" class=" lazyload {{ settings.image_loading_style }}" data-sizes="auto" />
+      </div>
+    </a>
+    <div class="thumbnail-overlay  no-overlay ">
+      <a href="{{ product.url }}" itemprop="url" class="hidden-product-link">{{ product.title }}</a>
+      <div class="info">
+        <a href="{{ product.url }}" itemprop="url"></a>
+      </div>
+    </div>    
+  </div>
+  <a class="product-info__caption " href="{{ product.url }}" itemprop="url"> 
+    <div class="product-details"> <span class="title" itemprop="name">{{ product.title }}</span>      
+      {% assign variant = product.selected_or_first_available_variant %}
+      <p class="modal_price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+        <meta itemprop="seller" content="{{ shop.name | escape }}" />
+        <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+        <meta itemprop="itemCondition" content="New" />
+
+        <span class="sold_out">{% if variant.available == false %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+        <span itemprop="price" content="{{ variant.price | money_without_currency }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+          <span class="current_price {% if product.available == false %}hidden{% endif %}">
+            {% if variant.price > 0 %}
+            <span class="money">{{ variant.price | money }}</span>
+            {% else %}
+            {{ settings.free_price_text }}
+            {% endif %}
+          </span>
+        </span>
+        <span class="was_price">
+          {% if variant.price < variant.compare_at_price and variant.available %}
+          <span class="money">{{ variant.compare_at_price | money }}</span>
+          {% endif %}
+        </span>
+        {% if section.settings.display_savings %}
+        <span class="sale savings">
+          {% if variant.price < variant.compare_at_price and variant.available %}
+          {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{{ variant.compare_at_price | minus: variant.price | money }}</span>)
+          {% endif %}
+        </span>
+        {% endif %}
+      </p>
+      {% include 'product-notify-me' %}      
+    </div>
+  </a>
+</div>
+{% endif %}
+{% endfor %}
